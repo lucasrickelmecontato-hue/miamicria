@@ -73,30 +73,6 @@ if (document.getElementById('heroVideo1')) {
   heroVideoMobileQuery.addEventListener('change', sincronizarFontesHeroVideo);
 }
 
-/* ---------- Header: opacidade 0 no topo, aparece ao rolar ---------- */
-/* (só em páginas com capa de vídeo; nas outras o header já nasce visível) */
-
-const siteHeader = document.getElementById('siteHeader');
-
-if (document.querySelector('.hero')) {
-  let headerFadeDistance = window.innerHeight * 0.55;
-
-  const atualizarOpacidadeHeader = () => {
-    const scrollY = window.scrollY || window.pageYOffset;
-    const opacidade = Math.min(scrollY / headerFadeDistance, 1);
-    siteHeader.style.opacity = opacidade;
-    siteHeader.style.pointerEvents = opacidade < 0.05 ? 'none' : 'auto';
-  };
-
-  window.addEventListener('scroll', atualizarOpacidadeHeader, { passive: true });
-  window.addEventListener('resize', () => {
-    headerFadeDistance = window.innerHeight * 0.55;
-    atualizarOpacidadeHeader();
-  });
-  atualizarOpacidadeHeader();
-} else {
-  siteHeader.style.opacity = 1;
-}
 
 /* ---------- Product data ---------- */
 
