@@ -424,6 +424,76 @@ a{color:inherit; text-decoration:none;}
   font-size: 14px;
 }
 
+/* ---------- Para quem é ---------- */
+
+.who{
+  padding: 110px 24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,45,149,0.12), transparent 55%),
+    var(--bg-alt);
+  text-align: center;
+}
+
+.who-inner{
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.who-title{
+  font-family: 'Archivo', 'Arial Black', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.who-list{
+  list-style: none;
+  margin: 48px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.who-list li{
+  font-family: var(--font-display);
+  font-size: clamp(17px, 2.6vw, 22px);
+  letter-spacing: 0.01em;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.4;
+}
+
+.who-stars{
+  color: var(--gold);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 12px rgba(255,195,92,0.7);
+}
+
+.who-highlight{
+  margin-top: 52px;
+  font-family: 'Archivo', 'Arial Black', sans-serif;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(24px, 4vw, 36px);
+  line-height: 1.25;
+  background: linear-gradient(90deg, var(--magenta), var(--orange));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(255,45,149,0.4));
+}
+
+.who-text{
+  margin-top: 16px;
+  color: rgba(255,255,255,0.65);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 .products{
   padding: 100px 24px;
   background: var(--bg);
