@@ -446,7 +446,12 @@ a{color:inherit; text-decoration:none;}
   font-size: clamp(32px, 6vw, 56px);
   line-height: 1.1;
   letter-spacing: -0.01em;
-  color: var(--white);
+  background: linear-gradient(90deg, var(--teal), var(--purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(45,217,199,0.4));
 }
 
 .who-list{
@@ -455,15 +460,27 @@ a{color:inherit; text-decoration:none;}
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
+  text-align: left;
 }
 
 .who-list li{
+  position: relative;
+  padding-left: 30px;
   font-family: var(--font-display);
   font-size: clamp(17px, 2.6vw, 22px);
   letter-spacing: 0.01em;
   color: rgba(255,255,255,0.85);
   line-height: 1.4;
+}
+
+.who-list li::before{
+  content: '▸';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--magenta);
+  text-shadow: 0 0 10px rgba(255,45,149,0.6);
 }
 
 .who-stars{
