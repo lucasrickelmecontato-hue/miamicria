@@ -113,3 +113,71 @@ Quando o usuário pedir skill nova:
 4. Se a skill precisar de arquivos de apoio (templates, exemplos),
    criar dentro da pasta da skill
 5. Seguir o fluxo da skill-creator nativa do Claude Code
+
+---
+
+# Miami Cria
+
+> Perfil: **criador solo** — uma pessoa, uma marca, audiência como ativo
+> principal. O sistema gira em torno do que você produz e publica.
+
+## O que é esse workspace
+
+Operação da Miami Cria — e-commerce de roupas oversized temáticas da franquia GTA. Aqui eu produzo conteúdo, construo o site/loja, mantenho relação com audiência gamer e fecho venda.
+
+**Estrutura de pastas:**
+- `_memoria/` — quem eu sou, como falo, o que tá em foco
+- `identidade/` — cores, fontes, logo, padrão visual
+- `marketing/` — conteúdo, SEO, campanhas (saída das skills)
+- `saidas/` — análises, emails, documentos pontuais
+- `produtos/` — meus produtos próprios (roupas, coleções)
+- `audiencia/` — listas, dados, contatos da minha base
+- `dados/` — arquivos a analisar (CSV, PDF, planilha)
+- `scripts/` — utilitários (gerar imagem, postar, render)
+- `tarefas.md` — o que tá em jogo agora
+
+## Quem sou
+
+Sou o criador da Miami Cria. Crio e vendo roupas oversized com estética GTA/Vice City — pra quem curte a franquia, do descolado ao nerd assumido.
+O que diferencia: estética Miami Vice City/GTA VI aplicada a streetwear real, feito por quem também é fã da franquia, não uma marca genérica surfando a hype.
+
+## O que produzo
+
+- Roupas oversized temáticas GTA (produto físico)
+- Posts de Instagram (teaser/hype, estilo trailer de game)
+- Site/loja própria (em construção — prioridade máxima no momento)
+
+## Minha audiência
+
+Pais de gamers e os próprios gamers da franquia GTA, de adolescentes até pessoas de 30-35 anos. Mistura de público descolado (streetwear) e nerd assumido (fã da franquia).
+
+## Tom de voz
+
+Seco, direto, estilo teaser de trailer de game. Referência real:
+
+> "Você ainda não está preparado.
+> Uma nova forma de vestir o hype.
+> MIAMI CRIA
+> Em breve."
+
+Evitar: travessão no meio do texto, qualquer coisa que soe feita por IA, jargão fora do nicho gamer/streetwear ("alavancar", "sinergia", "vamos juntos!").
+
+## Posicionamento
+
+Roupa que veste o hype da franquia GTA com estética Vice City de verdade — painterly, cinematográfica, sunset neon — não estampa genérica de fã-clube. Pra quem quer usar a vibe do jogo no dia a dia, não só ter uma camiseta com logo.
+
+## Regras do sistema
+
+- Conteúdo novo salvar em `marketing/conteudo/<tipo>-<tema>-<data>/`
+- Cada lançamento de produto/coleção cria pasta em `produtos/<nome>/`
+- Toda peça visual (carrossel, post, mockup de produto) segue a paleta e o estilo de `identidade/design-guide.md` — estética Miami Vice City/GTA VI, nunca cores primárias puras
+
+## Ferramentas conectadas
+
+- [ ] Notion
+- [ ] Canva
+- [ ] Google Calendar
+- [ ] Meta Ads
+- [ ] Google Ads
+
+*(Marcar conforme for instalando os MCPs)*
