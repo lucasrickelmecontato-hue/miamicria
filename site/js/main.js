@@ -35,14 +35,23 @@ if (document.getElementById('heroVideo1')) {
   };
 
   // espera o vídeo ter dado real carregado antes de mandar tocar — evita o play()
-  // ser abortado pelo load() (causa comum de vídeo "travado" no primeiro frame no celular)
+  // ser abortado pelo load() (causa comum de vídeo "travado" no primeiro frame no celular).
+  // Tenta em vários eventos (loadeddata/canplay/canplaythrough) porque em conexões móveis
+  // mais lentas nem sempre o mesmo evento dispara de forma confiável.
   const tocarQuandoPronto = (video, indice) => {
+    let tocou = false;
     const tentar = () => {
+      if (tocou) return;
       iniciarNoPontoCerto(video, indice);
-      video.play().catch(() => {});
+      const promessa = video.play();
+      if (promessa) promessa.then(() => { tocou = true; }).catch(() => {});
     };
+    ['loadeddata', 'canplay', 'canplaythrough'].forEach(evento => {
+      video.addEventListener(evento, tentar, { once: true });
+    });
     if (video.readyState >= 2) tentar();
-    else video.addEventListener('loadeddata', tentar, { once: true });
+    // rede móvel lenta pode não disparar nenhum desses eventos a tempo — tenta de novo mesmo assim
+    setTimeout(tentar, 3000);
   };
 
   const sincronizarFontesHeroVideo = () => {
