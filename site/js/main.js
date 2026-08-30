@@ -4,11 +4,29 @@ document.getElementById('year').textContent = new Date().getFullYear();
 /* (só roda em páginas que têm a capa, ex: index.html) */
 
 if (document.getElementById('heroVideo1')) {
-  const heroVideos = [document.getElementById('heroVideo1'), document.getElementById('heroVideo2'), document.getElementById('heroVideo3'), document.getElementById('heroVideo4')];
+  const video1El = document.getElementById('heroVideo1');
+  const isMobileHero = window.matchMedia('(max-width: 860px)').matches;
+
+  // no celular o vídeo 1 nunca ficou bem enquadrado (corta os personagens em
+  // telas mais baixas), então no mobile ele fica fora do rodízio e a capa
+  // começa direto no vídeo 2. No desktop ele continua normalmente.
+  const heroVideos = isMobileHero
+    ? [document.getElementById('heroVideo2'), document.getElementById('heroVideo3'), document.getElementById('heroVideo4')]
+    : [video1El, document.getElementById('heroVideo2'), document.getElementById('heroVideo3'), document.getElementById('heroVideo4')];
+
+  if (isMobileHero) {
+    video1El.classList.remove('is-active');
+    video1El.pause();
+    video1El.removeAttribute('autoplay');
+    heroVideos[0].classList.add('is-active');
+    heroVideos[0].preload = 'auto';
+    heroVideos[0].load();
+  }
+
   let heroVideoAtual = 0;
 
   // vídeo 1 pula a abertura e já entra na hora que a mão encosta na camisa
-  const HERO_VIDEO_START = { 0: 1.6 };
+  const HERO_VIDEO_START = isMobileHero ? {} : { 0: 1.6 };
 
   heroVideos.forEach(v => { v.muted = true; });
 
