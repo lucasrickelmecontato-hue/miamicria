@@ -12,19 +12,11 @@ if (document.getElementById('heroVideo1')) {
 
   heroVideos.forEach(v => { v.muted = true; });
 
-  /* Vídeos verticais dedicados pro celular (evita cortar quem tá na cena) */
-  const heroVideoMobileQuery = window.matchMedia('(max-width: 860px)');
-  let heroVideoModoMobile = null;
-
-  const aplicarFonteHeroVideo = (video) => {
-    const mobile = heroVideoMobileQuery.matches;
-    const fonte = mobile ? video.dataset.mobile : video.dataset.desktop;
-    if (video.dataset.fonteAtual === fonte) return false;
-    video.dataset.fonteAtual = fonte;
-    video.src = fonte;
-    video.load();
-    return true;
-  };
+  // A troca entre vídeo vertical (celular) e horizontal (desktop) é feita pelo
+  // próprio navegador via <source media="">, no HTML — nada de trocar o src por JS.
+  // Isso evita o load()+play() concorrendo (causa clássica de vídeo travado no
+  // primeiro frame, principalmente no Safari/iOS) e deixa o autoplay nativo cuidar
+  // do vídeo 1 sozinho.
 
   const iniciarNoPontoCerto = (video, indice) => {
     const inicio = HERO_VIDEO_START[indice] || 0;
@@ -34,14 +26,12 @@ if (document.getElementById('heroVideo1')) {
     else video.addEventListener('loadedmetadata', aplicar, { once: true });
   };
 
-  // espera o vídeo ter dado real carregado antes de mandar tocar — evita o play()
-  // ser abortado pelo load() (causa comum de vídeo "travado" no primeiro frame no celular).
-  // Tenta em vários eventos (loadeddata/canplay/canplaythrough) porque em conexões móveis
-  // mais lentas nem sempre o mesmo evento dispara de forma confiável.
+  // rede de segurança: se por algum motivo o autoplay nativo não pegar, tenta de
+  // novo em vários eventos de carregamento + um fallback por tempo
   const tocarQuandoPronto = (video, indice) => {
     let tocou = false;
     const tentar = () => {
-      if (tocou) return;
+      if (tocou || !video.paused) return;
       iniciarNoPontoCerto(video, indice);
       const promessa = video.play();
       if (promessa) promessa.then(() => { tocou = true; }).catch(() => {});
@@ -50,25 +40,7 @@ if (document.getElementById('heroVideo1')) {
       video.addEventListener(evento, tentar, { once: true });
     });
     if (video.readyState >= 2) tentar();
-    // rede móvel lenta pode não disparar nenhum desses eventos a tempo — tenta de novo mesmo assim
     setTimeout(tentar, 3000);
-  };
-
-  const sincronizarFontesHeroVideo = () => {
-    const mobile = heroVideoMobileQuery.matches;
-    if (mobile === heroVideoModoMobile) return;
-    heroVideoModoMobile = mobile;
-
-    heroVideos.forEach((v, i) => {
-      const estavaAtivo = v.classList.contains('is-active');
-      const trocouFonte = aplicarFonteHeroVideo(v);
-      if (!estavaAtivo) return;
-      if (trocouFonte) tocarQuandoPronto(v, i);
-      else {
-        iniciarNoPontoCerto(v, i);
-        v.play().catch(() => {});
-      }
-    });
   };
 
   const trocarHeroVideo = () => {
@@ -88,9 +60,8 @@ if (document.getElementById('heroVideo1')) {
 
   heroVideos.forEach(v => v.addEventListener('ended', trocarHeroVideo));
 
-  sincronizarFontesHeroVideo();
-
-  heroVideoMobileQuery.addEventListener('change', sincronizarFontesHeroVideo);
+  iniciarNoPontoCerto(heroVideos[0], 0);
+  tocarQuandoPronto(heroVideos[0], 0);
 }
 
 

@@ -55,10 +55,22 @@
 
   <section class="hero">
     <div class="hero-photo">
-      <video class="hero-video is-active" id="heroVideo1" data-desktop="video/hero-1.mp4" data-mobile="video/hero-1-mobile.mp4" muted playsinline preload="auto"></video>
-      <video class="hero-video" id="heroVideo2" data-desktop="video/hero-2.mp4" data-mobile="video/hero-2-mobile.mp4" muted playsinline preload="auto"></video>
-      <video class="hero-video" id="heroVideo3" data-desktop="video/hero-3.mp4" data-mobile="video/hero-3-mobile.mp4" muted playsinline preload="auto"></video>
-      <video class="hero-video" id="heroVideo4" data-desktop="video/hero-4.mp4" data-mobile="video/hero-4-mobile.mp4" muted playsinline preload="auto"></video>
+      <video class="hero-video is-active" id="heroVideo1" muted playsinline autoplay preload="auto">
+        <source src="video/hero-1-mobile.mp4" media="(max-width: 860px)">
+        <source src="video/hero-1.mp4">
+      </video>
+      <video class="hero-video" id="heroVideo2" muted playsinline preload="auto">
+        <source src="video/hero-2-mobile.mp4" media="(max-width: 860px)">
+        <source src="video/hero-2.mp4">
+      </video>
+      <video class="hero-video" id="heroVideo3" muted playsinline preload="auto">
+        <source src="video/hero-3-mobile.mp4" media="(max-width: 860px)">
+        <source src="video/hero-3.mp4">
+      </video>
+      <video class="hero-video" id="heroVideo4" muted playsinline preload="auto">
+        <source src="video/hero-4-mobile.mp4" media="(max-width: 860px)">
+        <source src="video/hero-4.mp4">
+      </video>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-neon-edge" aria-hidden="true"></div>
