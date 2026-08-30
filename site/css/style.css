@@ -1030,6 +1030,11 @@ a{color:inherit; text-decoration:none;}
     align-items: center;
   }
 
+  .hero-sub{
+    align-self: flex-start;
+    text-align: left;
+  }
+
   .hero-title{
     font-size: clamp(44px, 11vw, 64px);
     margin-top: auto;
@@ -1051,8 +1056,12 @@ a{color:inherit; text-decoration:none;}
     object-fit: cover;
   }
 
-  /* vídeos verticais dedicados já vêm enquadrados certos, sem precisar de crop manual */
-  #heroVideo1, #heroVideo2, #heroVideo3, #heroVideo4{ object-position: center; }
+  /* vídeo 2 já vem bem enquadrado no celular; os outros têm céu/rua demais
+     sobrando em cima, então dá um zoom pra deixar os personagens em destaque */
+  #heroVideo2{ object-position: center; }
+  #heroVideo1{ object-position: center; transform: scale(1.4); transform-origin: 50% 65%; }
+  #heroVideo3{ object-position: center; transform: scale(1.35); transform-origin: 50% 62%; }
+  #heroVideo4{ object-position: center; transform: scale(1.18); transform-origin: 50% 55%; }
 
   .hero-neon-edge{
     box-shadow:

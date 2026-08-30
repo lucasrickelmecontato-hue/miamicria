@@ -43,6 +43,18 @@ if (document.getElementById('heroVideo1')) {
     setTimeout(tentar, 3000);
   };
 
+  // só o vídeo ativo e o próximo da fila carregam de cada vez — os outros dois
+  // ficam com preload="none" até chegar a vez deles. Com os 4 carregando juntos
+  // (preload="auto" em todos) o celular disputava banda/decodificação entre eles
+  // e isso travava a reprodução.
+  const prepararProximoVideo = (indiceAtual) => {
+    const proximo = heroVideos[(indiceAtual + 1) % heroVideos.length];
+    if (proximo.preload !== 'auto') {
+      proximo.preload = 'auto';
+      proximo.load();
+    }
+  };
+
   const trocarHeroVideo = () => {
     const anterior = heroVideos[heroVideoAtual];
     heroVideoAtual = (heroVideoAtual + 1) % heroVideos.length;
@@ -52,6 +64,7 @@ if (document.getElementById('heroVideo1')) {
     proximo.play().catch(() => {});
     proximo.classList.add('is-active');
     anterior.classList.remove('is-active');
+    prepararProximoVideo(heroVideoAtual);
 
     setTimeout(() => {
       if (anterior !== heroVideos[heroVideoAtual]) anterior.pause();
@@ -62,6 +75,7 @@ if (document.getElementById('heroVideo1')) {
 
   iniciarNoPontoCerto(heroVideos[0], 0);
   tocarQuandoPronto(heroVideos[0], 0);
+  prepararProximoVideo(0);
 }
 
 
