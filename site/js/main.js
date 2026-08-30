@@ -7,12 +7,13 @@ if (document.getElementById('heroVideo1')) {
   const video1El = document.getElementById('heroVideo1');
   const isMobileHero = window.matchMedia('(max-width: 860px)').matches;
 
-  // no celular o vídeo 1 nunca ficou bem enquadrado (corta os personagens em
-  // telas mais baixas), então no mobile ele fica fora do rodízio e a capa
-  // começa direto no vídeo 2. No desktop ele continua normalmente.
+  // no celular a capa começa pelo vídeo 2, com o vídeo 1 (iphone) em segundo
+  // lugar no rodízio. No desktop a ordem normal (vídeo 1 primeiro) continua.
   const heroVideos = isMobileHero
-    ? [document.getElementById('heroVideo2'), document.getElementById('heroVideo3'), document.getElementById('heroVideo4')]
+    ? [document.getElementById('heroVideo2'), video1El, document.getElementById('heroVideo3'), document.getElementById('heroVideo4')]
     : [video1El, document.getElementById('heroVideo2'), document.getElementById('heroVideo3'), document.getElementById('heroVideo4')];
+
+  const video1Index = heroVideos.indexOf(video1El);
 
   if (isMobileHero) {
     video1El.classList.remove('is-active');
@@ -26,7 +27,7 @@ if (document.getElementById('heroVideo1')) {
   let heroVideoAtual = 0;
 
   // vídeo 1 pula a abertura e já entra na hora que a mão encosta na camisa
-  const HERO_VIDEO_START = isMobileHero ? {} : { 0: 1.6 };
+  const HERO_VIDEO_START = { [video1Index]: 1.6 };
 
   heroVideos.forEach(v => { v.muted = true; });
 
