@@ -19,10 +19,11 @@ if (document.getElementById('heroVideo1')) {
   const aplicarFonteHeroVideo = (video) => {
     const mobile = heroVideoMobileQuery.matches;
     const fonte = mobile ? video.dataset.mobile : video.dataset.desktop;
-    if (video.dataset.fonteAtual === fonte) return;
+    if (video.dataset.fonteAtual === fonte) return false;
     video.dataset.fonteAtual = fonte;
     video.src = fonte;
     video.load();
+    return true;
   };
 
   const iniciarNoPontoCerto = (video, indice) => {
@@ -33,6 +34,17 @@ if (document.getElementById('heroVideo1')) {
     else video.addEventListener('loadedmetadata', aplicar, { once: true });
   };
 
+  // espera o vídeo ter dado real carregado antes de mandar tocar — evita o play()
+  // ser abortado pelo load() (causa comum de vídeo "travado" no primeiro frame no celular)
+  const tocarQuandoPronto = (video, indice) => {
+    const tentar = () => {
+      iniciarNoPontoCerto(video, indice);
+      video.play().catch(() => {});
+    };
+    if (video.readyState >= 2) tentar();
+    else video.addEventListener('loadeddata', tentar, { once: true });
+  };
+
   const sincronizarFontesHeroVideo = () => {
     const mobile = heroVideoMobileQuery.matches;
     if (mobile === heroVideoModoMobile) return;
@@ -40,8 +52,10 @@ if (document.getElementById('heroVideo1')) {
 
     heroVideos.forEach((v, i) => {
       const estavaAtivo = v.classList.contains('is-active');
-      aplicarFonteHeroVideo(v);
-      if (estavaAtivo) {
+      const trocouFonte = aplicarFonteHeroVideo(v);
+      if (!estavaAtivo) return;
+      if (trocouFonte) tocarQuandoPronto(v, i);
+      else {
         iniciarNoPontoCerto(v, i);
         v.play().catch(() => {});
       }
@@ -66,9 +80,6 @@ if (document.getElementById('heroVideo1')) {
   heroVideos.forEach(v => v.addEventListener('ended', trocarHeroVideo));
 
   sincronizarFontesHeroVideo();
-  iniciarNoPontoCerto(heroVideos[0], 0);
-  const heroVideoPromise = heroVideos[0].play();
-  if (heroVideoPromise) heroVideoPromise.catch(() => {});
 
   heroVideoMobileQuery.addEventListener('change', sincronizarFontesHeroVideo);
 }
