@@ -388,7 +388,7 @@ a{color:inherit; text-decoration:none;}
 
 .marquee-track{
   display: inline-flex;
-  animation: scroll-left 150s linear infinite;
+  animation: scroll-left 240s linear infinite;
 }
 
 .marquee-track span{
