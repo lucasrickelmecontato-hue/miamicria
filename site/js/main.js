@@ -111,7 +111,7 @@ const PRODUTOS = [
     midias: [
       { tipo: 'img', src: 'img/produto-1-frente.png' },
       { tipo: 'img', src: 'img/produto-1-costas.png' },
-      { tipo: 'video', src: 'video/produto-1-frente.mp4' },
+      { tipo: 'video', src: 'video/produto-1-frente.mp4', inicio: 0.6 },
       { tipo: 'video', src: 'video/produto-1-costas.mp4' }
     ]
   },
@@ -166,12 +166,41 @@ const galleryNext = document.getElementById('galleryNext');
 
 let galeriaMidias = [];
 let galeriaIndice = 0;
+let galeriaElementos = [];
+
+// monta todos os elementos (fotos e vídeos) de uma vez só, escondidos, assim que a
+// galeria abre — os vídeos já começam a baixar em segundo plano com preload="auto",
+// então quando o usuário navega até eles não tem trava esperando carregar
+function montarGaleriaElementos(midias){
+  return midias.map((midia) => {
+    if (midia.tipo === 'video') {
+      const video = document.createElement('video');
+      video.src = midia.src;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      if (midia.inicio) {
+        video.addEventListener('loadedmetadata', () => { video.currentTime = midia.inicio; }, { once: true });
+      }
+      return video;
+    }
+    const img = document.createElement('img');
+    img.src = midia.src;
+    img.alt = '';
+    return img;
+  });
+}
 
 function renderGaleriaAtual(){
-  const midia = galeriaMidias[galeriaIndice];
-  galleryStage.innerHTML = midia.tipo === 'video'
-    ? `<video src="${midia.src}" autoplay muted loop playsinline></video>`
-    : `<img src="${midia.src}" alt="">`;
+  galeriaElementos.forEach((el, i) => {
+    const ativo = i === galeriaIndice;
+    el.classList.toggle('is-active', ativo);
+    if (el.tagName === 'VIDEO') {
+      if (ativo) el.play().catch(() => {});
+      else el.pause();
+    }
+  });
 
   galleryDots.innerHTML = galeriaMidias.map((_, i) =>
     `<button type="button" class="gallery-dot${i === galeriaIndice ? ' is-active' : ''}" data-index="${i}" aria-label="Ver mídia ${i + 1}"></button>`
@@ -188,6 +217,9 @@ function renderGaleriaAtual(){
 function abrirGaleria(midias, nomeProduto){
   galeriaMidias = midias;
   galeriaIndice = 0;
+  galleryStage.innerHTML = '';
+  galeriaElementos = montarGaleriaElementos(midias);
+  galeriaElementos.forEach(el => galleryStage.appendChild(el));
   renderGaleriaAtual();
   galleryModal.classList.add('open');
   galleryOverlay.classList.add('open');
@@ -197,7 +229,9 @@ function abrirGaleria(midias, nomeProduto){
 function fecharGaleria(){
   galleryModal.classList.remove('open');
   galleryOverlay.classList.remove('open');
+  galeriaElementos.forEach(el => { if (el.tagName === 'VIDEO') el.pause(); });
   galleryStage.innerHTML = '';
+  galeriaElementos = [];
   document.body.style.overflow = '';
 }
 
