@@ -104,9 +104,10 @@ const PRODUTOS = [
   {
     nome: 'Oversized Sunset Grid',
     desc: 'Estampa gradiente pôr do sol com grid neon',
-    preco: 129.90,
+    preco: 69.99,
     tag: 'Novo',
-    gradiente: 'linear-gradient(160deg, #ff2d95, #ff8a3d)'
+    gradiente: 'linear-gradient(160deg, #ff2d95, #ff8a3d)',
+    imagens: ['img/produto-1-frente.png', 'img/produto-1-costas.png']
   },
   {
     nome: 'Oversized Neon Skyline',
@@ -155,10 +156,13 @@ if (grid) {
     card.className = 'product-card';
     card.dataset.produto = produto.nome;
 
+    const imagens = produto.imagens || ['img/mockup-1.png'];
+    const imagensHtml = imagens.map((src, i) => `<img class="product-mockup${i === 0 ? ' is-active' : ''}" src="${src}" alt="" aria-hidden="true">`).join('');
+
     card.innerHTML = `
       <div class="product-media" style="background:${produto.gradiente}">
         ${produto.tag ? `<span class="product-tag">${produto.tag}</span>` : ''}
-        <img class="product-mockup" src="img/mockup-1.png" alt="" aria-hidden="true">
+        ${imagensHtml}
       </div>
       <div class="product-info">
         <div class="product-name">${produto.nome}</div>
@@ -173,6 +177,16 @@ if (grid) {
         <button type="button" class="add-btn" disabled>Selecione um tamanho</button>
       </div>
     `;
+
+    if (imagens.length > 1) {
+      const fotos = card.querySelectorAll('.product-mockup');
+      let fotoAtual = 0;
+      setInterval(() => {
+        fotos[fotoAtual].classList.remove('is-active');
+        fotoAtual = (fotoAtual + 1) % fotos.length;
+        fotos[fotoAtual].classList.add('is-active');
+      }, 2600);
+    }
 
     const sizeBtns = card.querySelectorAll('.size-btn');
     const addBtn = card.querySelector('.add-btn');
