@@ -107,7 +107,13 @@ const PRODUTOS = [
     preco: 69.99,
     tag: 'Novo',
     gradiente: 'linear-gradient(160deg, #ff2d95, #ff8a3d)',
-    imagens: ['img/produto-1-frente.png', 'img/produto-1-costas.png']
+    imagens: ['img/produto-1-frente.png', 'img/produto-1-costas.png'],
+    midias: [
+      { tipo: 'img', src: 'img/produto-1-frente.png' },
+      { tipo: 'img', src: 'img/produto-1-costas.png' },
+      { tipo: 'video', src: 'video/produto-1-frente.mp4' },
+      { tipo: 'video', src: 'video/produto-1-costas.mp4' }
+    ]
   },
   {
     nome: 'Oversized Neon Skyline',
@@ -148,6 +154,77 @@ const PRODUTOS = [
 
 const TAMANHOS = ['P', 'M', 'G'];
 
+/* ---------- Galeria de mídias do produto (frente/costas, foto/vídeo) ---------- */
+
+const galleryModal = document.getElementById('galleryModal');
+const galleryOverlay = document.getElementById('galleryOverlay');
+const galleryStage = document.getElementById('galleryStage');
+const galleryDots = document.getElementById('galleryDots');
+const galleryClose = document.getElementById('galleryClose');
+const galleryPrev = document.getElementById('galleryPrev');
+const galleryNext = document.getElementById('galleryNext');
+
+let galeriaMidias = [];
+let galeriaIndice = 0;
+
+function renderGaleriaAtual(){
+  const midia = galeriaMidias[galeriaIndice];
+  galleryStage.innerHTML = midia.tipo === 'video'
+    ? `<video src="${midia.src}" autoplay muted loop playsinline></video>`
+    : `<img src="${midia.src}" alt="">`;
+
+  galleryDots.innerHTML = galeriaMidias.map((_, i) =>
+    `<button type="button" class="gallery-dot${i === galeriaIndice ? ' is-active' : ''}" data-index="${i}" aria-label="Ver mídia ${i + 1}"></button>`
+  ).join('');
+
+  galleryDots.querySelectorAll('.gallery-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      galeriaIndice = Number(dot.dataset.index);
+      renderGaleriaAtual();
+    });
+  });
+}
+
+function abrirGaleria(midias, nomeProduto){
+  galeriaMidias = midias;
+  galeriaIndice = 0;
+  renderGaleriaAtual();
+  galleryModal.classList.add('open');
+  galleryOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharGaleria(){
+  galleryModal.classList.remove('open');
+  galleryOverlay.classList.remove('open');
+  galleryStage.innerHTML = '';
+  document.body.style.overflow = '';
+}
+
+function galeriaAnterior(){
+  galeriaIndice = (galeriaIndice - 1 + galeriaMidias.length) % galeriaMidias.length;
+  renderGaleriaAtual();
+}
+
+function galeriaProxima(){
+  galeriaIndice = (galeriaIndice + 1) % galeriaMidias.length;
+  renderGaleriaAtual();
+}
+
+if (galleryModal) {
+  galleryClose.addEventListener('click', fecharGaleria);
+  galleryOverlay.addEventListener('click', fecharGaleria);
+  galleryPrev.addEventListener('click', galeriaAnterior);
+  galleryNext.addEventListener('click', galeriaProxima);
+
+  document.addEventListener('keydown', (e) => {
+    if (!galleryModal.classList.contains('open')) return;
+    if (e.key === 'Escape') fecharGaleria();
+    if (e.key === 'ArrowLeft') galeriaAnterior();
+    if (e.key === 'ArrowRight') galeriaProxima();
+  });
+}
+
 const grid = document.getElementById('productGrid');
 
 if (grid) {
@@ -158,11 +235,15 @@ if (grid) {
 
     const imagens = produto.imagens || ['img/mockup-1.png'];
     const imagensHtml = imagens.map((src, i) => `<img class="product-mockup${i === 0 ? ' is-active' : ''}" src="${src}" alt="" aria-hidden="true">`).join('');
+    const temGaleria = Array.isArray(produto.midias) && produto.midias.length > 0;
 
     card.innerHTML = `
-      <div class="product-media" style="background:${produto.gradiente}">
+      <div class="product-media${temGaleria ? ' has-gallery' : ''}" style="background:${produto.gradiente}">
         ${produto.tag ? `<span class="product-tag">${produto.tag}</span>` : ''}
         ${imagensHtml}
+        ${temGaleria ? `<button type="button" class="product-expand" aria-label="Ver fotos e vídeos do produto">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
+        </button>` : ''}
       </div>
       <div class="product-info">
         <div class="product-name">${produto.nome}</div>
@@ -186,6 +267,11 @@ if (grid) {
         fotoAtual = (fotoAtual + 1) % fotos.length;
         fotos[fotoAtual].classList.add('is-active');
       }, 2600);
+    }
+
+    if (temGaleria) {
+      const abrirGaleriaDoCard = () => abrirGaleria(produto.midias, produto.nome);
+      card.querySelector('.product-media').addEventListener('click', abrirGaleriaDoCard);
     }
 
     const sizeBtns = card.querySelectorAll('.size-btn');
