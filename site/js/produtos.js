@@ -78,4 +78,19 @@ const PRODUTOS = [
       { tipo: 'video', src: 'video/produto-6-costas.mp4' }
     ]
   },
+  {
+    id: 'preto-e-branco',
+    nome: 'Oversized Preto e Branco',
+    desc: 'Estampa preto e branco com detalhe retro',
+    preco: 59.90,
+    tag: 'Novo',
+    gradiente: 'linear-gradient(160deg, #1a0b2e, #24123f)',
+    imagens: ['img/produto-7-frente.jpg', 'img/produto-7-costas.jpg'],
+    midias: [
+      { tipo: 'img', src: 'img/produto-7-frente.jpg' },
+      { tipo: 'img', src: 'img/produto-7-costas.jpg' },
+      { tipo: 'video', src: 'video/produto-7-frente.mp4', crop: { scale: 1.8, origin: '50% 12%' } },
+      { tipo: 'video', src: 'video/produto-7-costas.mp4', crop: { scale: 1.8, origin: '50% 12%' } }
+    ]
+  },
 ];

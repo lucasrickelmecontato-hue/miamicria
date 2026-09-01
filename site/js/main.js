@@ -211,10 +211,12 @@ if (produtoDetalhe) {
     thumbs.querySelectorAll('.produto-thumb').forEach((thumb, i) => thumb.classList.toggle('is-active', i === midiaAtual));
   }
 
-  stage.innerHTML = midias.map((midia) => midia.tipo === 'video'
-    ? `<video src="${midia.src}" muted loop playsinline preload="auto"></video>`
-    : `<img src="${midia.src}" alt="">`
-  ).join('');
+  stage.innerHTML = midias.map((midia) => {
+    const estilo = midia.crop ? ` style="transform:scale(${midia.crop.scale});transform-origin:${midia.crop.origin};"` : '';
+    return midia.tipo === 'video'
+      ? `<video src="${midia.src}" muted loop playsinline preload="auto"${estilo}></video>`
+      : `<img src="${midia.src}" alt=""${estilo}>`;
+  }).join('');
 
   stage.querySelectorAll('video').forEach((video, i) => {
     const inicio = midias[i].inicio;
