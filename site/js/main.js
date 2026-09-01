@@ -235,14 +235,31 @@ if (produtoDetalhe) {
     });
   });
 
-  document.getElementById('produtoPrev').addEventListener('click', () => {
+  const voltarMidia = () => {
     midiaAtual = (midiaAtual - 1 + midias.length) % midias.length;
     renderMidiaAtual();
-  });
-  document.getElementById('produtoNext').addEventListener('click', () => {
+  };
+  const avancarMidia = () => {
     midiaAtual = (midiaAtual + 1) % midias.length;
     renderMidiaAtual();
+  };
+
+  document.getElementById('produtoPrev').addEventListener('click', voltarMidia);
+  document.getElementById('produtoNext').addEventListener('click', avancarMidia);
+
+  // no celular os botões de seta somem (vira arrastar/swipe pra trocar de foto)
+  const stageWrap = document.querySelector('.produto-stage-wrap');
+  let arrastoX = null;
+  stageWrap.addEventListener('pointerdown', (e) => { arrastoX = e.clientX; });
+  stageWrap.addEventListener('pointerup', (e) => {
+    if (arrastoX === null) return;
+    const delta = e.clientX - arrastoX;
+    arrastoX = null;
+    if (Math.abs(delta) < 40) return;
+    if (delta < 0) avancarMidia();
+    else voltarMidia();
   });
+  stageWrap.addEventListener('pointercancel', () => { arrastoX = null; });
 
   renderMidiaAtual();
 
