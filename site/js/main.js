@@ -171,6 +171,20 @@ const PRODUTOS = [
       { tipo: 'video', src: 'video/produto-5-costas.mp4' }
     ]
   },
+  {
+    nome: 'Off-White Leonida',
+    desc: 'Tom areia com estampa exclusiva nas costas',
+    preco: 69.90,
+    tag: 'Novo',
+    gradiente: 'linear-gradient(160deg, #e8dcc8, #5a2a8f)',
+    imagens: ['img/produto-6-frente.png', 'img/produto-6-costas.png'],
+    midias: [
+      { tipo: 'img', src: 'img/produto-6-frente.png' },
+      { tipo: 'img', src: 'img/produto-6-costas.png' },
+      { tipo: 'video', src: 'video/produto-6-frente.mp4' },
+      { tipo: 'video', src: 'video/produto-6-costas.mp4' }
+    ]
+  },
 ];
 
 const TAMANHOS = ['P', 'M', 'G'];
