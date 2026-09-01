@@ -143,6 +143,20 @@ const PRODUTOS = [
       { tipo: 'video', src: 'video/produto-3-costas.mp4' }
     ]
   },
+  {
+    nome: 'Oversized Midnight Drive',
+    desc: 'Tom escuro com detalhe magenta neon',
+    preco: 69.90,
+    tag: 'Novo',
+    gradiente: 'linear-gradient(160deg, #1a0b2e, #ff2d95)',
+    imagens: ['img/produto-4-frente.png', 'img/produto-4-costas.png'],
+    midias: [
+      { tipo: 'img', src: 'img/produto-4-frente.png' },
+      { tipo: 'img', src: 'img/produto-4-costas.png' },
+      { tipo: 'video', src: 'video/produto-4-frente.mp4' },
+      { tipo: 'video', src: 'video/produto-4-costas.mp4' }
+    ]
+  },
 ];
 
 const TAMANHOS = ['P', 'M', 'G'];
