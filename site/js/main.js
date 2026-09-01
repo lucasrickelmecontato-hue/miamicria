@@ -104,7 +104,7 @@ const PRODUTOS = [
   {
     nome: 'Oversized Sunset Grid',
     desc: 'Estampa gradiente pôr do sol com grid neon',
-    preco: 69.99,
+    preco: 69.90,
     tag: 'Novo',
     gradiente: 'linear-gradient(160deg, #ff2d95, #ff8a3d)',
     imagens: ['img/produto-1-frente.png', 'img/produto-1-costas.png'],
@@ -118,7 +118,7 @@ const PRODUTOS = [
   {
     nome: 'Oversized Neon Skyline',
     desc: 'Silhueta de skyline com contorno turquesa',
-    preco: 129.90,
+    preco: 69.90,
     tag: 'Novo',
     gradiente: 'linear-gradient(160deg, #2dd9c7, #5a2a8f)',
     imagens: ['img/produto-2-frente.png', 'img/produto-2-costas.jpg'],
@@ -132,7 +132,7 @@ const PRODUTOS = [
   {
     nome: 'Oversized Vice Palms',
     desc: 'Palmeiras em contraluz sobre fundo quente',
-    preco: 119.90,
+    preco: 69.90,
     tag: '',
     gradiente: 'linear-gradient(160deg, #ff8a3d, #5a2a8f)',
     imagens: ['img/produto-3-frente.jpg', 'img/produto-3-costas.jpg'],
