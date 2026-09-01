@@ -130,20 +130,6 @@ const PRODUTOS = [
     ]
   },
   {
-    nome: 'Oversized Vice Palms',
-    desc: 'Palmeiras em contraluz sobre fundo quente',
-    preco: 69.90,
-    tag: '',
-    gradiente: 'linear-gradient(160deg, #ff8a3d, #5a2a8f)',
-    imagens: ['img/produto-3-frente.jpg', 'img/produto-3-costas.jpg'],
-    midias: [
-      { tipo: 'img', src: 'img/produto-3-frente.jpg' },
-      { tipo: 'img', src: 'img/produto-3-costas.jpg' },
-      { tipo: 'video', src: 'video/produto-3-frente.mp4' },
-      { tipo: 'video', src: 'video/produto-3-costas.mp4' }
-    ]
-  },
-  {
     nome: 'Oversized Midnight Drive',
     desc: 'Tom escuro com detalhe magenta neon',
     preco: 69.90,
