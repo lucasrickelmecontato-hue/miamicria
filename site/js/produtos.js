@@ -1,6 +1,6 @@
 /* ---------- Dados dos produtos (usado na home e na página de cada produto) ---------- */
 
-const TAMANHOS = ['P', 'M', 'G'];
+const TAMANHOS = ['P', 'M', 'G', 'GG', 'XG'];
 
 const PRODUTOS = [
   {
