@@ -120,7 +120,14 @@ const PRODUTOS = [
     desc: 'Silhueta de skyline com contorno turquesa',
     preco: 129.90,
     tag: 'Novo',
-    gradiente: 'linear-gradient(160deg, #2dd9c7, #5a2a8f)'
+    gradiente: 'linear-gradient(160deg, #2dd9c7, #5a2a8f)',
+    imagens: ['img/produto-2-frente.png', 'img/produto-2-costas.jpg'],
+    midias: [
+      { tipo: 'img', src: 'img/produto-2-frente.png' },
+      { tipo: 'img', src: 'img/produto-2-costas.jpg' },
+      { tipo: 'video', src: 'video/produto-2-frente.mp4', inicio: 0.6 },
+      { tipo: 'video', src: 'video/produto-2-costas.mp4' }
+    ]
   },
   {
     nome: 'Oversized Vice Palms',
