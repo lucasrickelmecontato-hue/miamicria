@@ -67,7 +67,7 @@ const PRODUTOS = [
     id: 'off-white-leonida',
     nome: 'Off-White Leonida',
     desc: 'Tom areia com estampa exclusiva nas costas',
-    preco: 69.90,
+    preco: 89.90,
     tag: 'Novo',
     gradiente: 'linear-gradient(160deg, #e8dcc8, #5a2a8f)',
     imagens: ['img/produto-6-frente.png', 'img/produto-6-costas.png'],
