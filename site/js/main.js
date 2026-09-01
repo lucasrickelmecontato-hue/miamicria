@@ -140,10 +140,13 @@ function criarCardProduto(produto){
     }, 2600);
   }
 
+  // o box inteiro leva pro produto, menos os controles de tamanho/carrinho
   const irParaProduto = () => { window.location.href = `produto.html?id=${produto.id}`; };
-  card.querySelector('.product-media').addEventListener('click', irParaProduto);
-  card.querySelector('.product-name').style.cursor = 'pointer';
-  card.querySelector('.product-name').addEventListener('click', irParaProduto);
+  card.style.cursor = 'pointer';
+  card.addEventListener('click', (e) => {
+    if (e.target.closest('.size-row') || e.target.closest('.add-btn')) return;
+    irParaProduto();
+  });
 
   const sizeBtns = card.querySelectorAll('.size-btn');
   const addBtn = card.querySelector('.add-btn');
@@ -194,7 +197,7 @@ if (produtoDetalhe) {
   const midias = produto.midias || (produto.imagens || ['img/mockup-1.png']).map(src => ({ tipo: 'img', src }));
 
   const stage = document.getElementById('produtoStage');
-  const dots = document.getElementById('produtoDots');
+  const thumbs = document.getElementById('produtoThumbs');
 
   function renderMidiaAtual(){
     stage.querySelectorAll('img, video').forEach(el => {
@@ -205,7 +208,7 @@ if (produtoDetalhe) {
     el.classList.add('is-active');
     if (el.tagName === 'VIDEO') el.play().catch(() => {});
 
-    dots.querySelectorAll('.gallery-dot').forEach((dot, i) => dot.classList.toggle('is-active', i === midiaAtual));
+    thumbs.querySelectorAll('.produto-thumb').forEach((thumb, i) => thumb.classList.toggle('is-active', i === midiaAtual));
   }
 
   stage.innerHTML = midias.map((midia) => midia.tipo === 'video'
@@ -218,10 +221,16 @@ if (produtoDetalhe) {
     if (inicio) video.addEventListener('loadedmetadata', () => { video.currentTime = inicio; }, { once: true });
   });
 
-  dots.innerHTML = midias.map((_, i) => `<button type="button" class="gallery-dot" data-index="${i}" aria-label="Ver mídia ${i + 1}"></button>`).join('');
-  dots.querySelectorAll('.gallery-dot').forEach(dot => {
-    dot.addEventListener('click', () => {
-      midiaAtual = Number(dot.dataset.index);
+  thumbs.innerHTML = midias.map((midia, i) => `
+    <button type="button" class="produto-thumb" data-index="${i}" aria-label="Ver mídia ${i + 1}">
+      ${midia.tipo === 'video'
+        ? `<video src="${midia.src}" muted playsinline preload="metadata"></video><span class="produto-thumb-play">▶</span>`
+        : `<img src="${midia.src}" alt="">`}
+    </button>
+  `).join('');
+  thumbs.querySelectorAll('.produto-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      midiaAtual = Number(thumb.dataset.index);
       renderMidiaAtual();
     });
   });
@@ -258,9 +267,23 @@ if (produtoDetalhe) {
     });
   });
 
+  // quantidade
+  let quantidade = 1;
+  const qtdValor = document.getElementById('produtoQtdValor');
+  document.getElementById('produtoQtdMenos').addEventListener('click', () => {
+    quantidade = Math.max(1, quantidade - 1);
+    qtdValor.textContent = quantidade;
+  });
+  document.getElementById('produtoQtdMais').addEventListener('click', () => {
+    quantidade = Math.min(10, quantidade + 1);
+    qtdValor.textContent = quantidade;
+  });
+
   addBtn.addEventListener('click', () => {
     if (!tamanhoSelecionado) return;
-    adicionarAoCarrinho({ nome: produto.nome, tamanho: tamanhoSelecionado, preco: produto.preco });
+    for (let i = 0; i < quantidade; i++) {
+      adicionarAoCarrinho({ nome: produto.nome, tamanho: tamanhoSelecionado, preco: produto.preco });
+    }
     mostrarToast(`${produto.nome} (${tamanhoSelecionado}) adicionado ao carrinho`);
   });
 
