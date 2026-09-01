@@ -143,27 +143,6 @@ const PRODUTOS = [
       { tipo: 'video', src: 'video/produto-3-costas.mp4' }
     ]
   },
-  {
-    nome: 'Oversized Midnight Drive',
-    desc: 'Tom escuro com detalhe magenta neon',
-    preco: 139.90,
-    tag: 'Edição limitada',
-    gradiente: 'linear-gradient(160deg, #1a0b2e, #ff2d95)'
-  },
-  {
-    nome: 'Oversized Coastal Heat',
-    desc: 'Amarelo dourado com respingo rosa',
-    preco: 119.90,
-    tag: '',
-    gradiente: 'linear-gradient(160deg, #ffc35c, #ff2d95)'
-  },
-  {
-    nome: 'Oversized Retro Wave',
-    desc: 'Roxo profundo com onda turquesa',
-    preco: 129.90,
-    tag: 'Novo',
-    gradiente: 'linear-gradient(160deg, #5a2a8f, #2dd9c7)'
-  }
 ];
 
 const TAMANHOS = ['P', 'M', 'G'];
