@@ -157,6 +157,20 @@ const PRODUTOS = [
       { tipo: 'video', src: 'video/produto-4-costas.mp4' }
     ]
   },
+  {
+    nome: 'Oversized Coastal Heat',
+    desc: 'Amarelo dourado com respingo rosa',
+    preco: 69.90,
+    tag: 'Novo',
+    gradiente: 'linear-gradient(160deg, #ffc35c, #ff2d95)',
+    imagens: ['img/produto-5-frente.png', 'img/produto-5-costas.png'],
+    midias: [
+      { tipo: 'img', src: 'img/produto-5-frente.png' },
+      { tipo: 'img', src: 'img/produto-5-costas.png' },
+      { tipo: 'video', src: 'video/produto-5-frente.mp4', inicio: 0.6 },
+      { tipo: 'video', src: 'video/produto-5-costas.mp4' }
+    ]
+  },
 ];
 
 const TAMANHOS = ['P', 'M', 'G'];
