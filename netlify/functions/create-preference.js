@@ -1,4 +1,4 @@
-// Gera a preferencia de pagamento (Checkout Pro) pro carrinho recebido
+// Gera a preferencia de pagamento (Checkout Pro) pro carrinho recebido.
 const FRETE_FIXO = 19.90;
 const SITE_URL = 'https://miamicria.com.br';
 
