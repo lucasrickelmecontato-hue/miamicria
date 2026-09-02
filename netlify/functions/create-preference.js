@@ -69,17 +69,7 @@ exports.handler = async (event) => {
 
     if (!resposta.ok) {
       console.error('Mercado Pago recusou a preferência:', dados);
-      return {
-        statusCode: 502,
-        body: JSON.stringify({
-          erro: 'Não foi possível gerar o pagamento',
-          debug_status: resposta.status,
-          debug_mensagem: dados.message,
-          debug_causa: dados.cause,
-          debug_token_prefixo: (process.env.MP_ACCESS_TOKEN || '').slice(0, 8),
-          debug_token_tamanho: (process.env.MP_ACCESS_TOKEN || '').length,
-        }),
-      };
+      return { statusCode: 502, body: JSON.stringify({ erro: 'Não foi possível gerar o pagamento' }) };
     }
 
     return {
