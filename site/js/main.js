@@ -389,7 +389,9 @@ checkoutBtn.addEventListener('click', async () => {
   checkoutBtn.textContent = 'Gerando pagamento...';
 
   try {
-    const resposta = await fetch('/.netlify/functions/create-preference', {
+    // o site fica no GitHub Pages e a funcao de checkout fica no Netlify -
+    // dominios diferentes, por isso a URL completa em vez de caminho relativo
+    const resposta = await fetch('https://miamicria.netlify.app/.netlify/functions/create-preference', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ itens: carrinho }),

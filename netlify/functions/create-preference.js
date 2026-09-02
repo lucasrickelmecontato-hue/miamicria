@@ -2,28 +2,41 @@
 const FRETE_FIXO = 19.90;
 const SITE_URL = 'https://miamicria.com.br';
 
+// o site vive no GitHub Pages (miamicria.com.br) e essa funcao vive no
+// Netlify (miamicria.netlify.app) - dominios diferentes, entao precisa
+// liberar CORS pro navegador aceitar a resposta
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': SITE_URL,
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: CORS_HEADERS, body: '' };
+  }
+
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, headers: CORS_HEADERS, body: 'Method Not Allowed' };
   }
 
   let payload;
   try {
     payload = JSON.parse(event.body || '{}');
   } catch (err) {
-    return { statusCode: 400, body: JSON.stringify({ erro: 'JSON inválido' }) };
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'JSON inválido' }) };
   }
 
   const itensCarrinho = Array.isArray(payload.itens) ? payload.itens : [];
   if (itensCarrinho.length === 0) {
-    return { statusCode: 400, body: JSON.stringify({ erro: 'Carrinho vazio' }) };
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Carrinho vazio' }) };
   }
 
   // preco/nome vêm do cliente só pra exibição - nunca confiamos no valor pra
   // cobrança sem validar o formato básico aqui
   const itemInvalido = itensCarrinho.some((item) => !item.nome || !Number.isFinite(Number(item.preco)) || Number(item.preco) <= 0);
   if (itemInvalido) {
-    return { statusCode: 400, body: JSON.stringify({ erro: 'Item inválido no carrinho' }) };
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Item inválido no carrinho' }) };
   }
 
   const items = itensCarrinho.map((item) => ({
@@ -69,15 +82,16 @@ exports.handler = async (event) => {
 
     if (!resposta.ok) {
       console.error('Mercado Pago recusou a preferência:', dados);
-      return { statusCode: 502, body: JSON.stringify({ erro: 'Não foi possível gerar o pagamento' }) };
+      return { statusCode: 502, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Não foi possível gerar o pagamento' }) };
     }
 
     return {
       statusCode: 200,
+      headers: CORS_HEADERS,
       body: JSON.stringify({ init_point: dados.init_point }),
     };
   } catch (err) {
     console.error('Erro ao chamar o Mercado Pago:', err);
-    return { statusCode: 500, body: JSON.stringify({ erro: 'Erro interno' }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Erro interno' }) };
   }
 };
