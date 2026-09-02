@@ -1,6 +1,7 @@
 // Gera a preferencia de pagamento (Checkout Pro) pro carrinho recebido.
 const FRETE_FIXO = 19.90;
 const SITE_URL = 'https://miamicria.com.br';
+const FUNCTIONS_URL = 'https://miamicria.netlify.app/.netlify/functions';
 
 // o site vive no GitHub Pages (miamicria.com.br) e essa funcao vive no
 // Netlify (miamicria.netlify.app) - dominios diferentes, entao precisa
@@ -55,6 +56,9 @@ exports.handler = async (event) => {
     currency_id: 'BRL',
   }));
 
+  const valorTotal = items.reduce((acc, item) => acc + item.unit_price, 0) + FRETE_FIXO;
+  const itensResumo = items.map((item) => item.title).join(', ');
+
   items.push({
     title: 'Frete',
     quantity: 1,
@@ -76,11 +80,12 @@ exports.handler = async (event) => {
         street_number: endereco.numero,
       },
     },
-    // guardado aqui pra recuperar o endereco completo (bairro/cidade/estado/
-    // complemento nao cabem no objeto payer.address padrao) quando o webhook
-    // de pagamento confirmado for implementado, pra gerar a etiqueta de envio
+    // guardado aqui pra recuperar o pedido completo quando o pagamento for
+    // confirmado (o webhook busca isso de volta pra escrever no Airtable)
     metadata: {
       endereco_completo: endereco,
+      itens_resumo: itensResumo,
+      valor_total: valorTotal,
     },
     back_urls: {
       success: `${SITE_URL}/?pedido=aprovado`,
@@ -88,6 +93,7 @@ exports.handler = async (event) => {
       pending: `${SITE_URL}/?pedido=pendente`,
     },
     auto_return: 'approved',
+    notification_url: `${FUNCTIONS_URL}/payment-webhook`,
     payment_methods: {
       excluded_payment_types: [{ id: 'ticket' }],
       installments: 3,
