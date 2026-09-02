@@ -212,7 +212,11 @@ if (produtoDetalhe) {
   }
 
   stage.innerHTML = midias.map((midia) => {
-    const estilo = midia.crop ? ` style="transform:scale(${midia.crop.scale});transform-origin:${midia.crop.origin};"` : '';
+    let estilo = '';
+    if (midia.crop) {
+      const posicao = midia.crop.position ? `object-position:${midia.crop.position};` : '';
+      estilo = ` style="transform:scale(${midia.crop.scale});transform-origin:${midia.crop.origin};${posicao}"`;
+    }
     return midia.tipo === 'video'
       ? `<video src="${midia.src}" muted loop playsinline preload="auto"${estilo}></video>`
       : `<img src="${midia.src}" alt=""${estilo}>`;

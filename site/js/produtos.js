@@ -90,7 +90,7 @@ const PRODUTOS = [
       { tipo: 'img', src: 'img/produto-7-frente.jpg' },
       { tipo: 'img', src: 'img/produto-7-costas.jpg' },
       { tipo: 'video', src: 'video/produto-7-frente.mp4', crop: { scale: 1.8, origin: '50% 12%' } },
-      { tipo: 'video', src: 'video/produto-7-costas.mp4', crop: { scale: 1.8, origin: '50% 12%' } }
+      { tipo: 'video', src: 'video/produto-7-costas.mp4', crop: { scale: 1.3, origin: '50% 0%', position: 'center top' } }
     ]
   },
 ];
