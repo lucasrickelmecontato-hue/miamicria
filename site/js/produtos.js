@@ -5,7 +5,7 @@ const TAMANHOS = ['P', 'M', 'G', 'GG'];
 const PRODUTOS = [
   {
     id: 'sunset-grid',
-    nome: 'Oversized Sunset Grid',
+    nome: 'Vice City Stories',
     desc: 'Estampa gradiente pôr do sol com grid neon',
     preco: 79.90,
     tag: 'Novo',
@@ -20,7 +20,7 @@ const PRODUTOS = [
   },
   {
     id: 'neon-skyline',
-    nome: 'Oversized Neon Skyline',
+    nome: 'Vice Duo',
     desc: 'Silhueta de skyline com contorno turquesa',
     preco: 79.90,
     tag: 'Novo',
@@ -35,7 +35,7 @@ const PRODUTOS = [
   },
   {
     id: 'midnight-drive',
-    nome: 'Oversized Midnight Drive',
+    nome: 'Vice Nights',
     desc: 'Tom escuro com detalhe magenta neon',
     preco: 79.90,
     tag: 'Novo',
@@ -50,7 +50,7 @@ const PRODUTOS = [
   },
   {
     id: 'coastal-heat',
-    nome: 'Oversized Coastal Heat',
+    nome: 'Leonida Rex',
     desc: 'Amarelo dourado com respingo rosa',
     preco: 79.90,
     tag: 'Novo',
@@ -65,7 +65,7 @@ const PRODUTOS = [
   },
   {
     id: 'off-white-leonida',
-    nome: 'Off-White Leonida',
+    nome: 'Leonida Vacation',
     desc: 'Tom areia com estampa exclusiva nas costas',
     preco: 99.90,
     tag: 'Novo',
@@ -80,7 +80,7 @@ const PRODUTOS = [
   },
   {
     id: 'preto-e-branco',
-    nome: 'Oversized Preto e Branco',
+    nome: 'Disc Is Not Dead',
     desc: 'Estampa preto e branco com detalhe retro',
     preco: 89.90,
     tag: 'Novo',
