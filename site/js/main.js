@@ -175,12 +175,17 @@ function criarCardProduto(produto){
   return card;
 }
 
+// do mais barato pro mais caro, sempre
+function ordenarPorPreco(produtos){
+  return [...produtos].sort((a, b) => a.preco - b.preco);
+}
+
 /* ---------- Grid da home ---------- */
 
 const grid = document.getElementById('productGrid');
 
 if (grid) {
-  PRODUTOS.forEach((produto) => grid.appendChild(criarCardProduto(produto)));
+  ordenarPorPreco(PRODUTOS).forEach((produto) => grid.appendChild(criarCardProduto(produto)));
 }
 
 /* ---------- Página de produto (produto.html) ---------- */
@@ -311,7 +316,7 @@ if (produtoDetalhe) {
   });
 
   const outrosGrid = document.getElementById('outrosProdutosGrid');
-  PRODUTOS.filter(p => p.id !== produto.id).forEach(p => outrosGrid.appendChild(criarCardProduto(p)));
+  ordenarPorPreco(PRODUTOS.filter(p => p.id !== produto.id)).forEach(p => outrosGrid.appendChild(criarCardProduto(p)));
 }
 
 /* ---------- Carrinho ---------- */
