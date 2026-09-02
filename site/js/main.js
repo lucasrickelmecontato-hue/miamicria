@@ -319,6 +319,87 @@ if (produtoDetalhe) {
   ordenarPorPreco(PRODUTOS.filter(p => p.id !== produto.id)).forEach(p => outrosGrid.appendChild(criarCardProduto(p)));
 }
 
+/* ---------- Confirmação do pedido (pedido.html) ---------- */
+
+const pedidoCard = document.getElementById('pedidoCard');
+
+if (pedidoCard) {
+  const params = new URLSearchParams(window.location.search);
+  const paymentId = params.get('payment_id') || params.get('collection_id');
+
+  const STATUS_PEDIDO = {
+    approved: { titulo: 'Pedido aprovado!', classe: 'pedido-aprovado', texto: 'Seu pagamento foi confirmado. Já estamos preparando seu pedido.' },
+    pending: { titulo: 'Pagamento pendente', classe: 'pedido-pendente', texto: 'Assim que o pagamento for confirmado, seu pedido entra em preparação.' },
+    in_process: { titulo: 'Pagamento em análise', classe: 'pedido-pendente', texto: 'Seu pagamento está sendo analisado, pode levar algumas horas.' },
+    rejected: { titulo: 'Pagamento não aprovado', classe: 'pedido-recusado', texto: 'Seu pagamento não foi aprovado. Você pode tentar novamente.' },
+  };
+
+  const formatarData = (iso) => {
+    if (!iso) return '-';
+    return new Date(iso).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  };
+
+  const renderizarSemPedido = () => {
+    pedidoCard.innerHTML = `
+      <h1 class="pedido-titulo">Nenhum pedido encontrado</h1>
+      <p class="pedido-texto">Não achamos nenhum pedido nesse link. Se você acabou de comprar, confere seu WhatsApp ou fala com a gente.</p>
+      <a href="index.html#camisetas" class="btn btn-primary btn-block">Voltar pra loja</a>
+    `;
+  };
+
+  const renderizarErro = () => {
+    pedidoCard.innerHTML = `
+      <h1 class="pedido-titulo">Não conseguimos carregar seu pedido</h1>
+      <p class="pedido-texto">Pode ser algo temporário. Se o problema continuar, chama a gente no WhatsApp que resolvemos.</p>
+      <a href="contato.html" class="btn btn-primary btn-block">Falar no WhatsApp</a>
+    `;
+  };
+
+  const renderizarPedido = (dados) => {
+    const info = STATUS_PEDIDO[dados.status] || { titulo: 'Status do pedido', classe: '', texto: '' };
+    const parcelasTexto = dados.parcelas > 1 ? ` em ${dados.parcelas}x` : '';
+
+    pedidoCard.innerHTML = `
+      <div class="pedido-status ${info.classe}">${info.titulo}</div>
+      <p class="pedido-texto">${info.texto}</p>
+
+      <div class="pedido-detalhes">
+        <div class="pedido-linha">
+          <span>Produtos</span>
+          <span>${dados.produtos || '-'}</span>
+        </div>
+        <div class="pedido-linha">
+          <span>Tamanho</span>
+          <span>${dados.tamanhos || '-'}</span>
+        </div>
+        <div class="pedido-linha">
+          <span>Forma de pagamento</span>
+          <span>${dados.metodo}${parcelasTexto}</span>
+        </div>
+        <div class="pedido-linha">
+          <span>Data e hora</span>
+          <span>${formatarData(dados.data)}</span>
+        </div>
+        <div class="pedido-linha pedido-linha-total">
+          <span>Valor pago</span>
+          <span>R$ ${Number(dados.valor).toFixed(2).replace('.', ',')}</span>
+        </div>
+      </div>
+
+      <a href="index.html#camisetas" class="btn btn-ghost btn-block">Continuar comprando</a>
+    `;
+  };
+
+  if (!paymentId) {
+    renderizarSemPedido();
+  } else {
+    fetch(`https://miamicria.netlify.app/.netlify/functions/get-payment-status?payment_id=${encodeURIComponent(paymentId)}`)
+      .then((r) => { if (!r.ok) throw new Error('erro ao buscar pedido'); return r.json(); })
+      .then(renderizarPedido)
+      .catch(renderizarErro);
+  }
+}
+
 /* ---------- Carrinho ---------- */
 
 let carrinho = [];

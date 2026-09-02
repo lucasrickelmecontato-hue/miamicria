@@ -90,9 +90,9 @@ exports.handler = async (event) => {
       valor_total: valorTotal,
     },
     back_urls: {
-      success: `${SITE_URL}/?pedido=aprovado`,
-      failure: `${SITE_URL}/?pedido=recusado`,
-      pending: `${SITE_URL}/?pedido=pendente`,
+      success: `${SITE_URL}/pedido.html`,
+      failure: `${SITE_URL}/pedido.html`,
+      pending: `${SITE_URL}/pedido.html`,
     },
     auto_return: 'approved',
     notification_url: `${FUNCTIONS_URL}/payment-webhook`,
