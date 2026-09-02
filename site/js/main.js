@@ -334,13 +334,23 @@ function atualizarContador(){
   document.getElementById('cartCount').textContent = carrinho.length;
 }
 
+const FRETE_FIXO = 19.90;
+
+function formatarPreco(valor){
+  return `R$ ${valor.toFixed(2).replace('.', ',')}`;
+}
+
 function renderCarrinho(){
   const container = document.getElementById('cartItems');
+  const subtotalEl = document.getElementById('cartSubtotal');
+  const freteEl = document.getElementById('cartFrete');
   const totalEl = document.getElementById('cartTotal');
 
   if (carrinho.length === 0){
     container.innerHTML = '<p class="cart-empty">Seu carrinho tá vazio por enquanto.</p>';
-    totalEl.textContent = 'R$ 0,00';
+    subtotalEl.textContent = formatarPreco(0);
+    freteEl.textContent = '—';
+    totalEl.textContent = formatarPreco(0);
     return;
   }
 
@@ -358,8 +368,10 @@ function renderCarrinho(){
     btn.addEventListener('click', () => removerDoCarrinho(Number(btn.dataset.index)));
   });
 
-  const total = carrinho.reduce((acc, item) => acc + item.preco, 0);
-  totalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+  const subtotal = carrinho.reduce((acc, item) => acc + item.preco, 0);
+  subtotalEl.textContent = formatarPreco(subtotal);
+  freteEl.textContent = formatarPreco(FRETE_FIXO);
+  totalEl.textContent = formatarPreco(subtotal + FRETE_FIXO);
 }
 
 /* ---------- Cart drawer toggle ---------- */

@@ -169,9 +169,18 @@
     </div>
     <div class="cart-footer">
       <div class="cart-total-row">
-        <span>Total (referência)</span>
+        <span>Subtotal</span>
+        <span id="cartSubtotal">R$ 0,00</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Frete</span>
+        <span id="cartFrete">—</span>
+      </div>
+      <div class="cart-total-row cart-total-final">
+        <span>Total</span>
         <span id="cartTotal">R$ 0,00</span>
       </div>
+      <p class="cart-payment-note">Pix, débito ou crédito em até 3x sem juros</p>
       <button type="button" class="btn btn-primary btn-block" disabled>Finalizar compra (em breve)</button>
     </div>
   </div>
@@ -181,6 +190,6 @@
 <div class="toast" id="toast"></div>
 
 <script src="js/produtos.js?v=6"></script>
-<script src="js/main.js?v=14"></script>
+<script src="js/main.js?v=15"></script>
 </body>
 </html>
