@@ -57,7 +57,8 @@ exports.handler = async (event) => {
   }));
 
   const valorTotal = items.reduce((acc, item) => acc + item.unit_price, 0) + FRETE_FIXO;
-  const itensResumo = items.map((item) => item.title).join(', ');
+  const produtosResumo = itensCarrinho.map((item) => item.nome).join(', ');
+  const tamanhosResumo = itensCarrinho.map((item) => item.tamanho || '-').join(', ');
 
   items.push({
     title: 'Frete',
@@ -84,7 +85,8 @@ exports.handler = async (event) => {
     // confirmado (o webhook busca isso de volta pra escrever no Airtable)
     metadata: {
       endereco_completo: endereco,
-      itens_resumo: itensResumo,
+      produtos_resumo: produtosResumo,
+      tamanhos_resumo: tamanhosResumo,
       valor_total: valorTotal,
     },
     back_urls: {

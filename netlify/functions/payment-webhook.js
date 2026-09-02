@@ -44,8 +44,8 @@ exports.handler = async (event) => {
       fields: {
         Nome: endereco.nome || '',
         Telefone: endereco.telefone || '',
-        Produto: metadata.itens_resumo || '',
-        Tamanho: '',
+        Produto: metadata.produtos_resumo || '',
+        Tamanho: metadata.tamanhos_resumo || '',
         CEP: endereco.cep || '',
         Endereco: endereco.rua || '',
         Numero: endereco.numero || '',
