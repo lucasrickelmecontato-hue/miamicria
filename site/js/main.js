@@ -118,10 +118,8 @@ function criarCardProduto(produto){
     </div>
     <div class="product-info">
       <div class="product-name">${produto.nome}</div>
-      <div class="product-desc">${produto.desc}</div>
       <div class="product-price">
         R$ ${produto.preco.toFixed(2).replace('.', ',')}
-        <small>Preço de referência</small>
       </div>
       <div class="size-row" role="group" aria-label="Selecionar tamanho">
         ${TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}">${t}</button>`).join('')}
@@ -275,8 +273,7 @@ if (produtoDetalhe) {
   renderMidiaAtual();
 
   document.getElementById('produtoNome').textContent = produto.nome;
-  document.getElementById('produtoDesc').textContent = produto.desc;
-  document.getElementById('produtoPreco').innerHTML = `R$ ${produto.preco.toFixed(2).replace('.', ',')} <small>Preço de referência</small>`;
+  document.getElementById('produtoPreco').textContent = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
 
   const sizeRow = document.getElementById('produtoTamanhos');
   sizeRow.innerHTML = TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}">${t}</button>`).join('');
