@@ -39,6 +39,15 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Item inválido no carrinho' }) };
   }
 
+  const endereco = payload.endereco || {};
+  const camposEndereco = ['nome', 'telefone', 'cep', 'numero', 'rua', 'bairro', 'cidade', 'estado'];
+  const enderecoIncompleto = camposEndereco.some((campo) => !endereco[campo]);
+  if (enderecoIncompleto) {
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Endereço incompleto' }) };
+  }
+
+  const telefoneNumeros = String(endereco.telefone).replace(/\D/g, '');
+
   const items = itensCarrinho.map((item) => ({
     title: `${item.nome} - Tam. ${item.tamanho || '-'}`,
     quantity: 1,
@@ -55,6 +64,24 @@ exports.handler = async (event) => {
 
   const preferencia = {
     items,
+    payer: {
+      name: endereco.nome,
+      phone: {
+        area_code: telefoneNumeros.slice(0, 2),
+        number: telefoneNumeros.slice(2),
+      },
+      address: {
+        zip_code: endereco.cep,
+        street_name: endereco.rua,
+        street_number: endereco.numero,
+      },
+    },
+    // guardado aqui pra recuperar o endereco completo (bairro/cidade/estado/
+    // complemento nao cabem no objeto payer.address padrao) quando o webhook
+    // de pagamento confirmado for implementado, pra gerar a etiqueta de envio
+    metadata: {
+      endereco_completo: endereco,
+    },
     back_urls: {
       success: `${SITE_URL}/?pedido=aprovado`,
       failure: `${SITE_URL}/?pedido=recusado`,

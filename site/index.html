@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Bebas+Neue&family=Bungee&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=8">
 </head>
 <body>
 
@@ -192,6 +192,24 @@
         <span id="cartTotal">R$ 0,00</span>
       </div>
       <p class="cart-payment-note">Pix, débito ou crédito em até 3x sem juros</p>
+
+      <div class="cart-endereco" id="cartEndereco" hidden>
+        <p class="cart-endereco-label">Endereço de entrega</p>
+        <input type="text" id="entNome" class="cart-input" placeholder="Nome completo">
+        <input type="tel" id="entTelefone" class="cart-input" placeholder="WhatsApp">
+        <div class="cart-input-row">
+          <input type="text" id="entCep" class="cart-input" placeholder="CEP">
+          <input type="text" id="entNumero" class="cart-input" placeholder="Número">
+        </div>
+        <input type="text" id="entRua" class="cart-input" placeholder="Rua">
+        <input type="text" id="entComplemento" class="cart-input" placeholder="Complemento (opcional)">
+        <div class="cart-input-row">
+          <input type="text" id="entBairro" class="cart-input" placeholder="Bairro">
+          <input type="text" id="entCidade" class="cart-input" placeholder="Cidade">
+        </div>
+        <input type="text" id="entEstado" class="cart-input" placeholder="Estado (UF)" maxlength="2">
+      </div>
+
       <button type="button" class="btn btn-primary btn-block" id="checkoutBtn" disabled>Finalizar compra</button>
     </div>
   </div>
@@ -201,6 +219,6 @@
 <div class="toast" id="toast"></div>
 
 <script src="js/produtos.js?v=6"></script>
-<script src="js/main.js?v=17"></script>
+<script src="js/main.js?v=18"></script>
 </body>
 </html>

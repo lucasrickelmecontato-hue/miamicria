@@ -354,6 +354,7 @@ function renderCarrinho(){
     subtotalEl.textContent = formatarPreco(0);
     freteEl.textContent = '—';
     totalEl.textContent = formatarPreco(0);
+    resetarFormularioEndereco();
     return;
   }
 
@@ -380,9 +381,48 @@ function renderCarrinho(){
 /* ---------- Checkout (Mercado Pago) ---------- */
 
 const checkoutBtn = document.getElementById('checkoutBtn');
+const cartEndereco = document.getElementById('cartEndereco');
+let enderecoAberto = false;
+
+function resetarFormularioEndereco(){
+  enderecoAberto = false;
+  cartEndereco.hidden = true;
+  checkoutBtn.textContent = 'Finalizar compra';
+  cartEndereco.querySelectorAll('input').forEach(input => { input.value = ''; });
+}
+
+function coletarEndereco(){
+  return {
+    nome: document.getElementById('entNome').value.trim(),
+    telefone: document.getElementById('entTelefone').value.trim(),
+    cep: document.getElementById('entCep').value.trim(),
+    numero: document.getElementById('entNumero').value.trim(),
+    rua: document.getElementById('entRua').value.trim(),
+    complemento: document.getElementById('entComplemento').value.trim(),
+    bairro: document.getElementById('entBairro').value.trim(),
+    cidade: document.getElementById('entCidade').value.trim(),
+    estado: document.getElementById('entEstado').value.trim(),
+  };
+}
 
 checkoutBtn.addEventListener('click', async () => {
   if (carrinho.length === 0) return;
+
+  if (!enderecoAberto) {
+    enderecoAberto = true;
+    cartEndereco.hidden = false;
+    checkoutBtn.textContent = 'Confirmar e pagar';
+    document.getElementById('entNome').focus();
+    return;
+  }
+
+  const endereco = coletarEndereco();
+  const camposObrigatorios = ['nome', 'telefone', 'cep', 'numero', 'rua', 'bairro', 'cidade', 'estado'];
+  const faltando = camposObrigatorios.some((campo) => !endereco[campo]);
+  if (faltando) {
+    mostrarToast('Preenche todos os campos de endereço pra continuar');
+    return;
+  }
 
   const textoOriginal = checkoutBtn.textContent;
   checkoutBtn.disabled = true;
@@ -394,7 +434,7 @@ checkoutBtn.addEventListener('click', async () => {
     const resposta = await fetch('https://miamicria.netlify.app/.netlify/functions/create-preference', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ itens: carrinho }),
+      body: JSON.stringify({ itens: carrinho, endereco }),
     });
     const dados = await resposta.json();
 
@@ -423,6 +463,7 @@ function abrirCarrinho(){
 function fecharCarrinho(){
   cartDrawer.classList.remove('open');
   cartOverlay.classList.remove('open');
+  resetarFormularioEndereco();
 }
 
 cartBtn.addEventListener('click', abrirCarrinho);
