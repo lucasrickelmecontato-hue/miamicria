@@ -37,11 +37,25 @@ exports.handler = async (event) => {
     const pagamento = await respPagamento.json();
     if (pagamento.status !== 'approved') return responderOk();
 
+    // o Mercado Pago pode mandar a mesma notificacao mais de uma vez - checa
+    // se esse pagamento ja foi gravado antes de criar um registro novo
+    const filtro = encodeURIComponent(`{ID Pagamento} = "${paymentId}"`);
+    const respBusca = await fetch(
+      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}?filterByFormula=${filtro}`,
+      { headers: { Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}` } }
+    );
+
+    if (respBusca.ok) {
+      const busca = await respBusca.json();
+      if (busca.records && busca.records.length > 0) return responderOk();
+    }
+
     const metadata = pagamento.metadata || {};
     const endereco = metadata.endereco_completo || {};
 
     const registro = {
       fields: {
+        'ID Pagamento': paymentId,
         Nome: endereco.nome || '',
         Telefone: endereco.telefone || '',
         Produto: metadata.produtos_resumo || '',
