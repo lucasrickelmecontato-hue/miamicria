@@ -345,6 +345,9 @@ function renderCarrinho(){
   const subtotalEl = document.getElementById('cartSubtotal');
   const freteEl = document.getElementById('cartFrete');
   const totalEl = document.getElementById('cartTotal');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+
+  checkoutBtn.disabled = carrinho.length === 0;
 
   if (carrinho.length === 0){
     container.innerHTML = '<p class="cart-empty">Seu carrinho tá vazio por enquanto.</p>';
@@ -373,6 +376,35 @@ function renderCarrinho(){
   freteEl.textContent = formatarPreco(FRETE_FIXO);
   totalEl.textContent = formatarPreco(subtotal + FRETE_FIXO);
 }
+
+/* ---------- Checkout (Mercado Pago) ---------- */
+
+const checkoutBtn = document.getElementById('checkoutBtn');
+
+checkoutBtn.addEventListener('click', async () => {
+  if (carrinho.length === 0) return;
+
+  const textoOriginal = checkoutBtn.textContent;
+  checkoutBtn.disabled = true;
+  checkoutBtn.textContent = 'Gerando pagamento...';
+
+  try {
+    const resposta = await fetch('/.netlify/functions/create-preference', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ itens: carrinho }),
+    });
+    const dados = await resposta.json();
+
+    if (!resposta.ok || !dados.init_point) throw new Error('sem init_point');
+
+    window.location.href = dados.init_point;
+  } catch (err) {
+    mostrarToast('Não deu pra abrir o pagamento agora. Tenta de novo em instantes.');
+    checkoutBtn.disabled = false;
+    checkoutBtn.textContent = textoOriginal;
+  }
+});
 
 /* ---------- Cart drawer toggle ---------- */
 
