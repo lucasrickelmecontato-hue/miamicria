@@ -37,22 +37,16 @@ exports.handler = async (event) => {
     const pagamento = await respPagamento.json();
     if (pagamento.status !== 'approved') return responderOk();
 
-    // o Mercado Pago pode mandar a mesma notificacao mais de uma vez - checa
-    // se esse pagamento ja foi gravado antes de criar um registro novo
-    const filtro = encodeURIComponent(`{ID Pagamento} = "${paymentId}"`);
-    const respBusca = await fetch(
-      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}?filterByFormula=${filtro}`,
-      { headers: { Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}` } }
-    );
-
-    if (respBusca.ok) {
-      const busca = await respBusca.json();
-      if (busca.records && busca.records.length > 0) return responderOk();
-    }
-
     const metadata = pagamento.metadata || {};
     const endereco = metadata.endereco_completo || {};
 
+    // o Mercado Pago pode mandar a mesma notificacao mais de uma vez, as vezes
+    // quase simultaneamente - usar "checa se existe, depois cria" como duas
+    // chamadas separadas deixa uma brecha de tempo onde duas notificacoes
+    // concorrentes passam pela checagem antes de qualquer uma delas gravar,
+    // e as duas criam linha. O upsert do Airtable resolve o "existe ou nao"
+    // e a gravacao numa unica chamada atomica do lado deles, fechando essa
+    // brecha - por isso nao seta o Status aqui (ver abaixo)
     const registro = {
       fields: {
         'ID Pagamento': paymentId,
@@ -69,25 +63,48 @@ exports.handler = async (event) => {
         Estado: endereco.estado || '',
         Valor: metadata.valor_total || pagamento.transaction_amount || 0,
         Data: new Date().toISOString().slice(0, 10),
-        Status: 'Pendente',
       },
     };
 
     const respAirtable = await fetch(
       `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}`,
       {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
         },
-        body: JSON.stringify(registro),
+        body: JSON.stringify({
+          performUpsert: { fieldsToMergeOn: ['ID Pagamento'] },
+          records: [registro],
+        }),
       }
     );
 
     if (!respAirtable.ok) {
       const erroAirtable = await respAirtable.json().catch(() => ({}));
       console.error('Airtable recusou o registro:', erroAirtable);
+      return responderOk();
+    }
+
+    const resultado = await respAirtable.json();
+    const idNovoRegistro = (resultado.createdRecords || [])[0];
+
+    // so seta Status = Pendente quando o registro acabou de ser criado - se
+    // for uma notificacao duplicada batendo num pedido que ja existe, isso
+    // evita apagar um Status que a pessoa ja tenha mudado pra Enviado
+    if (idNovoRegistro) {
+      await fetch(
+        `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}/${idNovoRegistro}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.AIRTABLE_TOKEN}`,
+          },
+          body: JSON.stringify({ fields: { Status: 'Pendente' } }),
+        }
+      ).catch((err) => console.error('Erro ao setar Status inicial:', err));
     }
 
     return responderOk();
