@@ -1016,6 +1016,13 @@ a{color:inherit; text-decoration:none;}
   font-size: 12px;
   color: var(--teal);
   text-align: center;
+  margin-bottom: 4px;
+}
+
+.delivery-note{
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
   margin-bottom: 14px;
 }
 
@@ -1364,6 +1371,23 @@ a{color:inherit; text-decoration:none;}
 }
 
 .produto-info .btn-block{margin-top: 6px;}
+
+.produto-delivery-note{
+  margin-top: 12px;
+  text-align: center;
+}
+
+.produto-delivery-note p{
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--teal);
+  margin-bottom: 2px;
+}
+
+.produto-delivery-note span{
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+}
 
 .produto-desc{
   color: rgba(255,255,255,0.6);
