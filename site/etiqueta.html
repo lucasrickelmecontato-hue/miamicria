@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Etiqueta de envio — Miami Cria</title>
+<link rel="icon" href="img/logo.png">
+<style>
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: #e9e9e9;
+    color: #111;
+    padding: 24px;
+  }
+  .toolbar{
+    max-width: 720px;
+    margin: 0 auto 16px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .toolbar button{
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .etiqueta{
+    max-width: 720px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 24px;
+  }
+  .caixa{
+    border: 2px solid #000;
+    margin-bottom: 24px;
+  }
+  .caixa-titulo{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px 14px;
+    border-bottom: 2px solid #000;
+  }
+  .linha{
+    display: flex;
+    border-bottom: 1px solid #000;
+  }
+  .linha:last-child{border-bottom: none;}
+  .campo{
+    padding: 10px 14px;
+    border-right: 1px solid #000;
+    flex: 1;
+  }
+  .campo:last-child{border-right: none;}
+  .campo-label{
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 2px;
+  }
+  .campo-valor{font-size: 17px;}
+  .campo.pequeno{flex: 0 0 110px;}
+  .vazio{color: #b00; font-weight: bold;}
+
+  @media print{
+    body{background: #fff; padding: 0;}
+    .toolbar{display: none;}
+    .etiqueta{padding: 0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar">
+  <button type="button" onclick="window.print()">Imprimir</button>
+</div>
+
+<div class="etiqueta" id="etiqueta"></div>
+
+<script>
+  const p = new URLSearchParams(window.location.search);
+  const campo = (v) => v && v.trim() ? v : '<span class="vazio">—</span>';
+
+  const bloco = (titulo, prefixo) => `
+    <div class="caixa">
+      <div class="caixa-titulo">${titulo}</div>
+      <div class="linha">
+        <div class="campo"><span class="campo-label">Nome</span><span class="campo-valor">${campo(p.get(prefixo + '_nome'))}</span></div>
+        <div class="campo pequeno"><span class="campo-label">Telefone</span><span class="campo-valor">${campo(p.get(prefixo + '_telefone'))}</span></div>
+      </div>
+      <div class="linha">
+        <div class="campo"><span class="campo-label">Endereço</span><span class="campo-valor">${campo(p.get(prefixo + '_endereco'))}, ${campo(p.get(prefixo + '_numero'))}${p.get(prefixo + '_complemento') ? ' — ' + p.get(prefixo + '_complemento') : ''}</span></div>
+      </div>
+      <div class="linha">
+        <div class="campo"><span class="campo-label">Bairro</span><span class="campo-valor">${campo(p.get(prefixo + '_bairro'))}</span></div>
+      </div>
+      <div class="linha">
+        <div class="campo pequeno"><span class="campo-label">CEP</span><span class="campo-valor">${campo(p.get(prefixo + '_cep'))}</span></div>
+        <div class="campo"><span class="campo-label">Cidade</span><span class="campo-valor">${campo(p.get(prefixo + '_cidade'))}</span></div>
+        <div class="campo pequeno"><span class="campo-label">UF</span><span class="campo-valor">${campo(p.get(prefixo + '_uf'))}</span></div>
+        <div class="campo pequeno"><span class="campo-label">País</span><span class="campo-valor">BR</span></div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('etiqueta').innerHTML = bloco('DESTINATÁRIO', 'd') + bloco('REMETENTE', 'r');
+</script>
+
+</body>
+</html>
