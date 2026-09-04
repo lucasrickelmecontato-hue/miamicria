@@ -139,7 +139,7 @@ function criarCardProduto(produto){
   }
 
   // o box inteiro leva pro produto, menos os controles de tamanho/carrinho
-  const irParaProduto = () => { window.location.href = `produto.html?id=${produto.id}`; };
+  const irParaProduto = () => { window.location.href = `produto?id=${produto.id}`; };
   card.style.cursor = 'pointer';
   card.addEventListener('click', (e) => {
     if (e.target.closest('.size-row') || e.target.closest('.add-btn')) return;
@@ -340,7 +340,7 @@ if (pedidoCard) {
     pedidoCard.innerHTML = `
       <h1 class="pedido-titulo">Nenhum pedido encontrado</h1>
       <p class="pedido-texto">Não achamos nenhum pedido nesse link. Se você acabou de comprar, confere seu WhatsApp ou fala com a gente.</p>
-      <a href="index.html#camisetas" class="btn btn-primary btn-block">Voltar pra loja</a>
+      <a href="/#camisetas" class="btn btn-primary btn-block">Voltar pra loja</a>
     `;
   };
 
@@ -348,7 +348,7 @@ if (pedidoCard) {
     pedidoCard.innerHTML = `
       <h1 class="pedido-titulo">Não conseguimos carregar seu pedido</h1>
       <p class="pedido-texto">Pode ser algo temporário. Se o problema continuar, chama a gente no WhatsApp que resolvemos.</p>
-      <a href="contato.html" class="btn btn-primary btn-block">Falar no WhatsApp</a>
+      <a href="contato" class="btn btn-primary btn-block">Falar no WhatsApp</a>
     `;
   };
 
@@ -383,7 +383,7 @@ if (pedidoCard) {
         </div>
       </div>
 
-      <a href="index.html#camisetas" class="btn btn-ghost btn-block">Continuar comprando</a>
+      <a href="/#camisetas" class="btn btn-ghost btn-block">Continuar comprando</a>
     `;
   };
 
