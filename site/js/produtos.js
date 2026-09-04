@@ -4,7 +4,7 @@ const TAMANHOS = ['P', 'M', 'G', 'GG', 'XG'];
 
 const PRODUTOS = [
   {
-    id: 'sunset-grid',
+    id: 'vice-city-stories',
     nome: 'Vice City Stories',
     desc: 'Estampa gradiente pôr do sol com grid neon',
     preco: 79.90,
@@ -19,7 +19,7 @@ const PRODUTOS = [
     ]
   },
   {
-    id: 'neon-skyline',
+    id: 'vice-duo',
     nome: 'Vice Duo',
     desc: 'Silhueta de skyline com contorno turquesa',
     preco: 79.90,
@@ -34,7 +34,7 @@ const PRODUTOS = [
     ]
   },
   {
-    id: 'midnight-drive',
+    id: 'vice-nights',
     nome: 'Vice Nights',
     desc: 'Tom escuro com detalhe magenta neon',
     preco: 79.90,
@@ -49,7 +49,7 @@ const PRODUTOS = [
     ]
   },
   {
-    id: 'coastal-heat',
+    id: 'leonida-rex',
     nome: 'Leonida Rex',
     desc: 'Amarelo dourado com respingo rosa',
     preco: 79.90,
@@ -64,7 +64,7 @@ const PRODUTOS = [
     ]
   },
   {
-    id: 'off-white-leonida',
+    id: 'leonida-vacation',
     nome: 'Leonida Vacation',
     desc: 'Tom areia com estampa exclusiva nas costas',
     preco: 99.90,
@@ -79,7 +79,7 @@ const PRODUTOS = [
     ]
   },
   {
-    id: 'preto-e-branco',
+    id: 'disc-is-not-dead',
     nome: 'Disc Is Not Dead',
     desc: 'Estampa preto e branco com detalhe retro',
     preco: 89.90,
