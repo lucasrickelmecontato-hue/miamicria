@@ -105,7 +105,7 @@ function criarCardProduto(produto){
   card.className = 'product-card';
   card.dataset.produto = produto.nome;
 
-  const imagens = produto.imagens || ['img/mockup-1.png'];
+  const imagens = produto.imagens || ['/img/mockup-1.png'];
   const imagensHtml = imagens.map((src, i) => `<img class="product-mockup${i === 0 ? ' is-active' : ''}" src="${src}" alt="" aria-hidden="true">`).join('');
 
   card.innerHTML = `
@@ -139,7 +139,7 @@ function criarCardProduto(produto){
   }
 
   // o box inteiro leva pro produto, menos os controles de tamanho/carrinho
-  const irParaProduto = () => { window.location.href = `produto?id=${produto.id}`; };
+  const irParaProduto = () => { window.location.href = `/produto/${produto.id}`; };
   card.style.cursor = 'pointer';
   card.addEventListener('click', (e) => {
     if (e.target.closest('.size-row') || e.target.closest('.add-btn')) return;
@@ -191,13 +191,14 @@ if (grid) {
 const produtoDetalhe = document.getElementById('produtoDetalhe');
 
 if (produtoDetalhe) {
-  const idProduto = new URLSearchParams(window.location.search).get('id');
+  const idDaUrl = window.location.pathname.match(/\/produto\/([^/]+)\/?$/);
+  const idProduto = (idDaUrl && idDaUrl[1]) || new URLSearchParams(window.location.search).get('id');
   const produto = PRODUTOS.find(p => p.id === idProduto) || PRODUTOS[0];
 
   document.title = `${produto.nome} — Miami Cria`;
 
   let midiaAtual = 0;
-  const midias = produto.midias || (produto.imagens || ['img/mockup-1.png']).map(src => ({ tipo: 'img', src }));
+  const midias = produto.midias || (produto.imagens || ['/img/mockup-1.png']).map(src => ({ tipo: 'img', src }));
 
   const stage = document.getElementById('produtoStage');
   const thumbs = document.getElementById('produtoThumbs');
