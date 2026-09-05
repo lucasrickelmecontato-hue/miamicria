@@ -104,7 +104,7 @@ const PRODUTOS = [
     midias: [
       { tipo: 'img', src: '/img/produto-8-frente.png' },
       { tipo: 'img', src: '/img/produto-8-costas.png' },
-      { tipo: 'video', src: '/video/produto-8-frente.mp4', inicio: 0.6 },
+      { tipo: 'video', src: '/video/produto-8-frente.mp4', inicio: 0.6, crop: { scale: 1.6, origin: '50% 34%' } },
       { tipo: 'video', src: '/video/produto-8-costas.mp4' }
     ]
   },
