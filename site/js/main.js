@@ -202,6 +202,7 @@ if (produtoDetalhe) {
 
   const stage = document.getElementById('produtoStage');
   const thumbs = document.getElementById('produtoThumbs');
+  const videoAviso = document.getElementById('produtoVideoAviso');
 
   function renderMidiaAtual(){
     stage.querySelectorAll('img, video').forEach(el => {
@@ -211,6 +212,7 @@ if (produtoDetalhe) {
     const el = stage.children[midiaAtual];
     el.classList.add('is-active');
     if (el.tagName === 'VIDEO') el.play().catch(() => {});
+    if (videoAviso) videoAviso.hidden = midias[midiaAtual].tipo !== 'video';
 
     thumbs.querySelectorAll('.produto-thumb').forEach((thumb, i) => thumb.classList.toggle('is-active', i === midiaAtual));
   }
