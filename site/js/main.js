@@ -1,5 +1,36 @@
 document.getElementById('year').textContent = new Date().getFullYear();
 
+/* ---------- Navegação pra seção (Início/Camisetas/Sobre) sem usar # na URL ---------- */
+(function () {
+  const CHAVE_SCROLL = 'miamicriaScrollAlvo';
+
+  document.querySelectorAll('[data-scroll]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const alvoId = link.dataset.scroll;
+      const elAlvo = document.getElementById(alvoId);
+      if (elAlvo) {
+        // já estamos na home: rola suave sem navegar nem tocar na URL
+        e.preventDefault();
+        elAlvo.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // estamos em outra pagina: deixa ir pra "/" e guarda o alvo pra rolar assim que chegar
+        sessionStorage.setItem(CHAVE_SCROLL, alvoId);
+      }
+    });
+  });
+
+  const alvoPendente = sessionStorage.getItem(CHAVE_SCROLL);
+  if (alvoPendente) {
+    sessionStorage.removeItem(CHAVE_SCROLL);
+    const rolarQuandoPronto = () => {
+      const el = document.getElementById(alvoPendente);
+      if (el) el.scrollIntoView();
+    };
+    if (document.readyState === 'complete') rolarQuandoPronto();
+    else window.addEventListener('load', rolarQuandoPronto);
+  }
+})();
+
 /* ---------- Vídeos da capa: alternam em loop com fade suave no corte ---------- */
 /* (só roda em páginas que têm a capa, ex: index.html) */
 
@@ -343,7 +374,7 @@ if (pedidoCard) {
     pedidoCard.innerHTML = `
       <h1 class="pedido-titulo">Nenhum pedido encontrado</h1>
       <p class="pedido-texto">Não achamos nenhum pedido nesse link. Se você acabou de comprar, confere seu WhatsApp ou fala com a gente.</p>
-      <a href="/#camisetas" class="btn btn-primary btn-block">Voltar pra loja</a>
+      <a href="/" data-scroll="camisetas" class="btn btn-primary btn-block">Voltar pra loja</a>
     `;
   };
 
@@ -386,7 +417,7 @@ if (pedidoCard) {
         </div>
       </div>
 
-      <a href="/#camisetas" class="btn btn-ghost btn-block">Continuar comprando</a>
+      <a href="/" data-scroll="camisetas" class="btn btn-ghost btn-block">Continuar comprando</a>
     `;
   };
 
