@@ -93,4 +93,19 @@ const PRODUTOS = [
       { tipo: 'video', src: '/video/produto-7-costas.mp4', crop: { scale: 1.3, origin: '50% 0%', position: 'center top' } }
     ]
   },
+  {
+    id: 'vice-sunset',
+    nome: 'Vice Sunset',
+    desc: 'Estampa GTA VI com paleta quente de pôr do sol',
+    preco: 79.90,
+    tag: 'Novo',
+    gradiente: 'linear-gradient(160deg, #ff8a3d, #ff2d95)',
+    imagens: ['/img/produto-8-frente.png', '/img/produto-8-costas.png'],
+    midias: [
+      { tipo: 'img', src: '/img/produto-8-frente.png' },
+      { tipo: 'img', src: '/img/produto-8-costas.png' },
+      { tipo: 'video', src: '/video/produto-8-frente.mp4', inicio: 0.6 },
+      { tipo: 'video', src: '/video/produto-8-costas.mp4' }
+    ]
+  },
 ];

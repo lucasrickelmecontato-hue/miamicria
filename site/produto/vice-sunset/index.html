@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Miami Cria: Vista o hype</title>
-<meta name="description" content="Miami Cria: camisetas oversized com estética neon Miami. Streetwear pra quem vive de madrugada com luz de sunset.">
-<link rel="icon" href="img/logo.png">
+<title>Vice Sunset — Miami Cria</title>
+<meta name="description" content="Vice Sunset: Estampa GTA VI com paleta quente de pôr do sol. Camiseta oversized Miami Cria.">
+<link rel="icon" href="/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@800;900&family=Bebas+Neue&family=Bungee&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=14">
+<link rel="stylesheet" href="/css/style.css?v=14">
 </head>
 <body>
 
@@ -17,15 +17,15 @@
 
 <header class="site-header" id="siteHeader">
   <div class="header-inner">
-    <a href="#top" class="brand">
-      <img src="img/logo.png" alt="Miami Cria" class="brand-logo">
+    <a href="/" class="brand">
+      <img src="/img/logo.png" alt="Miami Cria" class="brand-logo">
     </a>
 
     <nav class="nav" id="mainNav">
-      <a href="#top" class="nav-link">Início</a>
-      <a href="#camisetas" class="nav-link">Camisetas</a>
-      <a href="#sobre" class="nav-link">Sobre</a>
-      <a href="contato" class="nav-link">Contato</a>
+      <a href="/" class="nav-link">Início</a>
+      <a href="/#camisetas" class="nav-link">Camisetas</a>
+      <a href="/#sobre" class="nav-link">Sobre</a>
+      <a href="/contato" class="nav-link">Contato</a>
     </nav>
 
     <div class="wanted-badge" aria-label="6 estrelas">
@@ -52,106 +52,102 @@
   </div>
 </header>
 
-<main id="top">
+<main id="produtoDetalhe">
 
-  <section class="hero">
-    <div class="hero-photo">
-      <video class="hero-video is-active" id="heroVideo1" muted playsinline autoplay preload="auto">
-        <source src="video/hero-1-mobile.mp4?v=2" media="(max-width: 860px)">
-        <source src="video/hero-1.mp4">
-      </video>
-      <video class="hero-video" id="heroVideo2" muted playsinline preload="none">
-        <source src="video/hero-2-mobile.mp4" media="(max-width: 860px)">
-        <source src="video/hero-2.mp4">
-      </video>
-      <video class="hero-video" id="heroVideo3" muted playsinline preload="none">
-        <source src="video/hero-3-mobile.mp4" media="(max-width: 860px)">
-        <source src="video/hero-3.mp4">
-      </video>
-      <video class="hero-video" id="heroVideo4" muted playsinline preload="none">
-        <source src="video/hero-4-mobile.mp4" media="(max-width: 860px)">
-        <source src="video/hero-4.mp4">
-      </video>
+  <section class="produto-hero">
+    <div class="produto-galeria">
+      <div class="produto-stage-wrap">
+        <span class="produto-zoom" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </span>
+        <button type="button" class="gallery-arrow gallery-prev" id="produtoPrev" aria-label="Anterior">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <div class="produto-stage" id="produtoStage"></div>
+        <button type="button" class="gallery-arrow gallery-next" id="produtoNext" aria-label="Próxima">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+      <div class="produto-thumbs" id="produtoThumbs"></div>
     </div>
-    <div class="hero-overlay"></div>
-    <div class="hero-neon-edge" aria-hidden="true"></div>
 
-    <div class="hero-content">
-      <h1 class="hero-title">
-        Você ainda<br>não está preparado.
-      </h1>
-      <p class="hero-sub">Uma nova forma de vestir o hype</p>
-      <div class="hero-actions">
-        <a href="#camisetas" class="btn btn-primary">Ver camisetas</a>
-        <a href="contato" class="btn btn-ghost">Entre em contato</a>
+    <div class="produto-info">
+      <p class="produto-kicker">Coleção Miami Cria</p>
+      <h1 class="produto-nome" id="produtoNome"></h1>
+      <div class="produto-preco" id="produtoPreco"></div>
+
+      <p class="produto-label">Tamanho</p>
+      <div class="size-row" role="group" aria-label="Selecionar tamanho" id="produtoTamanhos"></div>
+
+      <p class="produto-label">Quantidade</p>
+      <div class="produto-qtd">
+        <button type="button" id="produtoQtdMenos" aria-label="Diminuir quantidade">&minus;</button>
+        <span id="produtoQtdValor">1</span>
+        <button type="button" id="produtoQtdMais" aria-label="Aumentar quantidade">+</button>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-block" id="produtoAddBtn" disabled>Selecione um tamanho</button>
+
+      <div class="produto-delivery-note">
+        <p>🚚 Prazo de entrega: até 7 dias úteis</p>
+        <span>O prazo começa a contar após a confirmação do pagamento.</span>
+      </div>
+
+      <div class="produto-specs">
+        <h3>Especificações</h3>
+        <ul>
+          <li>Modelagem Oversized</li>
+          <li>Algodão fio 24.1</li>
+          <li>Tecido confortável e resistente</li>
+          <li>Gola reforçada</li>
+          <li>Caimento amplo e moderno</li>
+          <li>Estampa de alta qualidade</li>
+          <li>Inspirada no universo de GTA VI</li>
+          <li>Produção Miami Cria</li>
+        </ul>
+      </div>
+
+      <div class="produto-medidas">
+        <h3>Tabela de medidas — Oversize</h3>
+        <p class="produto-medidas-legenda">L = Largura &middot; C = Comprimento &middot; M = Manga</p>
+        <div class="produto-medidas-tabela-wrap">
+          <table class="produto-medidas-tabela">
+            <thead>
+              <tr><th>Tam.</th><th>L</th><th>C</th><th>M</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>P</td><td>57 cm</td><td>72 cm</td><td>20 cm</td></tr>
+              <tr><td>M</td><td>59 cm</td><td>74 cm</td><td>24 cm</td></tr>
+              <tr><td>G</td><td>62 cm</td><td>76 cm</td><td>27 cm</td></tr>
+              <tr><td>GG</td><td>64 cm</td><td>79 cm</td><td>28 cm</td></tr>
+              <tr><td>XG</td><td>67 cm</td><td>82 cm</td><td>29 cm</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-
-    <div class="hero-fade"></div>
   </section>
 
-  <section class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • </span>
-      <span>VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • VISTA O HYPE • OVERSIZED • MIAMI CRIA • NEON NIGHTS • </span>
-    </div>
-  </section>
-
-  <section class="products" id="camisetas">
+  <section class="products" id="outrosProdutos">
     <div class="section-head">
       <p class="section-kicker">Coleção</p>
-      <h2 class="section-title">Camisetas oversized</h2>
+      <h2 class="section-title">Outros produtos</h2>
     </div>
 
-    <div class="product-grid" id="productGrid"></div>
+    <div class="product-grid" id="outrosProdutosGrid"></div>
   </section>
-
-  <section class="about" id="sobre">
-    <div class="about-inner">
-      <p class="section-kicker">Sobre</p>
-      <h2 class="section-title">Miami Cria</h2>
-      <p class="about-text">
-        Miami Cria nasceu da mistura entre o lifestyle de Miami, a cultura urbana e a estética das ruas.
-      </p>
-      <p class="about-text">
-        Criamos peças para quem não quer passar despercebido. Cores fortes, referências vintage,
-        atitude e uma identidade que mistura o clássico com o moderno.
-      </p>
-      <p class="about-quote">&ldquo;Nem todo mundo nasceu para ser NPC.&rdquo;</p>
-    </div>
-  </section>
-
-  <section class="who">
-    <div class="who-inner">
-      <h2 class="who-title">Para quem é a<br>Miami Cria?</h2>
-
-      <ul class="who-list">
-        <li>Para quem já andou de BMX pela Grove Street</li>
-        <li>Para quem lembra de Big Smoke, Ryder, Sweet.</li>
-        <li>Para quem viveu Los Santos, San Fierro e Las Venturas.</li>
-        <li>Para quem sabe o que são cinco estrelas. <span class="who-stars">★★★★★</span></li>
-        <li>Para quem nunca deixou um carro sair da oficina do mesmo jeito que entrou.</li>
-        <li>Para quem tinha folhinha de códigos.</li>
-      </ul>
-
-      <p class="who-highlight">Se você entendeu, essa marca é pra você.</p>
-      <p class="who-text">A Miami Cria é para quem cresceu criando histórias nesses mundos.</p>
-      <p class="who-text">Agora, algumas dessas referências saíram da tela e ganharam as ruas.</p>
-    </div>
-  </section>
-
 
 </main>
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <img src="img/logo.png" alt="Miami Cria" class="footer-logo">
+    <img src="/img/logo.png" alt="Miami Cria" class="footer-logo">
     <p class="footer-tagline">Vista o hype.</p>
     <div class="footer-links">
-      <a href="#top">Início</a>
-      <a href="#camisetas">Camisetas</a>
-      <a href="#sobre">Sobre</a>
-      <a href="contato">Contato</a>
+      <a href="/">Início</a>
+      <a href="/#camisetas">Camisetas</a>
+      <a href="/#sobre">Sobre</a>
+      <a href="/contato">Contato</a>
     </div>
     <div class="footer-social">
       <a href="https://wa.me/5512981178229" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -168,7 +164,7 @@
       <p class="footer-legal-line">MIAMICRIA é uma marca afiliada a Caraguá Camisetas</p>
       <p class="footer-legal-line">CNPJ: 12.816.645/0001-86 &middot; Caraguatatuba, SP, Brasil</p>
       <p class="footer-policy-links">
-        <a href="privacidade">Política de Privacidade</a> &middot; <a href="termos">Termos de Uso</a> &middot; <a href="trocas-e-devolucoes">Trocas e Devoluções</a> &middot; <a href="envio-e-entrega">Envio e Entrega</a>
+        <a href="/privacidade">Política de Privacidade</a> &middot; <a href="/termos">Termos de Uso</a> &middot; <a href="/trocas-e-devolucoes">Trocas e Devoluções</a> &middot; <a href="/envio-e-entrega">Envio e Entrega</a>
       </p>
     </div>
   </div>
@@ -224,7 +220,7 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="js/produtos.js?v=11"></script>
-<script src="js/main.js?v=23"></script>
+<script src="/js/produtos.js?v=11"></script>
+<script src="/js/main.js?v=23"></script>
 </body>
 </html>
