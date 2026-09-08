@@ -52,6 +52,7 @@ exports.handler = async (event) => {
         'ID Pagamento': paymentId,
         Nome: endereco.nome || '',
         Telefone: endereco.telefone || '',
+        CPF: endereco.cpf || '',
         Produto: metadata.produtos_resumo || '',
         Tamanho: metadata.tamanhos_resumo || '',
         CEP: endereco.cep || '',

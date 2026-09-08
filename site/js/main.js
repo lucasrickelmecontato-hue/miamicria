@@ -512,6 +512,7 @@ function coletarEndereco(){
   return {
     nome: document.getElementById('entNome').value.trim(),
     telefone: document.getElementById('entTelefone').value.trim(),
+    cpf: document.getElementById('entCpf').value.trim(),
     cep: document.getElementById('entCep').value.trim(),
     numero: document.getElementById('entNumero').value.trim(),
     rua: document.getElementById('entRua').value.trim(),
@@ -534,10 +535,16 @@ checkoutBtn.addEventListener('click', async () => {
   }
 
   const endereco = coletarEndereco();
-  const camposObrigatorios = ['nome', 'telefone', 'cep', 'numero', 'rua', 'bairro', 'cidade', 'estado'];
+  const camposObrigatorios = ['nome', 'telefone', 'cpf', 'cep', 'numero', 'rua', 'bairro', 'cidade', 'estado'];
   const faltando = camposObrigatorios.some((campo) => !endereco[campo]);
   if (faltando) {
     mostrarToast('Preenche todos os campos de endereço pra continuar');
+    return;
+  }
+
+  const cpfNumeros = endereco.cpf.replace(/\D/g, '');
+  if (cpfNumeros.length !== 11) {
+    mostrarToast('CPF inválido — confere os números');
     return;
   }
 

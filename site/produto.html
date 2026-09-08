@@ -199,7 +199,10 @@
       <div class="cart-endereco" id="cartEndereco" hidden>
         <p class="cart-endereco-label">Endereço de entrega</p>
         <input type="text" id="entNome" class="cart-input" placeholder="Nome completo">
-        <input type="tel" id="entTelefone" class="cart-input" placeholder="WhatsApp">
+        <div class="cart-input-row">
+          <input type="tel" id="entTelefone" class="cart-input" placeholder="WhatsApp">
+          <input type="text" id="entCpf" class="cart-input" placeholder="CPF" inputmode="numeric" maxlength="14">
+        </div>
         <div class="cart-input-row">
           <input type="text" id="entCep" class="cart-input" placeholder="CEP">
           <input type="text" id="entNumero" class="cart-input" placeholder="Número">
@@ -222,6 +225,6 @@
 <div class="toast" id="toast"></div>
 
 <script src="js/produtos.js?v=12"></script>
-<script src="js/main.js?v=25"></script>
+<script src="js/main.js?v=26"></script>
 </body>
 </html>
