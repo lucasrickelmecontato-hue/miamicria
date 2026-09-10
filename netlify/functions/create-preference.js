@@ -41,7 +41,7 @@ exports.handler = async (event) => {
   }
 
   const endereco = payload.endereco || {};
-  const camposEndereco = ['nome', 'telefone', 'cpf', 'cep', 'numero', 'rua', 'bairro', 'cidade', 'estado'];
+  const camposEndereco = ['nome', 'telefone', 'cpf', 'email', 'cep', 'numero', 'rua', 'bairro', 'cidade', 'estado'];
   const enderecoIncompleto = camposEndereco.some((campo) => !endereco[campo]);
   if (enderecoIncompleto) {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Endereço incompleto' }) };
@@ -51,6 +51,9 @@ exports.handler = async (event) => {
   const cpfNumeros = String(endereco.cpf).replace(/\D/g, '');
   if (cpfNumeros.length !== 11) {
     return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'CPF inválido' }) };
+  }
+  if (!/^\S+@\S+\.\S+$/.test(endereco.email)) {
+    return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'E-mail inválido' }) };
   }
 
   const items = itensCarrinho.map((item) => ({
@@ -75,6 +78,7 @@ exports.handler = async (event) => {
     items,
     payer: {
       name: endereco.nome,
+      email: endereco.email,
       identification: {
         type: 'CPF',
         number: cpfNumeros,

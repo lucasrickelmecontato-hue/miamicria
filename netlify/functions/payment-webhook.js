@@ -53,6 +53,7 @@ exports.handler = async (event) => {
         Nome: endereco.nome || '',
         Telefone: endereco.telefone || '',
         CPF: endereco.cpf || '',
+        Email: endereco.email || '',
         Produto: metadata.produtos_resumo || '',
         Tamanho: metadata.tamanhos_resumo || '',
         CEP: endereco.cep || '',
