@@ -108,4 +108,34 @@ const PRODUTOS = [
       { tipo: 'video', src: '/video/produto-8-costas.mp4' }
     ]
   },
+  {
+    id: 'igor-brasil-x-mundo',
+    nome: 'IGOR — BRASIL X MUNDO',
+    desc: 'Collab oficial Miami Cria × Igor, inspirada no vídeo mais assistido dele',
+    preco: 94.90,
+    tag: 'Collab',
+    gradiente: 'linear-gradient(160deg, #2dd9c7, #ff2d95)',
+    imagens: ['/img/produto-9-frente.png', '/img/produto-9-costas.png'],
+    midias: [
+      { tipo: 'img', src: '/img/produto-9-frente.png' },
+      { tipo: 'img', src: '/img/produto-9-costas.png' }
+    ],
+    lancamento: {
+      badge: 'Edição Collab — Miami Cria × Igor',
+      paragrafos: [
+        'Você provavelmente já viu o vídeo.',
+        'Um dos momentos que mais rodaram nas redes do Igor agora saiu da tela e virou camiseta.',
+        'A estampa eterniza um dos confrontos mais marcantes do brasileiro contra um dos grandes nomes gringos do basquete — aquele tipo de momento que você assiste, reassiste e manda para os amigos.',
+        'Agora virou peça.'
+      ],
+      destaques: [
+        '🔥 Collab oficial MIAMI CRIA × IGOR',
+        '🏀 Inspirada no vídeo mais assistido do Igor',
+        '👕 Modelagem Oversized',
+        '☁️ 100% algodão',
+        '🇧🇷 Produção nacional'
+      ],
+      final: 'De um vídeo viral para uma camiseta.'
+    }
+  },
 ];

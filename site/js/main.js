@@ -309,6 +309,16 @@ if (produtoDetalhe) {
   document.getElementById('produtoNome').textContent = produto.nome;
   document.getElementById('produtoPreco').textContent = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
 
+  // bloco especial de lancamento/collab - so aparece nos produtos que tem esse dado
+  if (produto.lancamento) {
+    const lancamentoBox = document.getElementById('produtoLancamento');
+    document.getElementById('produtoLancamentoBadge').textContent = produto.lancamento.badge;
+    document.getElementById('produtoLancamentoTexto').innerHTML = produto.lancamento.paragrafos.map(p => `<p>${p}</p>`).join('');
+    document.getElementById('produtoLancamentoDestaques').innerHTML = produto.lancamento.destaques.map(d => `<li>${d}</li>`).join('');
+    document.getElementById('produtoLancamentoFinal').textContent = produto.lancamento.final;
+    lancamentoBox.hidden = false;
+  }
+
   const sizeRow = document.getElementById('produtoTamanhos');
   sizeRow.innerHTML = TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}">${t}</button>`).join('');
 
