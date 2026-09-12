@@ -136,7 +136,12 @@ function criarCardProduto(produto){
   card.className = 'product-card';
   card.dataset.produto = produto.nome;
 
-  const imagens = produto.imagens || ['/img/mockup-1.png'];
+  // quando o produto tem variantes de cor, intercala as fotos de todas as
+  // cores no carrossel do card (ex: frente preta, costas preta, frente
+  // branca, costas branca)
+  const imagens = produto.cores
+    ? produto.cores.flatMap(cor => cor.midias.filter(m => m.tipo === 'img').map(m => m.src))
+    : (produto.imagens || ['/img/mockup-1.png']);
   const imagensHtml = imagens.map((src, i) => `<img class="product-mockup${i === 0 ? ' is-active' : ''}" src="${src}" alt="" aria-hidden="true">`).join('');
 
   card.innerHTML = `
@@ -229,11 +234,19 @@ if (produtoDetalhe) {
   document.title = `${produto.nome} — Miami Cria`;
 
   let midiaAtual = 0;
-  let midias = produto.midias || (produto.imagens || ['/img/mockup-1.png']).map(src => ({ tipo: 'img', src }));
+  // quando o produto tem variantes de cor, as midias de todas as cores entram
+  // juntas na mesma galeria/miniaturas - o indice de cor de cada midia fica
+  // marcado (corIndice) pra sincronizar o botao de cor com o que esta sendo visto
+  let midias = produto.cores
+    ? produto.cores.flatMap((cor, ci) => cor.midias.map(m => ({ ...m, corIndice: ci })))
+    : (produto.midias || (produto.imagens || ['/img/mockup-1.png']).map(src => ({ tipo: 'img', src })));
 
   const stage = document.getElementById('produtoStage');
   const thumbs = document.getElementById('produtoThumbs');
   const videoAviso = document.getElementById('produtoVideoAviso');
+  const corToggle = document.getElementById('produtoCorToggle');
+
+  let corSelecionada = produto.cores ? produto.cores[0].nome : null;
 
   function renderMidiaAtual(){
     stage.querySelectorAll('img, video').forEach(el => {
@@ -246,6 +259,13 @@ if (produtoDetalhe) {
     if (videoAviso) videoAviso.hidden = midias[midiaAtual].tipo !== 'video';
 
     thumbs.querySelectorAll('.produto-thumb').forEach((thumb, i) => thumb.classList.toggle('is-active', i === midiaAtual));
+
+    // mantem o botao de cor certo aceso conforme a foto/video que esta em exibicao
+    if (produto.cores) {
+      const corIndice = midias[midiaAtual].corIndice;
+      corSelecionada = produto.cores[corIndice].nome;
+      corToggle.querySelectorAll('.produto-cor-btn').forEach((btn, i) => btn.classList.toggle('is-active', i === corIndice));
+    }
   }
 
   function montarGaleria(){
@@ -309,12 +329,10 @@ if (produtoDetalhe) {
   });
   stageWrap.addEventListener('pointercancel', () => { arrastoX = null; });
 
-  montarGaleria();
-
-  // seletor de cor - so aparece em produtos com mais de uma variante
-  let corSelecionada = produto.cores ? produto.cores[0].nome : null;
+  // seletor de cor - so aparece em produtos com mais de uma variante. As fotos
+  // de todas as cores ja estao juntas na galeria (montarGaleria acima); o
+  // botao so pula pra primeira midia daquela cor
   if (produto.cores && produto.cores.length > 1) {
-    const corToggle = document.getElementById('produtoCorToggle');
     corToggle.innerHTML = produto.cores.map((cor, i) => `
       <button type="button" class="produto-cor-btn${i === 0 ? ' is-active' : ''}" data-cor="${i}" style="background:${cor.swatch}" aria-label="${cor.nome}"></button>
     `).join('');
@@ -322,14 +340,13 @@ if (produtoDetalhe) {
     corToggle.querySelectorAll('.produto-cor-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const indice = Number(btn.dataset.cor);
-        midias = produto.cores[indice].midias;
-        corSelecionada = produto.cores[indice].nome;
-        corToggle.querySelectorAll('.produto-cor-btn').forEach(b => b.classList.remove('is-active'));
-        btn.classList.add('is-active');
-        montarGaleria();
+        midiaAtual = midias.findIndex(m => m.corIndice === indice);
+        renderMidiaAtual();
       });
     });
   }
+
+  montarGaleria();
 
   document.getElementById('produtoNome').textContent = produto.nome;
   document.getElementById('produtoPreco').textContent = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
