@@ -138,7 +138,12 @@ function criarCardProduto(produto){
 
   // quando o produto tem variantes de cor, intercala as fotos de todas as
   // cores no carrossel do card (ex: frente preta, costas preta, frente
-  // branca, costas branca)
+  // branca, costas branca) - corPorImagem guarda qual cor cada foto
+  // representa, pra saber qual cor registrar se o cliente adicionar ao
+  // carrinho direto por aqui (sem abrir a pagina do produto)
+  const corPorImagem = produto.cores
+    ? produto.cores.flatMap((cor, ci) => cor.midias.filter(m => m.tipo === 'img').map(() => ci))
+    : null;
   const imagens = produto.cores
     ? produto.cores.flatMap(cor => cor.midias.filter(m => m.tipo === 'img').map(m => m.src))
     : (produto.imagens || ['/img/mockup-1.png']);
@@ -164,9 +169,9 @@ function criarCardProduto(produto){
     </div>
   `;
 
+  let fotoAtual = 0;
   if (imagens.length > 1) {
     const fotos = card.querySelectorAll('.product-mockup');
-    let fotoAtual = 0;
     setInterval(() => {
       fotos[fotoAtual].classList.remove('is-active');
       fotoAtual = (fotoAtual + 1) % fotos.length;
@@ -198,12 +203,13 @@ function criarCardProduto(produto){
 
   addBtn.addEventListener('click', () => {
     if (!tamanhoSelecionado) return;
+    const nomeComCor = corPorImagem ? `${produto.nome} - ${produto.cores[corPorImagem[fotoAtual]].nome}` : produto.nome;
     adicionarAoCarrinho({
-      nome: produto.nome,
+      nome: nomeComCor,
       tamanho: tamanhoSelecionado,
       preco: produto.preco
     });
-    mostrarToast(`${produto.nome} (${tamanhoSelecionado}) adicionado ao carrinho`);
+    mostrarToast(`${nomeComCor} (${tamanhoSelecionado}) adicionado ao carrinho`);
   });
 
   return card;
