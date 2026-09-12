@@ -229,7 +229,7 @@ if (produtoDetalhe) {
   document.title = `${produto.nome} — Miami Cria`;
 
   let midiaAtual = 0;
-  const midias = produto.midias || (produto.imagens || ['/img/mockup-1.png']).map(src => ({ tipo: 'img', src }));
+  let midias = produto.midias || (produto.imagens || ['/img/mockup-1.png']).map(src => ({ tipo: 'img', src }));
 
   const stage = document.getElementById('produtoStage');
   const thumbs = document.getElementById('produtoThumbs');
@@ -248,35 +248,40 @@ if (produtoDetalhe) {
     thumbs.querySelectorAll('.produto-thumb').forEach((thumb, i) => thumb.classList.toggle('is-active', i === midiaAtual));
   }
 
-  stage.innerHTML = midias.map((midia) => {
-    let estilo = '';
-    if (midia.crop) {
-      const posicao = midia.crop.position ? `object-position:${midia.crop.position};` : '';
-      estilo = ` style="transform:scale(${midia.crop.scale});transform-origin:${midia.crop.origin};${posicao}"`;
-    }
-    return midia.tipo === 'video'
-      ? `<video src="${midia.src}" muted loop playsinline preload="auto"${estilo}></video>`
-      : `<img src="${midia.src}" alt=""${estilo}>`;
-  }).join('');
+  function montarGaleria(){
+    stage.innerHTML = midias.map((midia) => {
+      let estilo = '';
+      if (midia.crop) {
+        const posicao = midia.crop.position ? `object-position:${midia.crop.position};` : '';
+        estilo = ` style="transform:scale(${midia.crop.scale});transform-origin:${midia.crop.origin};${posicao}"`;
+      }
+      return midia.tipo === 'video'
+        ? `<video src="${midia.src}" muted loop playsinline preload="auto"${estilo}></video>`
+        : `<img src="${midia.src}" alt=""${estilo}>`;
+    }).join('');
 
-  stage.querySelectorAll('video').forEach((video, i) => {
-    const inicio = midias[i].inicio;
-    if (inicio) video.addEventListener('loadedmetadata', () => { video.currentTime = inicio; }, { once: true });
-  });
-
-  thumbs.innerHTML = midias.map((midia, i) => `
-    <button type="button" class="produto-thumb" data-index="${i}" aria-label="Ver mídia ${i + 1}">
-      ${midia.tipo === 'video'
-        ? `<video src="${midia.src}" muted playsinline preload="metadata"></video><span class="produto-thumb-play">▶</span>`
-        : `<img src="${midia.src}" alt="">`}
-    </button>
-  `).join('');
-  thumbs.querySelectorAll('.produto-thumb').forEach(thumb => {
-    thumb.addEventListener('click', () => {
-      midiaAtual = Number(thumb.dataset.index);
-      renderMidiaAtual();
+    stage.querySelectorAll('video').forEach((video, i) => {
+      const inicio = midias[i].inicio;
+      if (inicio) video.addEventListener('loadedmetadata', () => { video.currentTime = inicio; }, { once: true });
     });
-  });
+
+    thumbs.innerHTML = midias.map((midia, i) => `
+      <button type="button" class="produto-thumb" data-index="${i}" aria-label="Ver mídia ${i + 1}">
+        ${midia.tipo === 'video'
+          ? `<video src="${midia.src}" muted playsinline preload="metadata"></video><span class="produto-thumb-play">▶</span>`
+          : `<img src="${midia.src}" alt="">`}
+      </button>
+    `).join('');
+    thumbs.querySelectorAll('.produto-thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        midiaAtual = Number(thumb.dataset.index);
+        renderMidiaAtual();
+      });
+    });
+
+    midiaAtual = 0;
+    renderMidiaAtual();
+  }
 
   const voltarMidia = () => {
     midiaAtual = (midiaAtual - 1 + midias.length) % midias.length;
@@ -304,7 +309,27 @@ if (produtoDetalhe) {
   });
   stageWrap.addEventListener('pointercancel', () => { arrastoX = null; });
 
-  renderMidiaAtual();
+  montarGaleria();
+
+  // seletor de cor - so aparece em produtos com mais de uma variante
+  let corSelecionada = produto.cores ? produto.cores[0].nome : null;
+  if (produto.cores && produto.cores.length > 1) {
+    const corToggle = document.getElementById('produtoCorToggle');
+    corToggle.innerHTML = produto.cores.map((cor, i) => `
+      <button type="button" class="produto-cor-btn${i === 0 ? ' is-active' : ''}" data-cor="${i}" style="background:${cor.swatch}" aria-label="${cor.nome}"></button>
+    `).join('');
+    corToggle.hidden = false;
+    corToggle.querySelectorAll('.produto-cor-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const indice = Number(btn.dataset.cor);
+        midias = produto.cores[indice].midias;
+        corSelecionada = produto.cores[indice].nome;
+        corToggle.querySelectorAll('.produto-cor-btn').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        montarGaleria();
+      });
+    });
+  }
 
   document.getElementById('produtoNome').textContent = produto.nome;
   document.getElementById('produtoPreco').textContent = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
@@ -350,10 +375,11 @@ if (produtoDetalhe) {
 
   addBtn.addEventListener('click', () => {
     if (!tamanhoSelecionado) return;
+    const nomeComCor = corSelecionada ? `${produto.nome} - ${corSelecionada}` : produto.nome;
     for (let i = 0; i < quantidade; i++) {
-      adicionarAoCarrinho({ nome: produto.nome, tamanho: tamanhoSelecionado, preco: produto.preco });
+      adicionarAoCarrinho({ nome: nomeComCor, tamanho: tamanhoSelecionado, preco: produto.preco });
     }
-    mostrarToast(`${produto.nome} (${tamanhoSelecionado}) adicionado ao carrinho`);
+    mostrarToast(`${nomeComCor} (${tamanhoSelecionado}) adicionado ao carrinho`);
   });
 
   const outrosGrid = document.getElementById('outrosProdutosGrid');

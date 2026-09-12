@@ -120,6 +120,24 @@ const PRODUTOS = [
       { tipo: 'img', src: '/img/produto-9-frente.png' },
       { tipo: 'img', src: '/img/produto-9-costas.png' }
     ],
+    cores: [
+      {
+        nome: 'Preto',
+        swatch: '#0d0616',
+        midias: [
+          { tipo: 'img', src: '/img/produto-9-frente.png' },
+          { tipo: 'img', src: '/img/produto-9-costas.png' }
+        ]
+      },
+      {
+        nome: 'Branco',
+        swatch: '#e9e2d0',
+        midias: [
+          { tipo: 'img', src: '/img/produto-9-branca-frente.png' },
+          { tipo: 'img', src: '/img/produto-9-branca-costas.png' }
+        ]
+      }
+    ],
     lancamento: {
       badge: 'Edição Collab — Miami Cria × Igor',
       paragrafos: [
