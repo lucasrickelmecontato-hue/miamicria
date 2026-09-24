@@ -60,6 +60,24 @@ async function escreverArquivo(caminho, conteudo, sha, mensagem) {
   }
 }
 
+// igual escreverArquivo, mas recebe o conteúdo já em base64 (usado pras fotos)
+async function escreverArquivoBinario(caminho, conteudoBase64, mensagem) {
+  const resp = await fetch(`${GITHUB_API}/repos/${process.env.GITHUB_REPO}/contents/${caminho}`, {
+    method: 'PUT',
+    headers: { ...headersGithub(), 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: mensagem, content: conteudoBase64, branch: branch() }),
+  });
+  if (!resp.ok) {
+    const erro = await resp.json().catch(() => ({}));
+    throw new Error(erro.message || `Falha ao gravar ${caminho}`);
+  }
+}
+
+// limite do Netlify pro corpo da requisição é ~6MB; o painel já comprime a
+// foto no aparelho antes de mandar, então isso aqui é só uma trava de segurança
+const TAMANHO_MAX_FOTO_BASE64 = 4.5 * 1024 * 1024;
+const EXTENSOES_FOTO = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
+
 async function apagarArquivo(caminho, sha, mensagem) {
   const resp = await fetch(`${GITHUB_API}/repos/${process.env.GITHUB_REPO}/contents/${caminho}`, {
     method: 'DELETE',
@@ -119,6 +137,29 @@ exports.handler = async (event) => {
 
   if (payload.senha !== process.env.ADMIN_SENHA) {
     return { statusCode: 401, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Senha incorreta' }) };
+  }
+
+  // upload de foto vinda do aparelho (galeria/câmera) - grava em site/img/
+  // e devolve o caminho pra ser usado no campo de imagem do produto
+  if (payload.acao === 'enviar_foto') {
+    try {
+      const extensao = EXTENSOES_FOTO[payload.tipo];
+      const base64 = typeof payload.base64 === 'string' ? payload.base64.replace(/^data:[^,]*,/, '') : '';
+      if (!extensao) {
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Formato de foto não suportado (use JPG, PNG ou WEBP)' }) };
+      }
+      if (!base64 || base64.length > TAMANHO_MAX_FOTO_BASE64 || !/^[A-Za-z0-9+/=]+$/.test(base64)) {
+        return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Foto inválida ou grande demais' }) };
+      }
+      const prefixo = slugValido(payload.id) ? payload.id : 'produto';
+      const lado = payload.lado === 'costas' ? 'costas' : 'frente';
+      const nomeArquivo = `${prefixo}-${lado}-${Date.now()}.${extensao}`;
+      await escreverArquivoBinario(`site/img/${nomeArquivo}`, base64, `admin: envia foto ${nomeArquivo}`);
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, caminho: `/img/${nomeArquivo}` }) };
+    } catch (err) {
+      console.error('Erro ao enviar foto:', err);
+      return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ erro: err.message || 'Erro ao enviar foto' }) };
+    }
   }
 
   try {
