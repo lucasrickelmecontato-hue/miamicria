@@ -298,5 +298,18 @@ const PRODUTOS = [
       ],
       "final": "De um vídeo viral para uma camiseta."
     }
+  },
+  {
+    "id": "caixa-leonida",
+    "nome": "CAIXA LEONIDA 📦🌴",
+    "desc": "Uma experiência criada para quem realmente vive a estética de Vice City e do universo GTA.\n\nPor R$ 249,90, você recebe um kit exclusivo e cheio de detalhes:\n\n📦 Caixa Leonida\nUma caixa exclusiva inspirada na estética de Vice City / Leonida, feita para você guardar, colecionar e até usar como decoração.\n\n👊 Soco-inglês\nUm item inspirado na estética urbana e clássica do universo GTA.\n\n☕ Caneca GTA VI\nCaneca personalizada com a capa de GTA VI, perfeita para completar a coleção.\n\n🔑 Chaveiro GTA VI personalizado\nUm detalhe exclusivo para levar a estética do jogo com você.\n\n✨ Adesivo holográfico Miami Cria — Edição Limitada\nPersonalizado especialmente para essa edição do press kit.\n\n🚨Emblema da RockStar de decoração.\n\n👕 Camiseta Rex Leonida\nA camiseta exclusiva da coleção Caixa Leonida, criada especialmente para acompanhar esse kit.\n\n🔥 Tudo isso em uma única caixa por R$ 249,90.\n\nNão é só um press kit.\nÉ uma peça da Miami Cria feita para quem é fã, coleciona e vive essa estética.\n\nMiami Cria — de fã pra fã.",
+    "preco": 249.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/caixa-leonida-frente-1790270845594.jpg",
+      "/img/caixa-leonida-costas-1790270888758.jpg"
+    ],
+    "esgotado": false
   }
 ];
