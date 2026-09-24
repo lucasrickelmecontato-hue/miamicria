@@ -6,3 +6,11 @@
   for = "/*"
   [headers.values]
     Accept-Ranges = "bytes"
+
+# atalho pro painel de produtos - só existe no domínio do Netlify
+# (miamicria.netlify.app/painel), nunca no domínio da loja (GitHub Pages
+# não lê esse arquivo, então lá isso nem existe)
+[[redirects]]
+  from = "/painel"
+  to = "/.netlify/functions/painel"
+  status = 200

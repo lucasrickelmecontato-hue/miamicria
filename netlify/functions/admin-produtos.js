@@ -9,15 +9,14 @@
 //   GITHUB_REPO    - "usuario/repositorio", ex: "lucasrickelmecontato-hue/miamicria"
 //   GITHUB_BRANCH  - opcional, default "main"
 
-const SITE_URL = 'https://miamicria.com.br';
 const GITHUB_API = 'https://api.github.com';
 const CAMINHO_PRODUTOS = 'site/js/produtos.js';
 const CAMINHO_TEMPLATE = 'site/produto.html';
 
-// o painel roda no mesmo domínio do site (miamicria.com.br/admin), mas a
-// função vive no Netlify - domínios diferentes, então precisa de CORS
+// o painel (netlify/functions/painel.js) e essa função vivem no mesmo domínio
+// do Netlify - é uma chamada same-origin, então isso aqui é só precaução
 const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': SITE_URL,
+  'Access-Control-Allow-Origin': 'https://miamicria.netlify.app',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 };
