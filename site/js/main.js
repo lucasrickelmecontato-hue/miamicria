@@ -149,9 +149,11 @@ function criarCardProduto(produto){
     : (produto.imagens || ['/img/mockup-1.png']);
   const imagensHtml = imagens.map((src, i) => `<img class="product-mockup${i === 0 ? ' is-active' : ''}" src="${src}" alt="" aria-hidden="true">`).join('');
 
+  const esgotado = !!produto.esgotado;
+
   card.innerHTML = `
     <div class="product-media has-gallery" style="background:${produto.gradiente}">
-      ${produto.tag ? `<span class="product-tag">${produto.tag}</span>` : ''}
+      ${esgotado ? '<span class="product-tag product-tag-esgotado">Esgotado</span>' : (produto.tag ? `<span class="product-tag">${produto.tag}</span>` : '')}
       ${imagensHtml}
       <button type="button" class="product-expand" aria-label="Ver produto">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
@@ -163,9 +165,9 @@ function criarCardProduto(produto){
         R$ ${produto.preco.toFixed(2).replace('.', ',')}
       </div>
       <div class="size-row" role="group" aria-label="Selecionar tamanho">
-        ${TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}">${t}</button>`).join('')}
+        ${TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('')}
       </div>
-      <button type="button" class="add-btn" disabled>Selecione um tamanho</button>
+      <button type="button" class="add-btn" disabled>${esgotado ? 'Esgotado' : 'Selecione um tamanho'}</button>
     </div>
   `;
 
@@ -193,6 +195,7 @@ function criarCardProduto(produto){
 
   sizeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      if (esgotado) return;
       sizeBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       tamanhoSelecionado = btn.dataset.size;
@@ -202,7 +205,7 @@ function criarCardProduto(produto){
   });
 
   addBtn.addEventListener('click', () => {
-    if (!tamanhoSelecionado) return;
+    if (esgotado || !tamanhoSelecionado) return;
     const nomeComCor = corPorImagem ? `${produto.nome} - ${produto.cores[corPorImagem[fotoAtual]].nome}` : produto.nome;
     adicionarAoCarrinho({
       nome: nomeComCor,
@@ -236,6 +239,7 @@ if (produtoDetalhe) {
   const idDaUrl = window.location.pathname.match(/\/produto\/([^/]+)\/?$/);
   const idProduto = (idDaUrl && idDaUrl[1]) || new URLSearchParams(window.location.search).get('id');
   const produto = PRODUTOS.find(p => p.id === idProduto) || PRODUTOS[0];
+  const esgotado = !!produto.esgotado;
 
   document.title = `${produto.nome} — Miami Cria`;
 
@@ -356,6 +360,9 @@ if (produtoDetalhe) {
 
   document.getElementById('produtoNome').textContent = produto.nome;
   document.getElementById('produtoPreco').textContent = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
+  if (esgotado) {
+    document.getElementById('produtoPreco').insertAdjacentHTML('afterend', '<p class="produto-esgotado-aviso">Produto esgotado no momento</p>');
+  }
 
   // bloco especial de lancamento/collab - so aparece nos produtos que tem esse dado
   if (produto.lancamento) {
@@ -368,14 +375,17 @@ if (produtoDetalhe) {
   }
 
   const sizeRow = document.getElementById('produtoTamanhos');
-  sizeRow.innerHTML = TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}">${t}</button>`).join('');
+  sizeRow.innerHTML = TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('');
 
   const sizeBtns = sizeRow.querySelectorAll('.size-btn');
   const addBtn = document.getElementById('produtoAddBtn');
   let tamanhoSelecionado = null;
 
+  if (esgotado) addBtn.textContent = 'Produto esgotado';
+
   sizeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
+      if (esgotado) return;
       sizeBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       tamanhoSelecionado = btn.dataset.size;
@@ -397,7 +407,7 @@ if (produtoDetalhe) {
   });
 
   addBtn.addEventListener('click', () => {
-    if (!tamanhoSelecionado) return;
+    if (esgotado || !tamanhoSelecionado) return;
     const nomeComCor = corSelecionada ? `${produto.nome} - ${corSelecionada}` : produto.nome;
     for (let i = 0; i < quantidade; i++) {
       adicionarAoCarrinho({ nome: nomeComCor, tamanho: tamanhoSelecionado, preco: produto.preco });
