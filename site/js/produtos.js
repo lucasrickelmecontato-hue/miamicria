@@ -308,7 +308,7 @@ const PRODUTOS = [
     "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
     "imagens": [
       "/img/caixa-leonida-frente-1790270845594.jpg",
-      "/img/caixa-leonida-costas-1790270888758.jpg"
+      "/img/caixa-leonida-costas-1790300038928.png"
     ],
     "esgotado": false
   }
