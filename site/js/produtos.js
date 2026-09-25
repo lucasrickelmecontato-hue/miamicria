@@ -311,5 +311,18 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790300038928.png"
     ],
     "esgotado": false
+  },
+  {
+    "id": "vice-city-collection",
+    "nome": "Vice City Collection",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/vice-city-collection-frente-1790303475504.png",
+      "/img/vice-city-collection-costas-1790303477880.png"
+    ],
+    "esgotado": false
   }
 ];
