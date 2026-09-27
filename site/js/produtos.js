@@ -11,7 +11,7 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #ff2d95, #ff8a3d)",
     "imagens": [
-      "/img/produto-1-frente.png",
+      "/img/vice-city-stories-frente-1790518438077.png",
       "/img/produto-1-costas.png"
     ],
     "midias": [
@@ -32,7 +32,8 @@ const PRODUTOS = [
         "tipo": "video",
         "src": "/video/produto-1-costas.mp4"
       }
-    ]
+    ],
+    "esgotado": false
   },
   {
     "id": "vice-duo",
