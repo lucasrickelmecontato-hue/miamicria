@@ -134,7 +134,7 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #e8dcc8, #5a2a8f)",
     "imagens": [
-      "/img/produto-6-frente.png",
+      "/img/leonida-vacation-frente-1790518185438.png",
       "/img/produto-6-costas.png"
     ],
     "midias": [
@@ -154,7 +154,8 @@ const PRODUTOS = [
         "tipo": "video",
         "src": "/video/produto-6-costas.mp4"
       }
-    ]
+    ],
+    "esgotado": false
   },
   {
     "id": "disc-is-not-dead",
