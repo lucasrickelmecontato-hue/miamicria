@@ -314,7 +314,7 @@ const PRODUTOS = [
   },
   {
     "id": "vice-leonida",
-    "nome": "VICE CITY LEONIDA",
+    "nome": "VICE CITY LEONIDA (PRETA)",
     "desc": "",
     "preco": 94.9,
     "tag": "",
