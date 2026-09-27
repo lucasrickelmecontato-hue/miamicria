@@ -324,5 +324,18 @@ const PRODUTOS = [
       "/img/vice-leonida-costas-1790516737776.png"
     ],
     "esgotado": false
+  },
+  {
+    "id": "vice-leonida-off",
+    "nome": "VICE CITY LEONIDA (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/vice-leonidaoff-frente-1790516845664.png",
+      "/img/vice-leonidaoff-costas-1790516847112.png"
+    ],
+    "esgotado": false
   }
 ];
