@@ -103,7 +103,7 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #ffc35c, #ff2d95)",
     "imagens": [
-      "/img/produto-5-frente.png",
+      "/img/leonida-rex-frente-1790518417364.png",
       "/img/produto-5-costas.png"
     ],
     "midias": [
@@ -124,7 +124,8 @@ const PRODUTOS = [
         "tipo": "video",
         "src": "/video/produto-5-costas.mp4"
       }
-    ]
+    ],
+    "esgotado": false
   },
   {
     "id": "leonida-vacation",
