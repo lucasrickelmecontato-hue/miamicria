@@ -132,7 +132,7 @@ const PRODUTOS = [
     "id": "leonida-vacation",
     "nome": "Leonida Vacation",
     "desc": "Tom areia com estampa exclusiva nas costas",
-    "preco": 99.9,
+    "preco": 94.9,
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #e8dcc8, #5a2a8f)",
     "imagens": [
