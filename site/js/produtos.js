@@ -340,18 +340,5 @@ const PRODUTOS = [
       "/img/vice-leonidaoff-costas-1790516847112.png"
     ],
     "esgotado": false
-  },
-  {
-    "id": "caneca",
-    "nome": "CANECA (SELECIONE QUALQUER TAMANHO)",
-    "desc": "",
-    "preco": 29.9,
-    "tag": "",
-    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
-    "imagens": [
-      "/img/caneca-frente-1790911783279.png",
-      "/img/caneca-costas-1790911787617.png"
-    ],
-    "esgotado": false
   }
 ];
