@@ -353,5 +353,18 @@ const PRODUTOS = [
       "/img/collab-makauli-preta-costas-1790963372195.png"
     ],
     "esgotado": false
+  },
+  {
+    "id": "collab-makauli-off",
+    "nome": "COLLAB x MAKAULI (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/collab-makauli-off-frente-1790963570917.png",
+      "/img/collab-makauli-off-costas-1790963573665.png"
+    ],
+    "esgotado": false
   }
 ];
