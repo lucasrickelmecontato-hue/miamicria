@@ -349,7 +349,7 @@ const PRODUTOS = [
     "tag": "",
     "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
     "imagens": [
-      "/img/collab-makauli-preta-frente-1790963331534.jpg",
+      "/img/collab-makauli-preta-frente-1790963436325.png",
       "/img/collab-makauli-preta-costas-1790963372195.png"
     ],
     "esgotado": false
