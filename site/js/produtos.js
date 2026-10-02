@@ -343,7 +343,7 @@ const PRODUTOS = [
   },
   {
     "id": "caneca",
-    "nome": "CANECA GTA VI",
+    "nome": "CANECA (SELECIONE QUALQUER TAMANHO)",
     "desc": "",
     "preco": 29.9,
     "tag": "",
