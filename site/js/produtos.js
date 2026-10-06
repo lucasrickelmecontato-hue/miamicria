@@ -392,5 +392,18 @@ const PRODUTOS = [
       "/img/stories-off-costas-1791250466390.png"
     ],
     "esgotado": false
+  },
+  {
+    "id": "vice-nights-off",
+    "nome": "Vice Nights (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/vice-nights-off-frente-1791250762795.png",
+      "/img/vice-nights-off-costas-1791250651329.png"
+    ],
+    "esgotado": false
   }
 ];
