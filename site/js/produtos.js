@@ -98,14 +98,14 @@ const PRODUTOS = [
   },
   {
     "id": "leonida-rex",
-    "nome": "Leonida Rex",
-    "desc": "Amarelo dourado com respingo rosa",
-    "preco": 79.9,
-    "tag": "Novo",
+    "nome": "Leonida Rex (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
     "gradiente": "linear-gradient(160deg, #ffc35c, #ff2d95)",
     "imagens": [
-      "/img/leonida-rex-frente-1790518417364.png",
-      "/img/produto-5-costas.png"
+      "/img/leonida-rex-frente-1791249650897.png",
+      "/img/leonida-rex-costas-1791250113358.png"
     ],
     "midias": [
       {
