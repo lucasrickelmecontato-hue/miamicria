@@ -366,5 +366,18 @@ const PRODUTOS = [
       "/img/collab-makauli-off-costas-1790963573665.png"
     ],
     "esgotado": false
+  },
+  {
+    "id": "leonida-rex-off",
+    "nome": "Leonida Rex (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/leonida-rex-off-frente-1791250347410.png",
+      "/img/leonida-rex-off-costas-1791250348797.png"
+    ],
+    "esgotado": false
   }
 ];
