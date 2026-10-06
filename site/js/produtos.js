@@ -405,5 +405,18 @@ const PRODUTOS = [
       "/img/vice-nights-off-costas-1791250651329.png"
     ],
     "esgotado": false
+  },
+  {
+    "id": "gabriel-street-preta",
+    "nome": "COLLAB x GABRIEL STREET (PRETA)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/gabriel-street-preta-frente-1791299883760.png",
+      "/img/gabriel-street-preta-costas-1791299885984.png"
+    ],
+    "esgotado": false
   }
 ];
