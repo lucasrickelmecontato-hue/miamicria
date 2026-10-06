@@ -379,5 +379,18 @@ const PRODUTOS = [
       "/img/leonida-rex-off-costas-1791250348797.png"
     ],
     "esgotado": false
+  },
+  {
+    "id": "stories-off",
+    "nome": "Vice City Stories (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/stories-off-frente-1791250395113.png",
+      "/img/stories-off-costas-1791250466390.png"
+    ],
+    "esgotado": false
   }
 ];
