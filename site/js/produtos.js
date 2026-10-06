@@ -98,14 +98,14 @@ const PRODUTOS = [
   },
   {
     "id": "leonida-rex",
-    "nome": "Leonida Rex (OFF-WHITE)",
+    "nome": "Leonida Rex",
     "desc": "",
-    "preco": 94.9,
+    "preco": 79.9,
     "tag": "",
     "gradiente": "linear-gradient(160deg, #ffc35c, #ff2d95)",
     "imagens": [
-      "/img/leonida-rex-frente-1791249650897.png",
-      "/img/leonida-rex-costas-1791250113358.png"
+      "/img/leonida-rex-frente-1791250300836.png",
+      "/img/leonida-rex-costas-1791250302303.png"
     ],
     "midias": [
       {
