@@ -314,7 +314,7 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
     "esgotado": false,
-    "destaque": true
+    "destaque": 1
   },
   {
     "id": "vice-leonida",
@@ -460,6 +460,7 @@ const PRODUTOS = [
     ],
     "tamanhos": [
       "Único"
-    ]
+    ],
+    "destaque": 3
   }
 ];

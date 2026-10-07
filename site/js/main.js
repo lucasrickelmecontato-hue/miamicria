@@ -221,15 +221,17 @@ function criarCardProduto(produto){
   return card;
 }
 
-// produto com "destaque: true" sempre vem primeiro (fixado no topo); o resto
-// segue do mais barato pro mais caro, como sempre foi
+// produto pode levar "destaque: N" pra ficar fixado na N-ésima posição da
+// vitrine (1 = primeiro lugar, 3 = terceiro, etc.) - o resto segue a ordem
+// normal, do mais barato pro mais caro, preenchendo os espaços ao redor
 function ordenarPorPreco(produtos){
-  return [...produtos].sort((a, b) => {
-    const destaqueA = a.destaque ? 1 : 0;
-    const destaqueB = b.destaque ? 1 : 0;
-    if (destaqueA !== destaqueB) return destaqueB - destaqueA;
-    return a.preco - b.preco;
+  const fixados = produtos.filter(p => p.destaque).sort((a, b) => a.destaque - b.destaque);
+  const resultado = produtos.filter(p => !p.destaque).sort((a, b) => a.preco - b.preco);
+  fixados.forEach(produto => {
+    const indice = Math.min(Math.max(produto.destaque - 1, 0), resultado.length);
+    resultado.splice(indice, 0, produto);
   });
+  return resultado;
 }
 
 /* ---------- Grid da home ---------- */
