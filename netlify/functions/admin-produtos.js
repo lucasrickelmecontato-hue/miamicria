@@ -203,6 +203,11 @@ exports.handler = async (event) => {
       const indiceExistente = produtos.findIndex((p) => p.id === id);
       const ehNovo = indiceExistente === -1;
 
+      // produto sem variação de tamanho de roupa (caneca, chaveiro, boné) -
+      // o painel só manda um booleano "tamanhoUnico", aqui vira o array que
+      // main.js já sabe ler (produto.tamanhos || TAMANHOS)
+      const tamanhos = enviado.tamanhoUnico ? ['Único'] : undefined;
+
       const produtoFinal = ehNovo
         ? {
             id,
@@ -213,6 +218,7 @@ exports.handler = async (event) => {
             gradiente: enviado.gradiente || 'linear-gradient(160deg, #5a2a8f, #ff2d95)',
             imagens: (enviado.imagens || []).filter(Boolean),
             esgotado: !!enviado.esgotado,
+            tamanhos,
           }
         : {
             ...produtos[indiceExistente],
@@ -222,6 +228,7 @@ exports.handler = async (event) => {
             tag: enviado.tag,
             imagens: enviado.imagens && enviado.imagens.length ? enviado.imagens.filter(Boolean) : produtos[indiceExistente].imagens,
             esgotado: !!enviado.esgotado,
+            tamanhos,
           };
 
       const novaLista = ehNovo

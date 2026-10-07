@@ -187,6 +187,11 @@ const HTML = `<!DOCTYPE html>
     <p class="ajuda">No celular, o botão abre a galeria ou a câmera. A foto é reduzida automaticamente e enviada pro site na hora.</p>
 
     <div class="checkbox-row">
+      <input type="checkbox" id="fTamanhoUnico">
+      <label for="fTamanhoUnico">Produto sem tamanho de roupa (tamanho único - ex: caneca, chaveiro, boné)</label>
+    </div>
+
+    <div class="checkbox-row">
       <input type="checkbox" id="fEsgotado">
       <label for="fEsgotado">Marcar como esgotado</label>
     </div>
@@ -223,6 +228,7 @@ const campos = {
   img1: document.getElementById('fImg1'),
   img2: document.getElementById('fImg2'),
   esgotado: document.getElementById('fEsgotado'),
+  tamanhoUnico: document.getElementById('fTamanhoUnico'),
 };
 
 let editandoId = null; // null = criando produto novo
@@ -345,6 +351,7 @@ function limparForm() {
   campos.img1.value = '';
   campos.img2.value = '';
   campos.esgotado.checked = false;
+  campos.tamanhoUnico.checked = false;
   atualizarPreviewsPelosCampos();
   mostrarMsg(document.getElementById('msgImg1'), '', '');
   mostrarMsg(document.getElementById('msgImg2'), '', '');
@@ -363,6 +370,7 @@ function preencherFormParaEdicao(produto) {
   campos.img1.value = (produto.imagens && produto.imagens[0]) || '';
   campos.img2.value = (produto.imagens && produto.imagens[1]) || '';
   campos.esgotado.checked = !!produto.esgotado;
+  campos.tamanhoUnico.checked = !!(produto.tamanhos && produto.tamanhos.length);
   atualizarPreviewsPelosCampos();
   tituloForm.textContent = \`Editando: \${produto.nome}\`;
   btnCancelarEdicao.style.display = 'block';
@@ -472,6 +480,7 @@ document.getElementById('btnSalvar').addEventListener('click', async () => {
     tag: campos.tag.value.trim(),
     imagens: [campos.img1.value.trim(), campos.img2.value.trim()].filter(Boolean),
     esgotado: campos.esgotado.checked,
+    tamanhoUnico: campos.tamanhoUnico.checked,
   };
 
   const btn = document.getElementById('btnSalvar');
