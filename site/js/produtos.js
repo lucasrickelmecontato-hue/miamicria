@@ -445,5 +445,20 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ]
+  },
+  {
+    "id": "boneco-gta6",
+    "nome": "Boneco GTA VI",
+    "desc": "Boneco colecionável artesanal inspirado no universo de GTA VI",
+    "preco": 139.9,
+    "tag": "Novo",
+    "gradiente": "linear-gradient(160deg, #ff2d95, #5a2a8f)",
+    "imagens": [
+      "/img/produto-11-frente.jpg",
+      "/img/produto-11-costas.jpg"
+    ],
+    "tamanhos": [
+      "Único"
+    ]
   }
 ];
