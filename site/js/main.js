@@ -150,6 +150,9 @@ function criarCardProduto(produto){
   const imagensHtml = imagens.map((src, i) => `<img class="product-mockup${i === 0 ? ' is-active' : ''}" src="${src}" alt="" aria-hidden="true">`).join('');
 
   const esgotado = !!produto.esgotado;
+  // produto sem variação (ex: caneca, chaveiro) declara "tamanhos" próprio -
+  // sem isso, cai no TAMANHOS padrão de roupa (P/M/G/GG/XG)
+  const tamanhosProduto = produto.tamanhos || TAMANHOS;
 
   card.innerHTML = `
     <div class="product-media has-gallery" style="background:${produto.gradiente}">
@@ -165,7 +168,7 @@ function criarCardProduto(produto){
         R$ ${produto.preco.toFixed(2).replace('.', ',')}
       </div>
       <div class="size-row" role="group" aria-label="Selecionar tamanho">
-        ${TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('')}
+        ${tamanhosProduto.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('')}
       </div>
       <button type="button" class="add-btn" disabled>${esgotado ? 'Esgotado' : 'Selecione um tamanho'}</button>
     </div>
@@ -375,7 +378,8 @@ if (produtoDetalhe) {
   }
 
   const sizeRow = document.getElementById('produtoTamanhos');
-  sizeRow.innerHTML = TAMANHOS.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('');
+  const tamanhosProduto = produto.tamanhos || TAMANHOS;
+  sizeRow.innerHTML = tamanhosProduto.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('');
 
   const sizeBtns = sizeRow.querySelectorAll('.size-btn');
   const addBtn = document.getElementById('produtoAddBtn');

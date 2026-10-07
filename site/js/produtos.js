@@ -298,5 +298,19 @@ const PRODUTOS = [
       ],
       "final": "De um vídeo viral para uma camiseta."
     }
+  },
+  {
+    "id": "caneca-gta6",
+    "nome": "Caneca GTA VI",
+    "desc": "Caneca de cerâmica com arte exclusiva de GTA VI",
+    "preco": 39.9,
+    "tag": "Novo",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/produto-10-frente.jpg"
+    ],
+    "tamanhos": [
+      "Único"
+    ]
   }
 ];
