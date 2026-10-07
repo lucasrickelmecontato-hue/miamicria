@@ -221,9 +221,15 @@ function criarCardProduto(produto){
   return card;
 }
 
-// do mais barato pro mais caro, sempre
+// produto com "destaque: true" sempre vem primeiro (fixado no topo); o resto
+// segue do mais barato pro mais caro, como sempre foi
 function ordenarPorPreco(produtos){
-  return [...produtos].sort((a, b) => a.preco - b.preco);
+  return [...produtos].sort((a, b) => {
+    const destaqueA = a.destaque ? 1 : 0;
+    const destaqueB = b.destaque ? 1 : 0;
+    if (destaqueA !== destaqueB) return destaqueB - destaqueA;
+    return a.preco - b.preco;
+  });
 }
 
 /* ---------- Grid da home ---------- */

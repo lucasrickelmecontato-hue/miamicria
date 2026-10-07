@@ -313,7 +313,8 @@ const PRODUTOS = [
       "/img/caixa-leonida-frente-1790270845594.jpg",
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
-    "esgotado": false
+    "esgotado": false,
+    "destaque": true
   },
   {
     "id": "vice-leonida",
