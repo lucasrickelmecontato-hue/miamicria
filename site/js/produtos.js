@@ -11,7 +11,7 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #ff2d95, #ff8a3d)",
     "imagens": [
-      "/img/produto-1-frente.png",
+      "/img/vice-city-stories-frente-1790518438077.png",
       "/img/produto-1-costas.png"
     ],
     "midias": [
@@ -32,7 +32,8 @@ const PRODUTOS = [
         "tipo": "video",
         "src": "/video/produto-1-costas.mp4"
       }
-    ]
+    ],
+    "esgotado": false
   },
   {
     "id": "vice-duo",
@@ -98,13 +99,13 @@ const PRODUTOS = [
   {
     "id": "leonida-rex",
     "nome": "Leonida Rex",
-    "desc": "Amarelo dourado com respingo rosa",
+    "desc": "",
     "preco": 79.9,
-    "tag": "Novo",
+    "tag": "",
     "gradiente": "linear-gradient(160deg, #ffc35c, #ff2d95)",
     "imagens": [
-      "/img/produto-5-frente.png",
-      "/img/produto-5-costas.png"
+      "/img/leonida-rex-frente-1791250300836.png",
+      "/img/leonida-rex-costas-1791250302303.png"
     ],
     "midias": [
       {
@@ -124,17 +125,18 @@ const PRODUTOS = [
         "tipo": "video",
         "src": "/video/produto-5-costas.mp4"
       }
-    ]
+    ],
+    "esgotado": false
   },
   {
     "id": "leonida-vacation",
     "nome": "Leonida Vacation",
     "desc": "Tom areia com estampa exclusiva nas costas",
-    "preco": 99.9,
+    "preco": 94.9,
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #e8dcc8, #5a2a8f)",
     "imagens": [
-      "/img/produto-6-frente.png",
+      "/img/leonida-vacation-frente-1790518185438.png",
       "/img/produto-6-costas.png"
     ],
     "midias": [
@@ -154,7 +156,8 @@ const PRODUTOS = [
         "tipo": "video",
         "src": "/video/produto-6-costas.mp4"
       }
-    ]
+    ],
+    "esgotado": false
   },
   {
     "id": "disc-is-not-dead",
@@ -298,6 +301,136 @@ const PRODUTOS = [
       ],
       "final": "De um vídeo viral para uma camiseta."
     }
+  },
+  {
+    "id": "caixa-leonida",
+    "nome": "CAIXA LEONIDA 📦🌴",
+    "desc": "",
+    "preco": 249.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/caixa-leonida-frente-1790270845594.jpg",
+      "/img/caixa-leonida-costas-1790914190040.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "vice-leonida",
+    "nome": "VICE CITY LEONIDA (PRETA)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/vice-leonida-frente-1790516735643.png",
+      "/img/vice-leonida-costas-1790516737776.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "vice-leonida-off",
+    "nome": "VICE CITY LEONIDA (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/vice-leonidaoff-frente-1790516845664.png",
+      "/img/vice-leonidaoff-costas-1790516847112.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "collab-makauli-preta",
+    "nome": "COLLAB x MAKAULI (PRETA)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/collab-makauli-preta-frente-1790963436325.png",
+      "/img/collab-makauli-preta-costas-1790963372195.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "collab-makauli-off",
+    "nome": "COLLAB x MAKAULI (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/collab-makauli-off-frente-1790963570917.png",
+      "/img/collab-makauli-off-costas-1790963573665.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "leonida-rex-off",
+    "nome": "Leonida Rex (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/leonida-rex-off-frente-1791250347410.png",
+      "/img/leonida-rex-off-costas-1791250348797.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "stories-off",
+    "nome": "Vice City Stories (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/stories-off-frente-1791250395113.png",
+      "/img/stories-off-costas-1791250466390.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "vice-nights-off",
+    "nome": "Vice Nights (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/vice-nights-off-frente-1791250762795.png",
+      "/img/vice-nights-off-costas-1791250651329.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "gabriel-street-preta",
+    "nome": "COLLAB x GABRIEL STREET (PRETA)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/gabriel-street-preta-frente-1791299883760.png",
+      "/img/gabriel-street-preta-costas-1791299885984.png"
+    ],
+    "esgotado": false
+  },
+  {
+    "id": "gabriel-street-off",
+    "nome": "COLLAB x GABRIEL STREET (OFF-WHITE)",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/gabriel-street-off-frente-1791300053048.png",
+      "/img/gabriel-street-off-costas-1791300055399.png"
+    ],
+    "esgotado": false
   },
   {
     "id": "caneca-gta6",

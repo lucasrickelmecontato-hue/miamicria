@@ -101,6 +101,27 @@ const HTML = `<!DOCTYPE html>
   .msg.sucesso{color: var(--teal);}
   #areaLogada{display:none;}
   .ajuda{font-size: 12px; color: var(--muted); margin-top: 6px;}
+  .foto-bloco{display:flex; gap: 12px; align-items:flex-start;}
+  .foto-preview{
+    width: 84px; height: 84px; flex: 0 0 84px;
+    object-fit: cover; border-radius: 10px;
+    border: 1px dashed var(--border);
+    background: rgba(255,255,255,0.04);
+  }
+  .foto-preview:not([src]), .foto-preview[src=""]{visibility: hidden;}
+  .foto-controles{flex: 1; min-width: 0;}
+  .btn-foto{
+    display:block; text-align:center;
+    margin: 0 0 8px; padding: 11px 12px;
+    border: 1px solid var(--teal); border-radius: 999px;
+    color: var(--white); font-size: 14px; font-weight: 600;
+    text-transform: none; letter-spacing: 0; cursor: pointer;
+  }
+  .btn-foto:hover{background: rgba(45,217,199,0.15);}
+  .btn-foto.ocupado{opacity: 0.5; pointer-events: none;}
+  .arq-escondido{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;}
+  .foto-controles input[type="text"]{font-size: 13px; padding: 9px 10px;}
+  .foto-controles .msg{margin-top: 4px;}
 </style>
 </head>
 <body>
@@ -142,12 +163,28 @@ const HTML = `<!DOCTYPE html>
     <label for="fTag">Tag (opcional, ex: Novo, Collab)</label>
     <input type="text" id="fTag" placeholder="Novo">
 
-    <label for="fImg1">Imagem frente (URL, ex: /img/produto-x-frente.png)</label>
-    <input type="text" id="fImg1" placeholder="/img/produto-x-frente.png">
+    <label>Imagem frente</label>
+    <div class="foto-bloco">
+      <img class="foto-preview" id="prevImg1" alt="">
+      <div class="foto-controles">
+        <label class="btn-foto" for="arqImg1">📷 Escolher foto do aparelho</label>
+        <input type="file" id="arqImg1" accept="image/*" class="arq-escondido">
+        <input type="text" id="fImg1" placeholder="ou cole um caminho, ex: /img/produto-x-frente.png">
+        <p class="msg" id="msgImg1"></p>
+      </div>
+    </div>
 
-    <label for="fImg2">Imagem costas (URL)</label>
-    <input type="text" id="fImg2" placeholder="/img/produto-x-costas.png">
-    <p class="ajuda">As imagens precisam já estar hospedadas (ex: subidas na pasta img/ do repositório) - esse painel não faz upload de arquivo.</p>
+    <label>Imagem costas</label>
+    <div class="foto-bloco">
+      <img class="foto-preview" id="prevImg2" alt="">
+      <div class="foto-controles">
+        <label class="btn-foto" for="arqImg2">📷 Escolher foto do aparelho</label>
+        <input type="file" id="arqImg2" accept="image/*" class="arq-escondido">
+        <input type="text" id="fImg2" placeholder="ou cole um caminho, ex: /img/produto-x-costas.png">
+        <p class="msg" id="msgImg2"></p>
+      </div>
+    </div>
+    <p class="ajuda">No celular, o botão abre a galeria ou a câmera. A foto é reduzida automaticamente e enviada pro site na hora.</p>
 
     <div class="checkbox-row">
       <input type="checkbox" id="fEsgotado">
@@ -189,6 +226,96 @@ const campos = {
 };
 
 let editandoId = null; // null = criando produto novo
+let enviosEmAndamento = 0;
+
+// ---------- fotos vindas do aparelho ----------
+// reduz a foto no próprio aparelho (lado maior até 1600px, JPEG) antes de
+// enviar - foto de celular costuma ter 3-8MB, depois disso fica ~200-500KB
+const LADO_MAX_FOTO = 1600;
+
+function carregarImagemLocal(arquivo) {
+  return new Promise(function (resolve, reject) {
+    const url = URL.createObjectURL(arquivo);
+    const img = new Image();
+    img.onload = function () { URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('Não consegui abrir essa foto. Tente outra (JPG ou PNG).')); };
+    img.src = url;
+  });
+}
+
+async function comprimirFoto(arquivo) {
+  const img = await carregarImagemLocal(arquivo);
+  const escala = Math.min(1, LADO_MAX_FOTO / Math.max(img.naturalWidth, img.naturalHeight));
+  const largura = Math.round(img.naturalWidth * escala);
+  const altura = Math.round(img.naturalHeight * escala);
+  const canvas = document.createElement('canvas');
+  canvas.width = largura;
+  canvas.height = altura;
+  const ctx = canvas.getContext('2d');
+  // PNG com fundo transparente mantém PNG; o resto vira JPEG (bem mais leve)
+  const manterPng = arquivo.type === 'image/png';
+  if (!manterPng) {
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, largura, altura);
+  }
+  ctx.drawImage(img, 0, 0, largura, altura);
+  const tipo = manterPng ? 'image/png' : 'image/jpeg';
+  const dataUrl = canvas.toDataURL(tipo, 0.85);
+  return { tipo: tipo, dataUrl: dataUrl };
+}
+
+function atualizarPreview(numero, src) {
+  const prev = document.getElementById('prevImg' + numero);
+  if (src) prev.src = src; else prev.removeAttribute('src');
+}
+
+function atualizarPreviewsPelosCampos() {
+  atualizarPreview(1, campos.img1.value.trim());
+  atualizarPreview(2, campos.img2.value.trim());
+}
+
+function configurarEnvioDeFoto(numero, lado) {
+  const inputArquivo = document.getElementById('arqImg' + numero);
+  const botao = document.querySelector('label[for="arqImg' + numero + '"]');
+  const campoCaminho = campos['img' + numero];
+  const msg = document.getElementById('msgImg' + numero);
+
+  campoCaminho.addEventListener('change', function () {
+    atualizarPreview(numero, campoCaminho.value.trim());
+  });
+
+  inputArquivo.addEventListener('change', async function () {
+    const arquivo = inputArquivo.files && inputArquivo.files[0];
+    inputArquivo.value = '';
+    if (!arquivo) return;
+
+    enviosEmAndamento++;
+    document.getElementById('btnSalvar').disabled = true;
+    botao.classList.add('ocupado');
+    mostrarMsg(msg, 'Preparando foto...', '');
+    try {
+      const foto = await comprimirFoto(arquivo);
+      atualizarPreview(numero, foto.dataUrl);
+      mostrarMsg(msg, 'Enviando foto...', '');
+      const idProduto = editandoId || campos.id.value.trim().toLowerCase();
+      const resposta = await chamarFuncao('enviar_foto', {
+        id: idProduto,
+        lado: lado,
+        tipo: foto.tipo,
+        base64: foto.dataUrl,
+      });
+      campoCaminho.value = resposta.caminho;
+      mostrarMsg(msg, 'Foto enviada ✓ (clique em Salvar produto pra aplicar)', 'sucesso');
+    } catch (err) {
+      atualizarPreview(numero, campoCaminho.value.trim());
+      mostrarMsg(msg, err.message, 'erro');
+    } finally {
+      enviosEmAndamento--;
+      botao.classList.remove('ocupado');
+      if (enviosEmAndamento === 0) document.getElementById('btnSalvar').disabled = false;
+    }
+  });
+}
 
 function mostrarMsg(el, texto, tipo) {
   el.textContent = texto || '';
@@ -218,6 +345,9 @@ function limparForm() {
   campos.img1.value = '';
   campos.img2.value = '';
   campos.esgotado.checked = false;
+  atualizarPreviewsPelosCampos();
+  mostrarMsg(document.getElementById('msgImg1'), '', '');
+  mostrarMsg(document.getElementById('msgImg2'), '', '');
   tituloForm.textContent = 'Novo produto';
   btnCancelarEdicao.style.display = 'none';
 }
@@ -233,6 +363,7 @@ function preencherFormParaEdicao(produto) {
   campos.img1.value = (produto.imagens && produto.imagens[0]) || '';
   campos.img2.value = (produto.imagens && produto.imagens[1]) || '';
   campos.esgotado.checked = !!produto.esgotado;
+  atualizarPreviewsPelosCampos();
   tituloForm.textContent = \`Editando: \${produto.nome}\`;
   btnCancelarEdicao.style.display = 'block';
   window.scrollTo({ top: document.getElementById('tituloForm').offsetTop - 20, behavior: 'smooth' });
@@ -328,6 +459,9 @@ document.getElementById('campoSenha').addEventListener('keydown', (e) => {
 });
 
 btnCancelarEdicao.addEventListener('click', limparForm);
+
+configurarEnvioDeFoto(1, 'frente');
+configurarEnvioDeFoto(2, 'costas');
 
 document.getElementById('btnSalvar').addEventListener('click', async () => {
   const produto = {
