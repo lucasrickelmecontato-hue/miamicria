@@ -64,7 +64,8 @@ const PRODUTOS = [
         "tipo": "video",
         "src": "/video/produto-2-costas.mp4"
       }
-    ]
+    ],
+    "esgotado": true
   },
   {
     "id": "vice-nights",
