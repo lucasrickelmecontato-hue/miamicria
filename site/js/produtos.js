@@ -447,5 +447,21 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ]
+  },
+  {
+    "id": "boneco",
+    "nome": "JACARÉ BONECO",
+    "desc": "",
+    "preco": 139.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/boneco-frente-1791579829263.jpg",
+      "/img/boneco-costas-1791579964514.jpg"
+    ],
+    "esgotado": false,
+    "tamanhos": [
+      "Único"
+    ]
   }
 ];
