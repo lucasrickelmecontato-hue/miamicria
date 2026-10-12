@@ -452,7 +452,7 @@ const PRODUTOS = [
     "id": "boneco",
     "nome": "JACARÉ BONECO",
     "desc": "",
-    "preco": 139.9,
+    "preco": 109.9,
     "tag": "",
     "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
     "imagens": [
