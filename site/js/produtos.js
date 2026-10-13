@@ -64,7 +64,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 4
+    "ordem": 3
   },
   {
     "id": "vice-duo",
@@ -97,7 +97,7 @@ const PRODUTOS = [
       }
     ],
     "esgotado": true,
-    "ordem": 10
+    "ordem": 9
   },
   {
     "id": "vice-nights",
@@ -159,7 +159,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 5
+    "ordem": 4
   },
   {
     "id": "leonida-rex",
@@ -222,7 +222,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 6
+    "ordem": 5
   },
   {
     "id": "leonida-vacation",
@@ -254,7 +254,7 @@ const PRODUTOS = [
       }
     ],
     "esgotado": false,
-    "ordem": 9
+    "ordem": 8
   },
   {
     "id": "disc-is-not-dead",
@@ -294,7 +294,7 @@ const PRODUTOS = [
         }
       }
     ],
-    "ordem": 8
+    "ordem": 7
   },
   {
     "id": "vice-sunset",
@@ -361,7 +361,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 7
+    "ordem": 6
   },
   {
     "id": "igor-brasil-x-mundo",
@@ -431,7 +431,7 @@ const PRODUTOS = [
       ],
       "final": "De um vídeo viral para uma camiseta."
     },
-    "ordem": 11
+    "ordem": 10
   },
   {
     "id": "caixa-leonida",
@@ -445,7 +445,7 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
     "esgotado": false,
-    "ordem": 2
+    "ordem": 1
   },
   {
     "id": "vice-leonida-off",
@@ -489,7 +489,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 3
+    "ordem": 2
   },
   {
     "id": "collab-makauli-off",
@@ -548,7 +548,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 14
+    "ordem": 13
   },
   {
     "id": "boneco",
@@ -565,7 +565,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 15
+    "ordem": 14
   },
   {
     "id": "gabriel-street",
@@ -609,6 +609,6 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 1
+    "ordem": 11
   }
 ];
