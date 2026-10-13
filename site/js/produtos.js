@@ -203,6 +203,20 @@ const PRODUTOS = [
             "src": "/img/leonida-rex-off-white-costas-1791927861970.png"
           }
         ]
+      },
+      {
+        "nome": "Preta",
+        "swatch": "#0d0616",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/leonida-rex-preta-frente-1791928468952.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/leonida-rex-preta-costas-1791928494883.png"
+          }
+        ]
       }
     ]
   },
