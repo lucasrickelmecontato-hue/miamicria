@@ -141,6 +141,20 @@ const PRODUTOS = [
             "src": "/img/vice-nights-off-white-costas-1791927803527.png"
           }
         ]
+      },
+      {
+        "nome": "Preta",
+        "swatch": "#0d0616",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-nights-preta-frente-1791928352432.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-nights-preta-costas-1791928420974.png"
+          }
+        ]
       }
     ]
   },
