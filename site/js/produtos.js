@@ -298,8 +298,8 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #ff8a3d, #ff2d95)",
     "imagens": [
-      "/img/produto-8-frente.png",
-      "/img/produto-8-costas.png"
+      "/img/vice-sunset-preta-frente-1791928625207.png",
+      "/img/vice-sunset-preta-costas-1791928635433.png"
     ],
     "midias": [
       {
@@ -322,6 +322,37 @@ const PRODUTOS = [
       {
         "tipo": "video",
         "src": "/video/produto-8-costas.mp4"
+      }
+    ],
+    "esgotado": false,
+    "cores": [
+      {
+        "nome": "Preta",
+        "swatch": "#0d0616",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-sunset-preta-frente-1791928625207.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-sunset-preta-costas-1791928635433.png"
+          }
+        ]
+      },
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-sunset-off-white-frente-1791928639856.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-sunset-off-white-costas-1791928644971.png"
+          }
+        ]
       }
     ]
   },
