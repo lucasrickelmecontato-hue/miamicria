@@ -91,8 +91,8 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #1a0b2e, #ff2d95)",
     "imagens": [
-      "/img/produto-4-frente.png",
-      "/img/produto-4-costas.png"
+      "/img/vice-nights-off-white-frente-1791927801490.png",
+      "/img/vice-nights-off-white-costas-1791927803527.png"
     ],
     "midias": [
       {
@@ -110,6 +110,23 @@ const PRODUTOS = [
       {
         "tipo": "video",
         "src": "/video/produto-4-costas.mp4"
+      }
+    ],
+    "esgotado": false,
+    "cores": [
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-nights-off-white-frente-1791927801490.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-nights-off-white-costas-1791927803527.png"
+          }
+        ]
       }
     ]
   },
