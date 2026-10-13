@@ -537,17 +537,47 @@ const PRODUTOS = [
   },
   {
     "id": "gabriel-street-off",
-    "nome": "COLLAB x GABRIEL STREET (OFF-WHITE)",
+    "nome": "COLLAB x GABRIEL STREET",
     "desc": "",
     "preco": 94.9,
     "tag": "",
     "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
     "imagens": [
-      "/img/gabriel-street-off-frente-1791300053048.png",
-      "/img/gabriel-street-off-costas-1791300055399.png"
+      "/img/gabriel-street-off-preta-frente-1791929606315.png",
+      "/img/gabriel-street-off-preta-costas-1791929611397.png"
     ],
     "esgotado": false,
-    "ordem": 12
+    "ordem": 12,
+    "cores": [
+      {
+        "nome": "Preta",
+        "swatch": "#0d0616",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/gabriel-street-off-preta-frente-1791929606315.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/gabriel-street-off-preta-costas-1791929611397.png"
+          }
+        ]
+      },
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/gabriel-street-off-off-white-frente-1791929623019.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/gabriel-street-off-off-white-costas-1791929627159.png"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "caneca-gta6",
