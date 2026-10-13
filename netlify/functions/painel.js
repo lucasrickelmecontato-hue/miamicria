@@ -145,6 +145,29 @@ const HTML = `<!DOCTYPE html>
   .cor-item-topo input[type="text"]{flex: 1; min-width: 0;}
   .cor-item-topo .cor-remover{width: auto; margin: 0; padding: 10px 14px; border-color: var(--magenta); font-size: 13px;}
   .cor-item .foto-bloco + .foto-bloco{margin-top: 10px;}
+  select{
+    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+    border-radius: 8px; padding: 11px 12px; color: var(--white); font-size: 15px; font-family: inherit;
+  }
+  select option{background: var(--card);}
+  .badge-drop{
+    display:inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 2px 8px; border-radius: 999px; color: #fff;
+    background: linear-gradient(135deg, var(--magenta), #ff8a3d); vertical-align: middle;
+  }
+  .ordem-item{
+    display:flex; align-items:center; gap: 10px;
+    border: 1px solid var(--border); border-radius: 10px; padding: 8px; margin-bottom: 6px;
+    background: var(--card);
+  }
+  .ordem-item.movido{border-color: var(--teal);}
+  .ordem-pos{width: 22px; text-align:center; color: var(--muted); font-size: 13px; flex: 0 0 22px;}
+  .ordem-item img{width: 44px; height: 44px; object-fit: cover; border-radius: 6px; flex: 0 0 44px; background: rgba(255,255,255,0.05);}
+  .ordem-nome{flex: 1; min-width: 0; font-size: 13px; font-weight: 600; overflow-wrap: anywhere;}
+  .ordem-setas{display:flex; gap: 6px; flex: 0 0 auto;}
+  .ordem-setas button{width: 40px; height: 40px; margin: 0; padding: 0; font-size: 16px; border-color: var(--border);}
+  .botoes-ordem{display:flex; flex-wrap: wrap; gap: 8px; margin: 10px 0;}
+  .botoes-ordem button{flex: 1 1 140px; margin: 0; padding: 10px 8px; font-size: 13px;}
   .cor-item .lado-titulo{font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;}
 </style>
 </head>
@@ -166,6 +189,18 @@ const HTML = `<!DOCTYPE html>
     <h2 style="font-size:16px; margin-bottom:8px;">Produtos no site</h2>
     <div id="listaProdutos"></div>
     <p class="msg" id="msgLista"></p>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:16px; margin-bottom:4px;">Ordem no site</h2>
+    <p class="ajuda" style="margin-top:0;">Use as setas pra escolher a ordem em que as camisetas aparecem no site (o primeiro da lista é o primeiro da vitrine). Depois clique em Salvar ordem. Produto novo entra automaticamente em primeiro lugar.</p>
+    <div class="botoes-ordem">
+      <button type="button" id="btnOrdemDrop">Drop mais novo primeiro</button>
+      <button type="button" id="btnOrdemDesfazer" style="border-color: var(--border);">Desfazer mudanças</button>
+    </div>
+    <div id="listaOrdem"></div>
+    <button type="button" id="btnSalvarOrdem" disabled>Salvar ordem</button>
+    <p class="msg" id="msgOrdem"></p>
   </div>
 
   <div class="card">
@@ -193,6 +228,16 @@ const HTML = `<!DOCTYPE html>
       <label class="tipo-opcao"><input type="radio" name="fTipo" value="objeto">🧸 Objeto (sem tamanho)</label>
     </div>
     <p class="ajuda">Objeto = caneca, boneco, chaveiro... No site ele aparece sem escolha de tamanho e sem tabela de medidas.</p>
+
+    <label for="fDrop">Drop (coleção)</label>
+    <select id="fDrop">
+      <option value="1">Drop 1 (produtos que já estavam no site)</option>
+      <option value="2">Drop 2</option>
+      <option value="3">Drop 3</option>
+      <option value="4">Drop 4</option>
+      <option value="5">Drop 5</option>
+    </select>
+    <p class="ajuda">A partir do Drop 2, o produto ganha a etiqueta "DROP 2" na foto do site, pra mostrar que é lançamento.</p>
 
     <label>Cores</label>
     <p class="ajuda" style="margin-top:0;">Toque nas cores que esse produto tem - cada cor ganha as próprias fotos, e no site o cliente escolhe entre elas. Se não marcar nenhuma, o produto fica com uma cor só (fotos logo abaixo).</p>
@@ -266,7 +311,10 @@ const campos = {
   img1: document.getElementById('fImg1'),
   img2: document.getElementById('fImg2'),
   esgotado: document.getElementById('fEsgotado'),
+  drop: document.getElementById('fDrop'),
 };
+
+let produtosAtuais = []; // última lista vinda do servidor
 
 let editandoId = null; // null = criando produto novo
 let enviosEmAndamento = 0;
@@ -400,6 +448,104 @@ function configurarEnvioDeFoto(numero, lado) {
     lado: lado,
   });
 }
+
+// ---------- drop e ordem da vitrine ----------
+
+function dropMaisNovo() {
+  return produtosAtuais.reduce(function (maior, p) { return Math.max(maior, p.drop || 1); }, 1);
+}
+
+// mesma regra do site (ordenarPorPreco em site/js/main.js): se já tem
+// "ordem", ela manda; senão, destaque fixo + resto do mais barato pro mais caro
+function ordemDoSite(produtos) {
+  if (produtos.some(function (p) { return Number.isFinite(p.ordem); })) {
+    const posicao = function (p) { return Number.isFinite(p.ordem) ? p.ordem : Infinity; };
+    return produtos.slice().sort(function (a, b) { return posicao(a) - posicao(b) || a.preco - b.preco; });
+  }
+  const fixados = produtos.filter(function (p) { return p.destaque; }).sort(function (a, b) { return a.destaque - b.destaque; });
+  const resultado = produtos.filter(function (p) { return !p.destaque; }).sort(function (a, b) { return a.preco - b.preco; });
+  fixados.forEach(function (p) {
+    resultado.splice(Math.min(Math.max(p.destaque - 1, 0), resultado.length), 0, p);
+  });
+  return resultado;
+}
+
+let ordemAtual = [];
+let ordemSalva = [];
+
+function fotoDoProduto(p) {
+  if (p.cores && p.cores.length) {
+    const img = (p.cores[0].midias || []).find(function (m) { return m.tipo === 'img'; });
+    if (img) return img.src;
+  }
+  return (p.imagens && p.imagens[0]) || '';
+}
+
+function renderizarOrdem() {
+  const lista = document.getElementById('listaOrdem');
+  lista.innerHTML = ordemAtual.map(function (id, i) {
+    const p = produtosAtuais.find(function (x) { return x.id === id; });
+    const foto = fotoDoProduto(p);
+    return '<div class="ordem-item' + (ordemSalva[i] !== id ? ' movido' : '') + '">' +
+      '<span class="ordem-pos">' + (i + 1) + '</span>' +
+      (foto ? '<img src="' + escaparAttr(foto) + '" alt="">' : '<img alt="">') +
+      '<span class="ordem-nome">' + escaparAttr(p.nome) + (p.drop > 1 ? ' <span class="badge-drop">Drop ' + p.drop + '</span>' : '') + '</span>' +
+      '<span class="ordem-setas">' +
+        '<button type="button" data-mover="-1" data-i="' + i + '" aria-label="Subir"' + (i === 0 ? ' disabled' : '') + '>↑</button>' +
+        '<button type="button" data-mover="1" data-i="' + i + '" aria-label="Descer"' + (i === ordemAtual.length - 1 ? ' disabled' : '') + '>↓</button>' +
+      '</span>' +
+    '</div>';
+  }).join('');
+  const mudou = ordemAtual.join() !== ordemSalva.join();
+  document.getElementById('btnSalvarOrdem').disabled = !mudou;
+  document.getElementById('btnOrdemDesfazer').disabled = !mudou;
+}
+
+document.getElementById('listaOrdem').addEventListener('click', function (e) {
+  const botao = e.target.closest('button[data-mover]');
+  if (!botao) return;
+  const i = Number(botao.dataset.i);
+  const j = i + Number(botao.dataset.mover);
+  if (j < 0 || j >= ordemAtual.length) return;
+  const temp = ordemAtual[i];
+  ordemAtual[i] = ordemAtual[j];
+  ordemAtual[j] = temp;
+  renderizarOrdem();
+  mostrarMsg(document.getElementById('msgOrdem'), '', '');
+});
+
+// joga os drops mais novos pro topo, mantendo a ordem atual dentro de cada drop
+document.getElementById('btnOrdemDrop').addEventListener('click', function () {
+  const dropDe = function (id) {
+    const p = produtosAtuais.find(function (x) { return x.id === id; });
+    return (p && p.drop) || 1;
+  };
+  ordemAtual = ordemAtual
+    .map(function (id, i) { return { id: id, i: i }; })
+    .sort(function (a, b) { return dropDe(b.id) - dropDe(a.id) || a.i - b.i; })
+    .map(function (x) { return x.id; });
+  renderizarOrdem();
+});
+
+document.getElementById('btnOrdemDesfazer').addEventListener('click', function () {
+  ordemAtual = ordemSalva.slice();
+  renderizarOrdem();
+});
+
+document.getElementById('btnSalvarOrdem').addEventListener('click', async function () {
+  const btn = document.getElementById('btnSalvarOrdem');
+  const msg = document.getElementById('msgOrdem');
+  btn.disabled = true;
+  mostrarMsg(msg, 'Salvando ordem...', '');
+  try {
+    await chamarFuncao('ordenar', { ids: ordemAtual });
+    await carregarLista();
+    mostrarMsg(msg, 'Ordem salva. O site atualiza em 1-2 minutos.', 'sucesso');
+  } catch (err) {
+    mostrarMsg(msg, err.message, 'erro');
+    btn.disabled = false;
+  }
+});
 
 // ---------- cores ----------
 
@@ -560,6 +706,7 @@ function limparForm() {
   campos.img1.value = '';
   campos.img2.value = '';
   campos.esgotado.checked = false;
+  campos.drop.value = String(dropMaisNovo());
   definirTipo('camiseta');
   coresForm = [];
   renderizarCores();
@@ -581,6 +728,7 @@ function preencherFormParaEdicao(produto) {
   campos.img1.value = (produto.imagens && produto.imagens[0]) || '';
   campos.img2.value = (produto.imagens && produto.imagens[1]) || '';
   campos.esgotado.checked = !!produto.esgotado;
+  campos.drop.value = String(produto.drop || 1);
   definirTipo(produto.tipo === 'objeto' || (produto.tamanhos && produto.tamanhos.length === 1) ? 'objeto' : 'camiseta');
   coresForm = coresDoProduto(produto);
   renderizarCores();
@@ -597,7 +745,7 @@ function renderizarLista(produtos) {
     <div class="produto-item" data-id="\${p.id}">
       <div class="produto-item-topo">
         <div>
-          <div class="produto-item-nome">\${p.nome}</div>
+          <div class="produto-item-nome">\${p.nome} \${p.drop > 1 ? '<span class="badge-drop">Drop ' + p.drop + '</span>' : ''}</div>
           <div class="produto-item-preco">R$ \${Number(p.preco).toFixed(2).replace('.', ',')}</div>
           <div class="produto-item-id">\${p.id}\${p.tipo === 'objeto' || (p.tamanhos && p.tamanhos.length === 1) ? ' · Objeto' : ''}\${p.cores && p.cores.length ? ' · ' + p.cores.map((c) => c.nome).join(' / ') : ''}</div>
         </div>
@@ -649,7 +797,12 @@ async function carregarLista() {
   mostrarMsg(msgLista, 'Carregando...', '');
   try {
     const { produtos } = await chamarFuncao('listar', {});
+    produtosAtuais = produtos;
     renderizarLista(produtos);
+    ordemAtual = ordemDoSite(produtos).map(function (p) { return p.id; });
+    ordemSalva = ordemAtual.slice();
+    renderizarOrdem();
+    if (!editandoId) campos.drop.value = String(dropMaisNovo());
     mostrarMsg(msgLista, '', '');
   } catch (err) {
     mostrarMsg(msgLista, err.message, 'erro');
@@ -693,6 +846,7 @@ document.getElementById('btnSalvar').addEventListener('click', async () => {
     tag: campos.tag.value.trim(),
     imagens: [campos.img1.value.trim(), campos.img2.value.trim()].filter(Boolean),
     esgotado: campos.esgotado.checked,
+    drop: Number(campos.drop.value),
     tipo: lerTipo(),
     cores: coresForm.map(function (cor) {
       return { nome: cor.nome.trim(), swatch: cor.swatch, midias: montarMidiasCor(cor) };

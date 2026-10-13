@@ -162,6 +162,7 @@ function criarCardProduto(produto){
   card.innerHTML = `
     <div class="product-media has-gallery" style="background:${produto.gradiente}">
       ${esgotado ? '<span class="product-tag product-tag-esgotado">Esgotado</span>' : (produto.tag ? `<span class="product-tag">${produto.tag}</span>` : '')}
+      ${produto.drop > 1 ? `<span class="product-drop">Drop ${produto.drop}</span>` : ''}
       ${imagensHtml}
       <button type="button" class="product-expand" aria-label="Ver produto">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
@@ -247,10 +248,16 @@ function criarCardProduto(produto){
   return card;
 }
 
+// depois que o dono organiza a vitrine no painel, cada produto ganha "ordem"
+// (1 = primeiro) e é ela que manda. Sem isso, vale o esquema antigo:
 // produto pode levar "destaque: N" pra ficar fixado na N-ésima posição da
 // vitrine (1 = primeiro lugar, 3 = terceiro, etc.) - o resto segue a ordem
 // normal, do mais barato pro mais caro, preenchendo os espaços ao redor
 function ordenarPorPreco(produtos){
+  if (produtos.some(p => Number.isFinite(p.ordem))) {
+    const posicao = p => (Number.isFinite(p.ordem) ? p.ordem : Infinity);
+    return [...produtos].sort((a, b) => posicao(a) - posicao(b) || a.preco - b.preco);
+  }
   const fixados = produtos.filter(p => p.destaque).sort((a, b) => a.destaque - b.destaque);
   const resultado = produtos.filter(p => !p.destaque).sort((a, b) => a.preco - b.preco);
   fixados.forEach(produto => {
@@ -414,6 +421,9 @@ if (produtoDetalhe) {
   montarGaleria();
 
   document.getElementById('produtoNome').textContent = produto.nome;
+  if (produto.drop > 1) {
+    document.querySelector('.produto-kicker').innerHTML = `<span class="produto-drop">Drop ${produto.drop}</span> Lançamento Miami Cria`;
+  }
   document.getElementById('produtoPreco').textContent = `R$ ${produto.preco.toFixed(2).replace('.', ',')}`;
   if (esgotado) {
     document.getElementById('produtoPreco').insertAdjacentHTML('afterend', '<p class="produto-esgotado-aviso">Produto esgotado no momento</p>');

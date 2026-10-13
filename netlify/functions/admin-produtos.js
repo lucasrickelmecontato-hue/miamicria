@@ -217,6 +217,23 @@ exports.handler = async (event) => {
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
     }
 
+    // ordem da vitrine definida no painel: recebe a lista de ids na ordem em
+    // que devem aparecer e grava "ordem" (1, 2, 3...) em cada produto. O
+    // "destaque" antigo sai, porque agora quem manda é a ordem do painel
+    if (payload.acao === 'ordenar') {
+      const ids = Array.isArray(payload.ids) ? payload.ids : [];
+      const mesmosIds = ids.length === produtos.length && new Set(ids).size === ids.length && produtos.every((p) => ids.includes(p.id));
+      if (!mesmosIds) {
+        return { statusCode: 409, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'A lista de produtos mudou enquanto você organizava. Recarregue a página e tente de novo.' }) };
+      }
+      const ordenados = produtos.map((p) => {
+        const { destaque, ...resto } = p;
+        return { ...resto, ordem: ids.indexOf(p.id) + 1 };
+      });
+      await escreverArquivo(CAMINHO_PRODUTOS, gerarArquivoProdutos(ordenados), arquivoProdutos.sha, 'admin: organiza ordem da vitrine');
+      return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true }) };
+    }
+
     if (payload.acao === 'salvar') {
       const enviado = payload.produto || {};
       const id = enviado.id;
@@ -231,6 +248,13 @@ exports.handler = async (event) => {
 
       const indiceExistente = produtos.findIndex((p) => p.id === id);
       const ehNovo = indiceExistente === -1;
+
+      // drop (coleção): 1 = os produtos de sempre, sem etiqueta; 2+ ganha a
+      // etiqueta "Drop N" no card. Só grava a partir do 2 pra não sujar o JSON
+      const dropEnviado = Math.round(Number(enviado.drop));
+      const drop = 'drop' in enviado
+        ? (dropEnviado >= 2 && dropEnviado <= 99 ? dropEnviado : undefined)
+        : ehNovo ? undefined : produtos[indiceExistente].drop;
 
       // objeto (caneca, boneco, chaveiro) não tem tamanho de roupa - vira
       // tamanhos: ['Único'], que main.js já sabe ler (produto.tamanhos || TAMANHOS)
@@ -264,6 +288,7 @@ exports.handler = async (event) => {
             tipo,
             tamanhos,
             cores,
+            drop,
           }
         : {
             ...produtos[indiceExistente],
@@ -278,7 +303,16 @@ exports.handler = async (event) => {
             tipo,
             tamanhos,
             cores,
+            drop,
           };
+
+      // se a vitrine já foi organizada no painel, produto novo entra em
+      // primeiro lugar (é lançamento) e os outros descem uma posição
+      const vitrineOrganizada = produtos.some((p) => Number.isFinite(p.ordem));
+      if (ehNovo && vitrineOrganizada) {
+        produtos.forEach((p) => { if (Number.isFinite(p.ordem)) p.ordem += 1; });
+        produtoFinal.ordem = 1;
+      }
 
       const novaLista = ehNovo
         ? [...produtos, produtoFinal]
