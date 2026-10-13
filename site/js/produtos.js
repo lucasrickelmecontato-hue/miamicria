@@ -11,7 +11,7 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #ff2d95, #ff8a3d)",
     "imagens": [
-      "/img/vice-city-stories-off-white-frente-1791927712746.png",
+      "/img/vice-city-stories-off-white-frente-1791927943610.png",
       "/img/vice-city-stories-off-white-costas-1791927719707.png"
     ],
     "midias": [
@@ -41,11 +41,25 @@ const PRODUTOS = [
         "midias": [
           {
             "tipo": "img",
-            "src": "/img/vice-city-stories-off-white-frente-1791927712746.png"
+            "src": "/img/vice-city-stories-off-white-frente-1791927943610.png"
           },
           {
             "tipo": "img",
             "src": "/img/vice-city-stories-off-white-costas-1791927719707.png"
+          }
+        ]
+      },
+      {
+        "nome": "Preta",
+        "swatch": "#0d0616",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-city-stories-preta-frente-1791927948945.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-city-stories-preta-costas-1791928138352.png"
           }
         ]
       }
