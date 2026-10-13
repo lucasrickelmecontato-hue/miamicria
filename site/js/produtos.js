@@ -63,7 +63,8 @@ const PRODUTOS = [
           }
         ]
       }
-    ]
+    ],
+    "ordem": 4
   },
   {
     "id": "vice-duo",
@@ -95,7 +96,8 @@ const PRODUTOS = [
         "src": "/video/produto-2-costas.mp4"
       }
     ],
-    "esgotado": true
+    "esgotado": true,
+    "ordem": 10
   },
   {
     "id": "vice-nights",
@@ -156,7 +158,8 @@ const PRODUTOS = [
           }
         ]
       }
-    ]
+    ],
+    "ordem": 5
   },
   {
     "id": "leonida-rex",
@@ -218,7 +221,8 @@ const PRODUTOS = [
           }
         ]
       }
-    ]
+    ],
+    "ordem": 6
   },
   {
     "id": "leonida-vacation",
@@ -249,7 +253,8 @@ const PRODUTOS = [
         "src": "/video/produto-6-costas.mp4"
       }
     ],
-    "esgotado": false
+    "esgotado": false,
+    "ordem": 9
   },
   {
     "id": "disc-is-not-dead",
@@ -288,7 +293,8 @@ const PRODUTOS = [
           "position": "center top"
         }
       }
-    ]
+    ],
+    "ordem": 8
   },
   {
     "id": "vice-sunset",
@@ -354,7 +360,8 @@ const PRODUTOS = [
           }
         ]
       }
-    ]
+    ],
+    "ordem": 7
   },
   {
     "id": "igor-brasil-x-mundo",
@@ -423,7 +430,8 @@ const PRODUTOS = [
         "🇧🇷 Produção nacional"
       ],
       "final": "De um vídeo viral para uma camiseta."
-    }
+    },
+    "ordem": 11
   },
   {
     "id": "caixa-leonida",
@@ -437,7 +445,7 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
     "esgotado": false,
-    "destaque": 1
+    "ordem": 1
   },
   {
     "id": "vice-leonida-off",
@@ -480,7 +488,8 @@ const PRODUTOS = [
           }
         ]
       }
-    ]
+    ],
+    "ordem": 3
   },
   {
     "id": "collab-makauli-off",
@@ -523,7 +532,8 @@ const PRODUTOS = [
           }
         ]
       }
-    ]
+    ],
+    "ordem": 12
   },
   {
     "id": "gabriel-street-off",
@@ -536,7 +546,8 @@ const PRODUTOS = [
       "/img/gabriel-street-off-frente-1791300053048.png",
       "/img/gabriel-street-off-costas-1791300055399.png"
     ],
-    "esgotado": false
+    "esgotado": false,
+    "ordem": 13
   },
   {
     "id": "caneca-gta6",
@@ -550,7 +561,8 @@ const PRODUTOS = [
     ],
     "tamanhos": [
       "Único"
-    ]
+    ],
+    "ordem": 2
   },
   {
     "id": "boneco",
@@ -566,6 +578,7 @@ const PRODUTOS = [
     "esgotado": false,
     "tamanhos": [
       "Único"
-    ]
+    ],
+    "ordem": 14
   }
 ];
