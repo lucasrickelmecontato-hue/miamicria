@@ -11,8 +11,8 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #ff2d95, #ff8a3d)",
     "imagens": [
-      "/img/vice-city-stories-off-white-frente-1791927943610.png",
-      "/img/vice-city-stories-off-white-costas-1791927719707.png"
+      "/img/vice-city-stories-preta-frente-1791927948945.png",
+      "/img/vice-city-stories-preta-costas-1791928138352.png"
     ],
     "midias": [
       {
@@ -36,20 +36,6 @@ const PRODUTOS = [
     "esgotado": false,
     "cores": [
       {
-        "nome": "Off-white",
-        "swatch": "#ece6d6",
-        "midias": [
-          {
-            "tipo": "img",
-            "src": "/img/vice-city-stories-off-white-frente-1791927943610.png"
-          },
-          {
-            "tipo": "img",
-            "src": "/img/vice-city-stories-off-white-costas-1791927719707.png"
-          }
-        ]
-      },
-      {
         "nome": "Preta",
         "swatch": "#0d0616",
         "midias": [
@@ -60,6 +46,20 @@ const PRODUTOS = [
           {
             "tipo": "img",
             "src": "/img/vice-city-stories-preta-costas-1791928138352.png"
+          }
+        ]
+      },
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-city-stories-off-white-frente-1791929968523.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-city-stories-off-white-costas-1791930066056.png"
           }
         ]
       }
