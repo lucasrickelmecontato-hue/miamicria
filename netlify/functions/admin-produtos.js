@@ -106,6 +106,34 @@ function slugValido(id) {
   return typeof id === 'string' && /^[a-z0-9]+(-[a-z0-9]+)*$/.test(id);
 }
 
+function caminhoMidiaValido(src) {
+  return typeof src === 'string' && /^(\/|https:\/\/)[^"<>\s]+$/.test(src);
+}
+
+// cores escolhidas no painel (ex: Preta, Off-white) - mesmo formato que
+// main.js já lê: [{ nome, swatch, midias: [{ tipo, src, crop?, inicio? }] }].
+// Mantém crop/inicio de mídias que já existiam (ex: vídeos do collab Igor).
+// Cor sem nenhuma foto é descartada; lista vazia vira undefined (some do JSON).
+function limparCores(cores) {
+  if (!Array.isArray(cores)) return undefined;
+  const limpas = cores
+    .map((cor) => {
+      const nome = typeof cor.nome === 'string' ? cor.nome.trim().slice(0, 30) : '';
+      const swatch = typeof cor.swatch === 'string' && /^#[0-9a-fA-F]{6}$/.test(cor.swatch) ? cor.swatch : '#888888';
+      const midias = (Array.isArray(cor.midias) ? cor.midias : [])
+        .filter((m) => m && (m.tipo === 'img' || m.tipo === 'video') && caminhoMidiaValido(m.src))
+        .map((m) => ({
+          tipo: m.tipo,
+          src: m.src,
+          ...(m.crop && typeof m.crop === 'object' ? { crop: m.crop } : {}),
+          ...(Number.isFinite(m.inicio) ? { inicio: m.inicio } : {}),
+        }));
+      return { nome, swatch, midias };
+    })
+    .filter((cor) => cor.nome && cor.midias.length);
+  return limpas.length ? limpas : undefined;
+}
+
 // gera a página estática de /produto/<id>/ a partir do template produto.html -
 // só troca título/descrição e vira os caminhos relativos em absolutos, que é
 // exatamente a diferença que existe hoje entre produto.html e as páginas geradas
@@ -114,7 +142,7 @@ function gerarPaginaProduto(templateHtml, produto) {
     .replace('<title>Produto — Miami Cria</title>', `<title>${produto.nome} — Miami Cria</title>`)
     .replace(
       /<meta name="description" content="[^"]*">/,
-      `<meta name="description" content="${produto.nome}: ${produto.desc || ''}. Camiseta oversized Miami Cria.">`
+      `<meta name="description" content="${produto.nome}: ${produto.desc || ''}. ${produto.tipo === 'objeto' ? 'Produto' : 'Camiseta oversized'} Miami Cria.">`
     );
   html = html.replace(/(href|src)="(?!https?:|\/|#|mailto:|tel:)([^"]*)"/g, '$1="/$2"');
   return html;
@@ -152,8 +180,9 @@ exports.handler = async (event) => {
         return { statusCode: 400, headers: CORS_HEADERS, body: JSON.stringify({ erro: 'Foto inválida ou grande demais' }) };
       }
       const prefixo = slugValido(payload.id) ? payload.id : 'produto';
+      const cor = slugValido(payload.cor) ? `-${payload.cor}` : '';
       const lado = payload.lado === 'costas' ? 'costas' : 'frente';
-      const nomeArquivo = `${prefixo}-${lado}-${Date.now()}.${extensao}`;
+      const nomeArquivo = `${prefixo}${cor}-${lado}-${Date.now()}.${extensao}`;
       await escreverArquivoBinario(`site/img/${nomeArquivo}`, base64, `admin: envia foto ${nomeArquivo}`);
       return { statusCode: 200, headers: CORS_HEADERS, body: JSON.stringify({ ok: true, caminho: `/img/${nomeArquivo}` }) };
     } catch (err) {
@@ -203,10 +232,24 @@ exports.handler = async (event) => {
       const indiceExistente = produtos.findIndex((p) => p.id === id);
       const ehNovo = indiceExistente === -1;
 
-      // produto sem variação de tamanho de roupa (caneca, chaveiro, boné) -
-      // o painel só manda um booleano "tamanhoUnico", aqui vira o array que
-      // main.js já sabe ler (produto.tamanhos || TAMANHOS)
-      const tamanhos = enviado.tamanhoUnico ? ['Único'] : undefined;
+      // objeto (caneca, boneco, chaveiro) não tem tamanho de roupa - vira
+      // tamanhos: ['Único'], que main.js já sabe ler (produto.tamanhos || TAMANHOS)
+      // e usa pra esconder seletor de tamanho e tabela de medidas. Aceita o
+      // formato antigo (tamanhoUnico) e o produto inteiro vindo do botão
+      // "Marcar esgotado" (que manda tipo/tamanhos de volta como estavam)
+      const ehObjeto =
+        enviado.tipo === 'objeto' ||
+        !!enviado.tamanhoUnico ||
+        (enviado.tipo === undefined && Array.isArray(enviado.tamanhos) && enviado.tamanhos.length === 1);
+      const tamanhos = ehObjeto ? ['Único'] : undefined;
+      const tipo = ehObjeto ? 'objeto' : undefined;
+
+      // cores: se o painel mandou o campo, ele manda (lista vazia = sem cores);
+      // se não mandou, mantém o que o produto já tinha
+      const cores = 'cores' in enviado ? limparCores(enviado.cores) : ehNovo ? undefined : produtos[indiceExistente].cores;
+      // com cores, "imagens" vira as fotos da primeira cor (fallback pra quem lê só imagens)
+      const imagensDasCores = cores ? cores[0].midias.filter((m) => m.tipo === 'img').map((m) => m.src) : null;
+      const imagensEnviadas = (enviado.imagens || []).filter(caminhoMidiaValido);
 
       const produtoFinal = ehNovo
         ? {
@@ -216,9 +259,11 @@ exports.handler = async (event) => {
             preco,
             tag: enviado.tag || '',
             gradiente: enviado.gradiente || 'linear-gradient(160deg, #5a2a8f, #ff2d95)',
-            imagens: (enviado.imagens || []).filter(Boolean),
+            imagens: imagensDasCores && imagensDasCores.length ? imagensDasCores : imagensEnviadas,
             esgotado: !!enviado.esgotado,
+            tipo,
             tamanhos,
+            cores,
           }
         : {
             ...produtos[indiceExistente],
@@ -226,9 +271,13 @@ exports.handler = async (event) => {
             desc: enviado.desc,
             preco,
             tag: enviado.tag,
-            imagens: enviado.imagens && enviado.imagens.length ? enviado.imagens.filter(Boolean) : produtos[indiceExistente].imagens,
+            imagens: imagensDasCores && imagensDasCores.length
+              ? imagensDasCores
+              : imagensEnviadas.length ? imagensEnviadas : produtos[indiceExistente].imagens,
             esgotado: !!enviado.esgotado,
+            tipo,
             tamanhos,
+            cores,
           };
 
       const novaLista = ehNovo

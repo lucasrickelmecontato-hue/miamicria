@@ -122,6 +122,30 @@ const HTML = `<!DOCTYPE html>
   .arq-escondido{position:absolute; width:1px; height:1px; opacity:0; pointer-events:none;}
   .foto-controles input[type="text"]{font-size: 13px; padding: 9px 10px;}
   .foto-controles .msg{margin-top: 4px;}
+  .tipo-opcoes{display:flex; gap: 8px;}
+  .tipo-opcao{
+    flex: 1; display:flex; align-items:center; justify-content:center; gap: 6px;
+    border: 1px solid var(--border); border-radius: 10px; padding: 12px 8px;
+    margin: 0; font-size: 14px; color: var(--white); text-transform: none; letter-spacing: 0;
+    cursor: pointer; text-align: center;
+  }
+  .tipo-opcao input{position:absolute; opacity:0; pointer-events:none;}
+  .tipo-opcao:has(input:checked){border-color: var(--teal); background: rgba(45,217,199,0.12);}
+  .cores-presets{display:flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;}
+  .chip-cor{
+    width: auto; margin: 0; padding: 8px 14px; font-size: 13px;
+    display:inline-flex; align-items:center; gap: 8px;
+    border-color: var(--border);
+  }
+  .chip-cor.ativo{border-color: var(--teal); background: rgba(45,217,199,0.15);}
+  .chip-bolinha{width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.4); flex: 0 0 14px;}
+  .cor-item{border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 12px;}
+  .cor-item-topo{display:flex; gap: 8px; align-items:center; margin-bottom: 10px;}
+  .cor-item-topo input[type="color"]{width: 42px; height: 42px; flex: 0 0 42px; border: 1px solid var(--border); border-radius: 8px; background: transparent; padding: 2px; cursor: pointer;}
+  .cor-item-topo input[type="text"]{flex: 1; min-width: 0;}
+  .cor-item-topo .cor-remover{width: auto; margin: 0; padding: 10px 14px; border-color: var(--magenta); font-size: 13px;}
+  .cor-item .foto-bloco + .foto-bloco{margin-top: 10px;}
+  .cor-item .lado-titulo{font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px;}
 </style>
 </head>
 <body>
@@ -163,6 +187,24 @@ const HTML = `<!DOCTYPE html>
     <label for="fTag">Tag (opcional, ex: Novo, Collab)</label>
     <input type="text" id="fTag" placeholder="Novo">
 
+    <label>Tipo de produto</label>
+    <div class="tipo-opcoes">
+      <label class="tipo-opcao"><input type="radio" name="fTipo" value="camiseta" checked>👕 Camiseta (P, M, G...)</label>
+      <label class="tipo-opcao"><input type="radio" name="fTipo" value="objeto">🧸 Objeto (sem tamanho)</label>
+    </div>
+    <p class="ajuda">Objeto = caneca, boneco, chaveiro... No site ele aparece sem escolha de tamanho e sem tabela de medidas.</p>
+
+    <label>Cores</label>
+    <p class="ajuda" style="margin-top:0;">Toque nas cores que esse produto tem - cada cor ganha as próprias fotos, e no site o cliente escolhe entre elas. Se não marcar nenhuma, o produto fica com uma cor só (fotos logo abaixo).</p>
+    <div class="cores-presets" id="coresPresets">
+      <button type="button" class="chip-cor" data-nome="Preta" data-swatch="#0d0616"><span class="chip-bolinha" style="background:#0d0616"></span>Preta</button>
+      <button type="button" class="chip-cor" data-nome="Off-white" data-swatch="#ece6d6"><span class="chip-bolinha" style="background:#ece6d6"></span>Off-white</button>
+      <button type="button" class="chip-cor" data-nome="Branca" data-swatch="#ffffff"><span class="chip-bolinha" style="background:#ffffff"></span>Branca</button>
+      <button type="button" class="chip-cor" id="btnOutraCor">+ Outra cor</button>
+    </div>
+    <div id="listaCores"></div>
+
+    <div id="blocoImagensSimples">
     <label>Imagem frente</label>
     <div class="foto-bloco">
       <img class="foto-preview" id="prevImg1" alt="">
@@ -184,12 +226,8 @@ const HTML = `<!DOCTYPE html>
         <p class="msg" id="msgImg2"></p>
       </div>
     </div>
-    <p class="ajuda">No celular, o botão abre a galeria ou a câmera. A foto é reduzida automaticamente e enviada pro site na hora.</p>
-
-    <div class="checkbox-row">
-      <input type="checkbox" id="fTamanhoUnico">
-      <label for="fTamanhoUnico">Produto sem tamanho de roupa (tamanho único - ex: caneca, chaveiro, boné)</label>
     </div>
+    <p class="ajuda">No celular, o botão de foto abre a galeria ou a câmera. A foto é reduzida automaticamente e enviada pro site na hora.</p>
 
     <div class="checkbox-row">
       <input type="checkbox" id="fEsgotado">
@@ -228,11 +266,32 @@ const campos = {
   img1: document.getElementById('fImg1'),
   img2: document.getElementById('fImg2'),
   esgotado: document.getElementById('fEsgotado'),
-  tamanhoUnico: document.getElementById('fTamanhoUnico'),
 };
 
 let editandoId = null; // null = criando produto novo
 let enviosEmAndamento = 0;
+
+// cores do produto sendo editado: { nome, swatch, frente, costas, midiasOriginais }
+// midiasOriginais guarda o que a cor já tinha no site (ex: vídeos), pra não perder
+let coresForm = [];
+let contadorCor = 0;
+
+function lerTipo() {
+  const marcado = document.querySelector('input[name="fTipo"]:checked');
+  return marcado ? marcado.value : 'camiseta';
+}
+
+function definirTipo(tipo) {
+  document.querySelectorAll('input[name="fTipo"]').forEach(function (r) { r.checked = r.value === tipo; });
+}
+
+function escaparAttr(texto) {
+  return String(texto == null ? '' : texto).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+function slugDaCor(nome) {
+  return String(nome || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
 
 // ---------- fotos vindas do aparelho ----------
 // reduz a foto no próprio aparelho (lado maior até 1600px, JPEG) antes de
@@ -280,14 +339,20 @@ function atualizarPreviewsPelosCampos() {
   atualizarPreview(2, campos.img2.value.trim());
 }
 
-function configurarEnvioDeFoto(numero, lado) {
-  const inputArquivo = document.getElementById('arqImg' + numero);
-  const botao = document.querySelector('label[for="arqImg' + numero + '"]');
-  const campoCaminho = campos['img' + numero];
-  const msg = document.getElementById('msgImg' + numero);
+// liga um bloco de foto (botão de arquivo + campo de caminho + preview) ao
+// upload - usado nas fotos simples do produto e nas fotos de cada cor
+function ligarEnvioDeFoto(opcoes) {
+  const inputArquivo = opcoes.inputArquivo;
+  const botao = opcoes.botao;
+  const campoCaminho = opcoes.campoCaminho;
+  const msg = opcoes.msg;
+  const mostrarPreview = function (src) {
+    if (src) opcoes.preview.src = src; else opcoes.preview.removeAttribute('src');
+  };
 
   campoCaminho.addEventListener('change', function () {
-    atualizarPreview(numero, campoCaminho.value.trim());
+    mostrarPreview(campoCaminho.value.trim());
+    if (opcoes.aoMudar) opcoes.aoMudar(campoCaminho.value.trim());
   });
 
   inputArquivo.addEventListener('change', async function () {
@@ -301,19 +366,21 @@ function configurarEnvioDeFoto(numero, lado) {
     mostrarMsg(msg, 'Preparando foto...', '');
     try {
       const foto = await comprimirFoto(arquivo);
-      atualizarPreview(numero, foto.dataUrl);
+      mostrarPreview(foto.dataUrl);
       mostrarMsg(msg, 'Enviando foto...', '');
       const idProduto = editandoId || campos.id.value.trim().toLowerCase();
       const resposta = await chamarFuncao('enviar_foto', {
         id: idProduto,
-        lado: lado,
+        cor: opcoes.cor ? opcoes.cor() : '',
+        lado: opcoes.lado,
         tipo: foto.tipo,
         base64: foto.dataUrl,
       });
       campoCaminho.value = resposta.caminho;
+      if (opcoes.aoMudar) opcoes.aoMudar(resposta.caminho);
       mostrarMsg(msg, 'Foto enviada ✓ (clique em Salvar produto pra aplicar)', 'sucesso');
     } catch (err) {
-      atualizarPreview(numero, campoCaminho.value.trim());
+      mostrarPreview(campoCaminho.value.trim());
       mostrarMsg(msg, err.message, 'erro');
     } finally {
       enviosEmAndamento--;
@@ -321,6 +388,148 @@ function configurarEnvioDeFoto(numero, lado) {
       if (enviosEmAndamento === 0) document.getElementById('btnSalvar').disabled = false;
     }
   });
+}
+
+function configurarEnvioDeFoto(numero, lado) {
+  ligarEnvioDeFoto({
+    inputArquivo: document.getElementById('arqImg' + numero),
+    botao: document.querySelector('label[for="arqImg' + numero + '"]'),
+    campoCaminho: campos['img' + numero],
+    preview: document.getElementById('prevImg' + numero),
+    msg: document.getElementById('msgImg' + numero),
+    lado: lado,
+  });
+}
+
+// ---------- cores ----------
+
+function htmlBlocoFotoCor(uid, lado, titulo, src) {
+  const idArq = 'arqCor' + uid + lado;
+  return '<div class="lado-titulo">' + titulo + '</div>' +
+    '<div class="foto-bloco" data-lado="' + lado + '">' +
+      '<img class="foto-preview"' + (src ? ' src="' + escaparAttr(src) + '"' : '') + ' alt="">' +
+      '<div class="foto-controles">' +
+        '<label class="btn-foto" for="' + idArq + '">📷 Escolher foto do aparelho</label>' +
+        '<input type="file" id="' + idArq + '" accept="image/*" class="arq-escondido">' +
+        '<input type="text" class="caminho-foto" value="' + escaparAttr(src) + '" placeholder="ou cole um caminho, ex: /img/produto-preta-' + lado + '.png">' +
+        '<p class="msg"></p>' +
+      '</div>' +
+    '</div>';
+}
+
+function renderizarCores() {
+  const lista = document.getElementById('listaCores');
+  lista.innerHTML = '';
+  coresForm.forEach(function (cor) {
+    const item = document.createElement('div');
+    item.className = 'cor-item';
+    item.innerHTML =
+      '<div class="cor-item-topo">' +
+        '<input type="color" class="cor-swatch" value="' + escaparAttr(cor.swatch) + '" aria-label="Cor da bolinha">' +
+        '<input type="text" class="cor-nome" value="' + escaparAttr(cor.nome) + '" placeholder="Nome da cor (ex: Azul)">' +
+        '<button type="button" class="cor-remover">Remover</button>' +
+      '</div>' +
+      htmlBlocoFotoCor(cor.uid, 'frente', 'Foto frente', cor.frente) +
+      htmlBlocoFotoCor(cor.uid, 'costas', 'Foto costas', cor.costas);
+
+    item.querySelector('.cor-swatch').addEventListener('input', function (e) { cor.swatch = e.target.value; });
+    item.querySelector('.cor-nome').addEventListener('input', function (e) {
+      cor.nome = e.target.value;
+      atualizarChipsCores();
+    });
+    item.querySelector('.cor-remover').addEventListener('click', function () {
+      if ((cor.frente || cor.costas) && !confirm('Remover a cor "' + (cor.nome || 'sem nome') + '" e as fotos dela desse produto?')) return;
+      coresForm = coresForm.filter(function (c) { return c !== cor; });
+      renderizarCores();
+    });
+
+    item.querySelectorAll('.foto-bloco').forEach(function (bloco) {
+      const lado = bloco.dataset.lado;
+      ligarEnvioDeFoto({
+        inputArquivo: bloco.querySelector('input[type="file"]'),
+        botao: bloco.querySelector('.btn-foto'),
+        campoCaminho: bloco.querySelector('.caminho-foto'),
+        preview: bloco.querySelector('.foto-preview'),
+        msg: bloco.querySelector('.msg'),
+        lado: lado,
+        cor: function () { return slugDaCor(cor.nome); },
+        aoMudar: function (caminho) { cor[lado] = caminho; },
+      });
+    });
+
+    lista.appendChild(item);
+  });
+  atualizarChipsCores();
+  // com cores marcadas, as fotos são as de cada cor - esconde as fotos "simples"
+  document.getElementById('blocoImagensSimples').style.display = coresForm.length ? 'none' : '';
+}
+
+function atualizarChipsCores() {
+  document.querySelectorAll('#coresPresets .chip-cor[data-nome]').forEach(function (chip) {
+    const ativo = coresForm.some(function (c) { return c.nome.trim().toLowerCase() === chip.dataset.nome.toLowerCase(); });
+    chip.classList.toggle('ativo', ativo);
+  });
+}
+
+function adicionarCor(nome, swatch) {
+  contadorCor++;
+  coresForm.push({ uid: contadorCor, nome: nome, swatch: swatch, frente: '', costas: '', midiasOriginais: [] });
+  renderizarCores();
+}
+
+document.querySelectorAll('#coresPresets .chip-cor[data-nome]').forEach(function (chip) {
+  chip.addEventListener('click', function () {
+    const existente = coresForm.find(function (c) { return c.nome.trim().toLowerCase() === chip.dataset.nome.toLowerCase(); });
+    if (existente) {
+      if ((existente.frente || existente.costas) && !confirm('Remover a cor "' + existente.nome + '" e as fotos dela desse produto?')) return;
+      coresForm = coresForm.filter(function (c) { return c !== existente; });
+      renderizarCores();
+    } else {
+      adicionarCor(chip.dataset.nome, chip.dataset.swatch);
+    }
+  });
+});
+
+document.getElementById('btnOutraCor').addEventListener('click', function () {
+  adicionarCor('', '#888888');
+  const nomes = document.querySelectorAll('#listaCores .cor-nome');
+  if (nomes.length) nomes[nomes.length - 1].focus();
+});
+
+function coresDoProduto(produto) {
+  return (produto.cores || []).map(function (cor) {
+    contadorCor++;
+    const imgs = (cor.midias || []).filter(function (m) { return m.tipo === 'img'; });
+    return {
+      uid: contadorCor,
+      nome: cor.nome || '',
+      swatch: /^#[0-9a-fA-F]{6}$/.test(cor.swatch || '') ? cor.swatch : '#888888',
+      frente: imgs[0] ? imgs[0].src : '',
+      costas: imgs[1] ? imgs[1].src : '',
+      midiasOriginais: cor.midias || [],
+    };
+  });
+}
+
+// devolve as mídias da cor no formato do site: troca as 2 primeiras fotos
+// pelas do formulário e mantém o resto (vídeos, fotos extras) como estava
+function montarMidiasCor(cor) {
+  const midias = cor.midiasOriginais.map(function (m) { return Object.assign({}, m); });
+  const indicesImg = [];
+  midias.forEach(function (m, i) { if (m.tipo === 'img' && indicesImg.length < 2) indicesImg.push(i); });
+  const remover = [];
+  [cor.frente, cor.costas].forEach(function (src, k) {
+    const indice = indicesImg[k];
+    if (indice === undefined) {
+      if (src) midias.push({ tipo: 'img', src: src });
+    } else if (!src) {
+      remover.push(indice);
+    } else if (midias[indice].src !== src) {
+      midias[indice].src = src;
+      delete midias[indice].crop; // recorte era da foto antiga
+    }
+  });
+  return midias.filter(function (m, i) { return remover.indexOf(i) === -1; });
 }
 
 function mostrarMsg(el, texto, tipo) {
@@ -351,7 +560,9 @@ function limparForm() {
   campos.img1.value = '';
   campos.img2.value = '';
   campos.esgotado.checked = false;
-  campos.tamanhoUnico.checked = false;
+  definirTipo('camiseta');
+  coresForm = [];
+  renderizarCores();
   atualizarPreviewsPelosCampos();
   mostrarMsg(document.getElementById('msgImg1'), '', '');
   mostrarMsg(document.getElementById('msgImg2'), '', '');
@@ -370,7 +581,9 @@ function preencherFormParaEdicao(produto) {
   campos.img1.value = (produto.imagens && produto.imagens[0]) || '';
   campos.img2.value = (produto.imagens && produto.imagens[1]) || '';
   campos.esgotado.checked = !!produto.esgotado;
-  campos.tamanhoUnico.checked = !!(produto.tamanhos && produto.tamanhos.length);
+  definirTipo(produto.tipo === 'objeto' || (produto.tamanhos && produto.tamanhos.length === 1) ? 'objeto' : 'camiseta');
+  coresForm = coresDoProduto(produto);
+  renderizarCores();
   atualizarPreviewsPelosCampos();
   tituloForm.textContent = \`Editando: \${produto.nome}\`;
   btnCancelarEdicao.style.display = 'block';
@@ -386,7 +599,7 @@ function renderizarLista(produtos) {
         <div>
           <div class="produto-item-nome">\${p.nome}</div>
           <div class="produto-item-preco">R$ \${Number(p.preco).toFixed(2).replace('.', ',')}</div>
-          <div class="produto-item-id">\${p.id}</div>
+          <div class="produto-item-id">\${p.id}\${p.tipo === 'objeto' || (p.tamanhos && p.tamanhos.length === 1) ? ' · Objeto' : ''}\${p.cores && p.cores.length ? ' · ' + p.cores.map((c) => c.nome).join(' / ') : ''}</div>
         </div>
         \${p.esgotado ? '<span class="tag-esgotado">Esgotado</span>' : ''}
       </div>
@@ -480,8 +693,19 @@ document.getElementById('btnSalvar').addEventListener('click', async () => {
     tag: campos.tag.value.trim(),
     imagens: [campos.img1.value.trim(), campos.img2.value.trim()].filter(Boolean),
     esgotado: campos.esgotado.checked,
-    tamanhoUnico: campos.tamanhoUnico.checked,
+    tipo: lerTipo(),
+    cores: coresForm.map(function (cor) {
+      return { nome: cor.nome.trim(), swatch: cor.swatch, midias: montarMidiasCor(cor) };
+    }),
   };
+
+  const corSemNome = produto.cores.find(function (c) { return !c.nome; });
+  const corSemFoto = produto.cores.find(function (c) { return !c.midias.length; });
+  if (corSemNome || corSemFoto) {
+    mostrarMsg(msgForm, corSemNome ? 'Dê um nome pra cada cor.' : 'A cor "' + corSemFoto.nome + '" está sem foto - envie ao menos uma foto ou remova a cor.', 'erro');
+    return;
+  }
+  if (produto.cores.length) produto.imagens = [];
 
   const btn = document.getElementById('btnSalvar');
   btn.disabled = true;

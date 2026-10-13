@@ -153,6 +153,11 @@ function criarCardProduto(produto){
   // produto sem variação (ex: caneca, chaveiro) declara "tamanhos" próprio -
   // sem isso, cai no TAMANHOS padrão de roupa (P/M/G/GG/XG)
   const tamanhosProduto = produto.tamanhos || TAMANHOS;
+  // só uma opção (objeto: caneca, boneco...) - nem mostra o seletor, já vem escolhido
+  const tamanhoUnico = tamanhosProduto.length === 1;
+  const coresHtml = produto.cores && produto.cores.length > 1
+    ? `<div class="card-cores" role="group" aria-label="Selecionar cor">${produto.cores.map((cor, i) => `<button type="button" class="card-cor-btn" data-cor="${i}" style="background:${cor.swatch}" aria-label="${cor.nome}" title="${cor.nome}"></button>`).join('')}</div>`
+    : '';
 
   card.innerHTML = `
     <div class="product-media has-gallery" style="background:${produto.gradiente}">
@@ -167,34 +172,54 @@ function criarCardProduto(produto){
       <div class="product-price">
         R$ ${produto.preco.toFixed(2).replace('.', ',')}
       </div>
-      <div class="size-row" role="group" aria-label="Selecionar tamanho">
+      ${coresHtml}
+      <div class="size-row" role="group" aria-label="Selecionar tamanho"${tamanhoUnico ? ' hidden' : ''}>
         ${tamanhosProduto.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('')}
       </div>
-      <button type="button" class="add-btn" disabled>${esgotado ? 'Esgotado' : 'Selecione um tamanho'}</button>
+      <button type="button" class="add-btn" ${esgotado || !tamanhoUnico ? 'disabled' : ''}>${esgotado ? 'Esgotado' : (tamanhoUnico ? 'Adicionar ao carrinho' : 'Selecione um tamanho')}</button>
     </div>
   `;
 
   let fotoAtual = 0;
+  // depois que o cliente toca numa cor, o carrossel só gira entre as fotos
+  // dela - assim a cor que vai pro carrinho é sempre a que ele escolheu
+  let corEscolhida = null;
+  const fotos = card.querySelectorAll('.product-mockup');
+  const mostrarFoto = (indice) => {
+    fotos[fotoAtual].classList.remove('is-active');
+    fotoAtual = indice;
+    fotos[fotoAtual].classList.add('is-active');
+  };
   if (imagens.length > 1) {
-    const fotos = card.querySelectorAll('.product-mockup');
     setInterval(() => {
-      fotos[fotoAtual].classList.remove('is-active');
-      fotoAtual = (fotoAtual + 1) % fotos.length;
-      fotos[fotoAtual].classList.add('is-active');
+      let proxima = (fotoAtual + 1) % fotos.length;
+      if (corEscolhida !== null) {
+        while (corPorImagem[proxima] !== corEscolhida) proxima = (proxima + 1) % fotos.length;
+      }
+      if (proxima !== fotoAtual) mostrarFoto(proxima);
     }, 2600);
   }
 
-  // o box inteiro leva pro produto, menos os controles de tamanho/carrinho
+  card.querySelectorAll('.card-cor-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      corEscolhida = Number(btn.dataset.cor);
+      card.querySelectorAll('.card-cor-btn').forEach(b => b.classList.toggle('active', b === btn));
+      const primeira = corPorImagem.indexOf(corEscolhida);
+      if (primeira !== -1) mostrarFoto(primeira);
+    });
+  });
+
+  // o box inteiro leva pro produto, menos os controles de cor/tamanho/carrinho
   const irParaProduto = () => { window.location.href = `/produto/${produto.id}`; };
   card.style.cursor = 'pointer';
   card.addEventListener('click', (e) => {
-    if (e.target.closest('.size-row') || e.target.closest('.add-btn')) return;
+    if (e.target.closest('.size-row') || e.target.closest('.add-btn') || e.target.closest('.card-cores')) return;
     irParaProduto();
   });
 
   const sizeBtns = card.querySelectorAll('.size-btn');
   const addBtn = card.querySelector('.add-btn');
-  let tamanhoSelecionado = null;
+  let tamanhoSelecionado = tamanhoUnico ? tamanhosProduto[0] : null;
 
   sizeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -209,13 +234,14 @@ function criarCardProduto(produto){
 
   addBtn.addEventListener('click', () => {
     if (esgotado || !tamanhoSelecionado) return;
-    const nomeComCor = corPorImagem ? `${produto.nome} - ${produto.cores[corPorImagem[fotoAtual]].nome}` : produto.nome;
+    const indiceCor = corEscolhida !== null ? corEscolhida : (corPorImagem ? corPorImagem[fotoAtual] : null);
+    const nomeComCor = indiceCor !== null ? `${produto.nome} - ${produto.cores[indiceCor].nome}` : produto.nome;
     adicionarAoCarrinho({
       nome: nomeComCor,
       tamanho: tamanhoSelecionado,
       preco: produto.preco
     });
-    mostrarToast(`${nomeComCor} (${tamanhoSelecionado}) adicionado ao carrinho`);
+    mostrarToast(tamanhoUnico ? `${nomeComCor} adicionado ao carrinho` : `${nomeComCor} (${tamanhoSelecionado}) adicionado ao carrinho`);
   });
 
   return card;
@@ -286,6 +312,9 @@ if (produtoDetalhe) {
       const corIndice = midias[midiaAtual].corIndice;
       corSelecionada = produto.cores[corIndice].nome;
       corToggle.querySelectorAll('.produto-cor-btn').forEach((btn, i) => btn.classList.toggle('is-active', i === corIndice));
+      document.querySelectorAll('#produtoCores .size-btn').forEach((btn, i) => btn.classList.toggle('active', i === corIndice));
+      const corLabel = document.getElementById('produtoCorNome');
+      if (corLabel) corLabel.textContent = corSelecionada;
     }
   }
 
@@ -354,6 +383,21 @@ if (produtoDetalhe) {
   // de todas as cores ja estao juntas na galeria (montarGaleria acima); o
   // botao so pula pra primeira midia daquela cor
   if (produto.cores && produto.cores.length > 1) {
+    // além das bolinhas em cima da foto, mostra as cores com nome junto do
+    // seletor de tamanho (o cliente vê claramente "Preta / Off-white")
+    document.getElementById('produtoTamanhos').previousElementSibling.insertAdjacentHTML('beforebegin', `
+      <p class="produto-label">Cor: <span id="produtoCorNome">${produto.cores[0].nome}</span></p>
+      <div class="size-row produto-cores-row" role="group" aria-label="Selecionar cor" id="produtoCores">
+        ${produto.cores.map((cor, i) => `<button type="button" class="size-btn${i === 0 ? ' active' : ''}" data-cor="${i}"><span class="cor-bolinha" style="background:${cor.swatch}"></span>${cor.nome}</button>`).join('')}
+      </div>
+    `);
+    document.querySelectorAll('#produtoCores .size-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        midiaAtual = midias.findIndex(m => m.corIndice === Number(btn.dataset.cor));
+        renderMidiaAtual();
+      });
+    });
+
     corToggle.innerHTML = produto.cores.map((cor, i) => `
       <button type="button" class="produto-cor-btn${i === 0 ? ' is-active' : ''}" data-cor="${i}" style="background:${cor.swatch}" aria-label="${cor.nome}"></button>
     `).join('');
@@ -387,11 +431,27 @@ if (produtoDetalhe) {
 
   const sizeRow = document.getElementById('produtoTamanhos');
   const tamanhosProduto = produto.tamanhos || TAMANHOS;
+  const tamanhoUnico = tamanhosProduto.length === 1;
   sizeRow.innerHTML = tamanhosProduto.map(t => `<button type="button" class="size-btn" data-size="${t}" ${esgotado ? 'disabled' : ''}>${t}</button>`).join('');
 
   const sizeBtns = sizeRow.querySelectorAll('.size-btn');
   const addBtn = document.getElementById('produtoAddBtn');
   let tamanhoSelecionado = null;
+
+  // objeto (caneca, boneco...): sem seletor de tamanho e sem a parte de
+  // especificações/tabela de medidas, que é conteúdo de camiseta
+  if (tamanhoUnico) {
+    tamanhoSelecionado = tamanhosProduto[0];
+    sizeRow.hidden = true;
+    sizeRow.previousElementSibling.hidden = true;
+    if (!esgotado) {
+      addBtn.disabled = false;
+      addBtn.textContent = 'Adicionar ao carrinho';
+    }
+  }
+  if (produto.tipo === 'objeto' || tamanhoUnico) {
+    document.querySelectorAll('.produto-specs, .produto-medidas').forEach(el => { el.hidden = true; });
+  }
 
   if (esgotado) addBtn.textContent = 'Produto esgotado';
 
@@ -424,7 +484,7 @@ if (produtoDetalhe) {
     for (let i = 0; i < quantidade; i++) {
       adicionarAoCarrinho({ nome: nomeComCor, tamanho: tamanhoSelecionado, preco: produto.preco });
     }
-    mostrarToast(`${nomeComCor} (${tamanhoSelecionado}) adicionado ao carrinho`);
+    mostrarToast(tamanhoUnico ? `${nomeComCor} adicionado ao carrinho` : `${nomeComCor} (${tamanhoSelecionado}) adicionado ao carrinho`);
   });
 
   const outrosGrid = document.getElementById('outrosProdutosGrid');
