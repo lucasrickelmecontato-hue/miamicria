@@ -138,8 +138,8 @@ const PRODUTOS = [
     "tag": "",
     "gradiente": "linear-gradient(160deg, #ffc35c, #ff2d95)",
     "imagens": [
-      "/img/leonida-rex-frente-1791250300836.png",
-      "/img/leonida-rex-costas-1791250302303.png"
+      "/img/leonida-rex-off-white-frente-1791927869003.png",
+      "/img/leonida-rex-off-white-costas-1791927861970.png"
     ],
     "midias": [
       {
@@ -160,7 +160,23 @@ const PRODUTOS = [
         "src": "/video/produto-5-costas.mp4"
       }
     ],
-    "esgotado": false
+    "esgotado": false,
+    "cores": [
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/leonida-rex-off-white-frente-1791927869003.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/leonida-rex-off-white-costas-1791927861970.png"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "leonida-vacation",
