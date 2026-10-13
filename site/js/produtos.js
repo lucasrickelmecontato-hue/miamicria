@@ -374,7 +374,7 @@ const PRODUTOS = [
       "/img/vice-leonidaoff-frente-1790516845664.png",
       "/img/vice-leonidaoff-costas-1790516847112.png"
     ],
-    "esgotado": true
+    "esgotado": false
   },
   {
     "id": "collab-makauli-preta",
