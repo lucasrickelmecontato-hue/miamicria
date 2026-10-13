@@ -169,8 +169,8 @@ const PRODUTOS = [
     "tag": "",
     "gradiente": "linear-gradient(160deg, #ffc35c, #ff2d95)",
     "imagens": [
-      "/img/leonida-rex-off-white-frente-1791927869003.png",
-      "/img/leonida-rex-off-white-costas-1791927861970.png"
+      "/img/leonida-rex-preta-frente-1791928468952.png",
+      "/img/leonida-rex-preta-costas-1791928494883.png"
     ],
     "midias": [
       {
@@ -194,20 +194,6 @@ const PRODUTOS = [
     "esgotado": false,
     "cores": [
       {
-        "nome": "Off-white",
-        "swatch": "#ece6d6",
-        "midias": [
-          {
-            "tipo": "img",
-            "src": "/img/leonida-rex-off-white-frente-1791927869003.png"
-          },
-          {
-            "tipo": "img",
-            "src": "/img/leonida-rex-off-white-costas-1791927861970.png"
-          }
-        ]
-      },
-      {
         "nome": "Preta",
         "swatch": "#0d0616",
         "midias": [
@@ -218,6 +204,20 @@ const PRODUTOS = [
           {
             "tipo": "img",
             "src": "/img/leonida-rex-preta-costas-1791928494883.png"
+          }
+        ]
+      },
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/leonida-rex-off-white-frente-1791930113435.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/leonida-rex-off-white-costas-1791930119439.png"
           }
         ]
       }
