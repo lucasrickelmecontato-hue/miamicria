@@ -381,19 +381,6 @@ const PRODUTOS = [
     "destaque": 1
   },
   {
-    "id": "vice-leonida",
-    "nome": "VICE CITY LEONIDA (PRETA)",
-    "desc": "",
-    "preco": 94.9,
-    "tag": "",
-    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
-    "imagens": [
-      "/img/vice-leonida-frente-1790516735643.png",
-      "/img/vice-leonida-costas-1790516737776.png"
-    ],
-    "esgotado": false
-  },
-  {
     "id": "vice-leonida-off",
     "nome": "VICE CITY LEONIDA (OFF-WHITE)",
     "desc": "",
