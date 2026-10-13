@@ -11,8 +11,8 @@ const PRODUTOS = [
     "tag": "Novo",
     "gradiente": "linear-gradient(160deg, #ff2d95, #ff8a3d)",
     "imagens": [
-      "/img/vice-city-stories-frente-1790518438077.png",
-      "/img/produto-1-costas.png"
+      "/img/vice-city-stories-off-white-frente-1791927712746.png",
+      "/img/vice-city-stories-off-white-costas-1791927719707.png"
     ],
     "midias": [
       {
@@ -33,7 +33,23 @@ const PRODUTOS = [
         "src": "/video/produto-1-costas.mp4"
       }
     ],
-    "esgotado": false
+    "esgotado": false,
+    "cores": [
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-city-stories-off-white-frente-1791927712746.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-city-stories-off-white-costas-1791927719707.png"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "vice-duo",
