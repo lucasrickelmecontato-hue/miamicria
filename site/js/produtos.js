@@ -484,7 +484,7 @@ const PRODUTOS = [
   },
   {
     "id": "collab-makauli-off",
-    "nome": "COLLAB x MAKAULI (OFF-WHITE)",
+    "nome": "COLLAB x MAKAULI",
     "desc": "",
     "preco": 94.9,
     "tag": "",
