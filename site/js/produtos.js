@@ -382,16 +382,46 @@ const PRODUTOS = [
   },
   {
     "id": "vice-leonida-off",
-    "nome": "VICE CITY LEONIDA (OFF-WHITE)",
+    "nome": "VICE CITY LEONIDA",
     "desc": "",
     "preco": 94.9,
     "tag": "",
     "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
     "imagens": [
-      "/img/vice-leonidaoff-frente-1790516845664.png",
-      "/img/vice-leonidaoff-costas-1790516847112.png"
+      "/img/vice-leonida-off-off-white-frente-1791928214170.png",
+      "/img/vice-leonida-off-off-white-costas-1791928217966.png"
     ],
-    "esgotado": false
+    "esgotado": false,
+    "cores": [
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-leonida-off-off-white-frente-1791928214170.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-leonida-off-off-white-costas-1791928217966.png"
+          }
+        ]
+      },
+      {
+        "nome": "Preta",
+        "swatch": "#0d0616",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/vice-leonida-off-preta-frente-1791928223920.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/vice-leonida-off-preta-costas-1791928227765.png"
+          }
+        ]
+      }
+    ]
   },
   {
     "id": "collab-makauli-preta",
