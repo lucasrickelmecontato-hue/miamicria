@@ -398,7 +398,7 @@ const PRODUTOS = [
       ],
       "final": "De um vídeo viral para uma camiseta."
     },
-    "ordem": 15
+    "ordem": 14
   },
   {
     "id": "caixa-leonida",
@@ -412,7 +412,7 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
     "esgotado": false,
-    "ordem": 6
+    "ordem": 1
   },
   {
     "id": "vice-leonida-off",
@@ -500,7 +500,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 17
+    "ordem": 16
   },
   {
     "id": "caneca-gta6",
@@ -515,7 +515,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 18
+    "ordem": 17
   },
   {
     "id": "boneco",
@@ -532,7 +532,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 19
+    "ordem": 18
   },
   {
     "id": "gabriel-street",
@@ -576,7 +576,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 16
+    "ordem": 15
   },
   {
     "id": "vice-flamingo",
@@ -621,7 +621,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 5
+    "ordem": 4
   },
   {
     "id": "vice-neon",
@@ -666,7 +666,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 4
+    "ordem": 3
   },
   {
     "id": "vice-heat",
@@ -711,7 +711,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 3
+    "ordem": 2
   },
   {
     "id": "vice-stickers",
@@ -756,7 +756,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 2
+    "ordem": 5
   },
   {
     "id": "vice-duo",
@@ -801,6 +801,6 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 1
+    "ordem": 6
   }
 ];
