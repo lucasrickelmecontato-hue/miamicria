@@ -67,39 +67,6 @@ const PRODUTOS = [
     "ordem": 3
   },
   {
-    "id": "vice-duo",
-    "nome": "Vice Duo",
-    "desc": "Silhueta de skyline com contorno turquesa",
-    "preco": 79.9,
-    "tag": "Novo",
-    "gradiente": "linear-gradient(160deg, #2dd9c7, #5a2a8f)",
-    "imagens": [
-      "/img/produto-2-frente.png",
-      "/img/produto-2-costas.jpg"
-    ],
-    "midias": [
-      {
-        "tipo": "img",
-        "src": "/img/produto-2-frente.png"
-      },
-      {
-        "tipo": "img",
-        "src": "/img/produto-2-costas.jpg"
-      },
-      {
-        "tipo": "video",
-        "src": "/video/produto-2-frente.mp4",
-        "inicio": 0.6
-      },
-      {
-        "tipo": "video",
-        "src": "/video/produto-2-costas.mp4"
-      }
-    ],
-    "esgotado": true,
-    "ordem": 9
-  },
-  {
     "id": "vice-nights",
     "nome": "Vice Nights",
     "desc": "Tom escuro com detalhe magenta neon",
