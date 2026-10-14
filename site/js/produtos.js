@@ -64,7 +64,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 5
+    "ordem": 6
   },
   {
     "id": "vice-nights",
@@ -126,7 +126,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 6
+    "ordem": 7
   },
   {
     "id": "leonida-rex",
@@ -189,7 +189,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 7
+    "ordem": 8
   },
   {
     "id": "leonida-vacation",
@@ -221,7 +221,7 @@ const PRODUTOS = [
       }
     ],
     "esgotado": false,
-    "ordem": 10
+    "ordem": 11
   },
   {
     "id": "disc-is-not-dead",
@@ -261,7 +261,7 @@ const PRODUTOS = [
         }
       }
     ],
-    "ordem": 9
+    "ordem": 10
   },
   {
     "id": "vice-sunset",
@@ -328,7 +328,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 8
+    "ordem": 9
   },
   {
     "id": "igor-brasil-x-mundo",
@@ -398,7 +398,7 @@ const PRODUTOS = [
       ],
       "final": "De um vídeo viral para uma camiseta."
     },
-    "ordem": 12
+    "ordem": 13
   },
   {
     "id": "caixa-leonida",
@@ -412,7 +412,7 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
     "esgotado": false,
-    "ordem": 3
+    "ordem": 4
   },
   {
     "id": "vice-leonida-off",
@@ -456,7 +456,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 4
+    "ordem": 5
   },
   {
     "id": "collab-makauli-off",
@@ -500,7 +500,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 14
+    "ordem": 15
   },
   {
     "id": "caneca-gta6",
@@ -515,7 +515,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 15
+    "ordem": 16
   },
   {
     "id": "boneco",
@@ -532,7 +532,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 16
+    "ordem": 17
   },
   {
     "id": "gabriel-street",
@@ -576,7 +576,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 13
+    "ordem": 14
   },
   {
     "id": "vice-flamingo",
@@ -621,7 +621,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 2
+    "ordem": 3
   },
   {
     "id": "vice-neon",
@@ -661,6 +661,51 @@ const PRODUTOS = [
           {
             "tipo": "img",
             "src": "/img/vice-neon-off-white-costas-1791946200716.png"
+          }
+        ]
+      }
+    ],
+    "drop": 2,
+    "ordem": 2
+  },
+  {
+    "id": "vice-heat",
+    "nome": "VICE HEAT",
+    "desc": "",
+    "preco": 94.9,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/heat-vice-preta-frente-1791946697496.png",
+      "/img/heat-vice-preta-costas-1791946701981.png"
+    ],
+    "esgotado": false,
+    "cores": [
+      {
+        "nome": "Preta",
+        "swatch": "#0d0616",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/heat-vice-preta-frente-1791946697496.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/heat-vice-preta-costas-1791946701981.png"
+          }
+        ]
+      },
+      {
+        "nome": "Off-white",
+        "swatch": "#ece6d6",
+        "midias": [
+          {
+            "tipo": "img",
+            "src": "/img/heat-vice-off-white-frente-1791946706624.png"
+          },
+          {
+            "tipo": "img",
+            "src": "/img/heat-vice-off-white-costas-1791946710053.png"
           }
         ]
       }
