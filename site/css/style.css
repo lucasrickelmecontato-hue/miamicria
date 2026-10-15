@@ -1921,3 +1921,19 @@ a{color:inherit; text-decoration:none;}
   border-radius: 999px;
   margin-right: 6px;
 }
+
+/* mensagem de agradecimento do pedido aprovado (pedido.html) */
+.pedido-mensagem{
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pedido-mensagem p{
+  color: rgba(255,255,255,0.8);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.pedido-mensagem strong{color: var(--white);}

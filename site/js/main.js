@@ -510,7 +510,17 @@ if (pedidoCard) {
   const paymentId = params.get('payment_id') || params.get('collection_id');
 
   const STATUS_PEDIDO = {
-    approved: { titulo: 'Pedido aprovado!', classe: 'pedido-aprovado', texto: 'Seu pagamento foi confirmado. Já estamos preparando seu pedido.' },
+    approved: {
+      titulo: '🖤 Obrigado pela sua compra na Miami Cria!',
+      classe: 'pedido-aprovado',
+      paragrafos: [
+        'Seu pedido já está sendo preparado com todo o cuidado. 🔥',
+        '📦 <strong>Prazo de envio:</strong> nosso pedido é enviado em até 3 dias úteis após a confirmação da compra.',
+        '📧 Assim que sua mercadoria for enviada, o código de rastreio será enviado automaticamente para o e-mail utilizado na compra.',
+        'Agora é só aguardar… sua peça Miami Cria está chegando! 🌴🔥',
+        '<strong>De fã pra fã. 🖤</strong>',
+      ],
+    },
     pending: { titulo: 'Pagamento pendente', classe: 'pedido-pendente', texto: 'Assim que o pagamento for confirmado, seu pedido entra em preparação.' },
     in_process: { titulo: 'Pagamento em análise', classe: 'pedido-pendente', texto: 'Seu pagamento está sendo analisado, pode levar algumas horas.' },
     rejected: { titulo: 'Pagamento não aprovado', classe: 'pedido-recusado', texto: 'Seu pagamento não foi aprovado. Você pode tentar novamente.' },
@@ -543,7 +553,9 @@ if (pedidoCard) {
 
     pedidoCard.innerHTML = `
       <div class="pedido-status ${info.classe}">${info.titulo}</div>
-      <p class="pedido-texto">${info.texto}</p>
+      ${info.paragrafos
+        ? `<div class="pedido-mensagem">${info.paragrafos.map(p => `<p>${p}</p>`).join('')}</div>`
+        : `<p class="pedido-texto">${info.texto}</p>`}
 
       <div class="pedido-detalhes">
         <div class="pedido-linha">
