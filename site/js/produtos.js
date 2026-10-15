@@ -528,11 +528,12 @@ const PRODUTOS = [
       "/img/boneco-frente-1791579829263.jpg",
       "/img/boneco-costas-1791579964514.jpg"
     ],
-    "esgotado": false,
+    "esgotado": true,
     "tamanhos": [
       "Único"
     ],
-    "ordem": 18
+    "ordem": 18,
+    "tipo": "objeto"
   },
   {
     "id": "gabriel-street",
