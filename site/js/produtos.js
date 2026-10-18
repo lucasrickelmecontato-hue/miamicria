@@ -528,7 +528,7 @@ const PRODUTOS = [
       "/img/boneco-frente-1791579829263.jpg",
       "/img/boneco-costas-1791579964514.jpg"
     ],
-    "esgotado": true,
+    "esgotado": false,
     "tamanhos": [
       "Único"
     ],
