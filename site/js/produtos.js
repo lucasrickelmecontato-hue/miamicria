@@ -64,7 +64,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 8
+    "ordem": 9
   },
   {
     "id": "vice-nights",
@@ -126,7 +126,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 9
+    "ordem": 10
   },
   {
     "id": "leonida-rex",
@@ -189,7 +189,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 10
+    "ordem": 11
   },
   {
     "id": "leonida-vacation",
@@ -221,7 +221,7 @@ const PRODUTOS = [
       }
     ],
     "esgotado": false,
-    "ordem": 13
+    "ordem": 14
   },
   {
     "id": "disc-is-not-dead",
@@ -261,7 +261,7 @@ const PRODUTOS = [
         }
       }
     ],
-    "ordem": 12
+    "ordem": 13
   },
   {
     "id": "vice-sunset",
@@ -328,7 +328,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 11
+    "ordem": 12
   },
   {
     "id": "igor-brasil-x-mundo",
@@ -398,7 +398,7 @@ const PRODUTOS = [
       ],
       "final": "De um vídeo viral para uma camiseta."
     },
-    "ordem": 14
+    "ordem": 15
   },
   {
     "id": "caixa-leonida",
@@ -412,7 +412,7 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
     "esgotado": false,
-    "ordem": 1
+    "ordem": 2
   },
   {
     "id": "vice-leonida-off",
@@ -456,7 +456,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 7
+    "ordem": 8
   },
   {
     "id": "collab-makauli-off",
@@ -500,7 +500,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 16
+    "ordem": 17
   },
   {
     "id": "caneca-gta6",
@@ -515,7 +515,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 17
+    "ordem": 18
   },
   {
     "id": "boneco",
@@ -532,7 +532,7 @@ const PRODUTOS = [
     "tamanhos": [
       "Único"
     ],
-    "ordem": 18,
+    "ordem": 19,
     "tipo": "objeto"
   },
   {
@@ -577,7 +577,7 @@ const PRODUTOS = [
         ]
       }
     ],
-    "ordem": 15
+    "ordem": 16
   },
   {
     "id": "vice-flamingo",
@@ -622,7 +622,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 4
+    "ordem": 5
   },
   {
     "id": "vice-neon",
@@ -667,7 +667,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 3
+    "ordem": 4
   },
   {
     "id": "vice-heat",
@@ -712,7 +712,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 2
+    "ordem": 3
   },
   {
     "id": "vice-stickers",
@@ -757,7 +757,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 5
+    "ordem": 6
   },
   {
     "id": "vice-duo",
@@ -802,6 +802,24 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 6
+    "ordem": 7
+  },
+  {
+    "id": "adesivo",
+    "nome": "CARTELA A4 ADESIVOS",
+    "desc": "",
+    "preco": 35,
+    "tag": "",
+    "gradiente": "linear-gradient(160deg, #5a2a8f, #ff2d95)",
+    "imagens": [
+      "/img/adesivo-frente-1792442660321.jpg"
+    ],
+    "esgotado": false,
+    "tipo": "objeto",
+    "tamanhos": [
+      "Único"
+    ],
+    "drop": 2,
+    "ordem": 1
   }
 ];
