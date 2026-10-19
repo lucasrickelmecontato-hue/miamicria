@@ -412,7 +412,7 @@ const PRODUTOS = [
       "/img/caixa-leonida-costas-1790914190040.png"
     ],
     "esgotado": false,
-    "ordem": 2
+    "ordem": 1
   },
   {
     "id": "vice-leonida-off",
@@ -622,7 +622,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 5
+    "ordem": 4
   },
   {
     "id": "vice-neon",
@@ -667,7 +667,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 4
+    "ordem": 3
   },
   {
     "id": "vice-heat",
@@ -712,7 +712,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 3
+    "ordem": 2
   },
   {
     "id": "vice-stickers",
@@ -757,7 +757,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 6
+    "ordem": 5
   },
   {
     "id": "vice-duo",
@@ -802,7 +802,7 @@ const PRODUTOS = [
       }
     ],
     "drop": 2,
-    "ordem": 7
+    "ordem": 6
   },
   {
     "id": "adesivo",
@@ -820,6 +820,6 @@ const PRODUTOS = [
       "Único"
     ],
     "drop": 2,
-    "ordem": 1
+    "ordem": 7
   }
 ];
